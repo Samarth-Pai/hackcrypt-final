@@ -8,11 +8,34 @@
         "title": "Signals in Binary",
         "topic": "Binary Representation",
         "cards": [
-          "Binary encodes information using two states: 0 and 1. These states map to voltage levels in hardware, which makes binary reliable for storage and processing.\n\nWhen you think of binary, imagine switches that are either on or off. By combining many switches, we can represent large numbers and complex data.",
-          "Every bit position has a place value. From right to left, the values are 1, 2, 4, 8, 16, and so on.\n\nTo convert from binary to decimal, multiply each bit by its place value and sum the results.",
-          "Binary also drives logic operations. AND, OR, and XOR gates take binary inputs and produce binary outputs.\n\nThese gates form the building blocks of processors and allow computers to make decisions.",
-          "Binary is used in data encoding schemes such as ASCII and Unicode.\n\nThese encodings map characters to binary patterns so text can be stored and transmitted accurately.",
-          "Error detection methods like parity bits and checksums add extra binary data to catch mistakes.\n\nThis keeps digital communication reliable even in noisy environments." 
+          {
+            "id": "bin-0",
+            "content": "Binary encodes information using two states: 0 and 1. These states map to voltage levels in hardware, which makes binary reliable for storage and processing.\n\nWhen you think of binary, imagine switches that are either on or off. By combining many switches, we can represent large numbers and complex data.",
+            "choices": [
+              { "label": "Explore place values", "nextId": "bin-1" },
+              { "label": "Jump to logic gates", "nextId": "bin-2" }
+            ]
+          },
+          {
+            "id": "bin-1",
+            "content": "Every bit position has a place value. From right to left, the values are 1, 2, 4, 8, 16, and so on.\n\nTo convert from binary to decimal, multiply each bit by its place value and sum the results."
+          },
+          {
+            "id": "bin-2",
+            "content": "Binary also drives logic operations. AND, OR, and XOR gates take binary inputs and produce binary outputs.\n\nThese gates form the building blocks of processors and allow computers to make decisions.",
+            "choices": [
+              { "label": "See encoding schemes", "nextId": "bin-3" },
+              { "label": "Skip to error detection", "nextId": "bin-4" }
+            ]
+          },
+          {
+            "id": "bin-3",
+            "content": "Binary is used in data encoding schemes such as ASCII and Unicode.\n\nThese encodings map characters to binary patterns so text can be stored and transmitted accurately."
+          },
+          {
+            "id": "bin-4",
+            "content": "Error detection methods like parity bits and checksums add extra binary data to catch mistakes.\n\nThis keeps digital communication reliable even in noisy environments." 
+          }
         ],
         "questions": [
           {

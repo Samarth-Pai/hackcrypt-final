@@ -49,6 +49,14 @@ export async function POST(request: Request) {
                 bySubject: {},
                 byDifficulty: {},
                 hiddenDifficultyRank: 3,
+                weekly: {
+                    weekStart: new Date().toISOString().slice(0, 10),
+                    questions: 0,
+                    correct: 0,
+                    quizzesCompleted: 0,
+                    storiesCompleted: 0,
+                    completedStoryIds: [],
+                },
             },
         };
 

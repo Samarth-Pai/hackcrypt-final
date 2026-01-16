@@ -29,6 +29,7 @@ export default async function SyllabusDetailPage({ params }: { params: Promise<{
         <div className="min-h-screen text-[#E2E8F0] p-6">
             <div className="max-w-4xl mx-auto">
                 <SyllabusDetail
+                    slug={slug}
                     title={syllabus.title}
                     description={syllabus.description}
                     flashcards={syllabus.flashcards || []}

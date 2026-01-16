@@ -58,7 +58,7 @@ const InfinityStone: React.FC<InfinityStoneProps> = ({
                         alt={label}
                         width={256}
                         height={256}
-                        className={`object-contain w-full h-full drop-shadow-2xl transition-all duration-300 ${!locked ? 'group-hover:drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]' : ''}`}
+                        className={`object-contain w-full h-full drop-shadow-2xl transition-all duration-300 mix-blend-screen ${!locked ? 'group-hover:drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]' : ''}`}
                         style={{
                             filter: !locked ? `drop-shadow(0 0 15px ${color})` : undefined
                         }}

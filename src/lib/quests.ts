@@ -16,6 +16,14 @@ type UserSnapshot = {
     performance?: {
         totalQuestions?: number;
         totalCorrect?: number;
+        weekly?: {
+            weekStart?: string;
+            questions?: number;
+            correct?: number;
+            quizzesCompleted?: number;
+            storiesCompleted?: number;
+            completedStoryIds?: string[];
+        };
     };
 };
 
@@ -66,6 +74,40 @@ const questDefinitions: Array<{
         target: 250,
         rewardXp: 100,
         getProgress: (user) => user.gamification?.xp || 0,
+    },
+    {
+        id: 'weekly-questions-20',
+        title: 'Weekly Warm-Up',
+        description: 'Answer 20 questions this week.',
+        target: 20,
+        rewardXp: 120,
+        getProgress: (user) => user.performance?.weekly?.questions || 0,
+    },
+    {
+        id: 'weekly-correct-15',
+        title: 'Weekly Precision',
+        description: 'Get 15 correct answers this week.',
+        target: 15,
+        rewardXp: 140,
+        getProgress: (user) => user.performance?.weekly?.correct || 0,
+    },
+    {
+        id: 'weekly-stories-3',
+        title: 'Story Marathon',
+        description: 'Complete 3 stories this week.',
+        target: 3,
+        rewardXp: 150,
+        getProgress: (user) => user.performance?.weekly?.storiesCompleted
+            ?? user.performance?.weekly?.completedStoryIds?.length
+            ?? 0,
+    },
+    {
+        id: 'weekly-quizzes-3',
+        title: 'Quiz Vanguard',
+        description: 'Finish 3 quizzes this week.',
+        target: 3,
+        rewardXp: 130,
+        getProgress: (user) => user.performance?.weekly?.quizzesCompleted || 0,
     },
 ];
 

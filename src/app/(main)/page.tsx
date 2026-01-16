@@ -31,17 +31,20 @@ export default function Home() {
   }, []);
 
   const getPositionStyles = (delta: number) => {
+    // Holographic Transitions
+    const baseTransition = "absolute transition-all duration-1000 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-[transform,opacity,filter]";
+
     switch (delta) {
-      case 0:
-        return "z-30 mb-10 scale-150 md:scale-[1.8] hover:scale-[2.0] translate-x-0 opacity-100 grayscale-0 brightness-100";
-      case 4:
-        return "z-20 bottom-[20%] left-[25%] md:left-[28%] scale-100 hover:scale-110 opacity-80";
-      case 3:
-        return "z-10 bottom-[10%] left-[5%] md:left-[10%] scale-90 hover:scale-105 opacity-60";
-      case 2:
-        return "z-0 bottom-[10%] right-[5%] md:right-[10%] scale-75 opacity-0";
-      case 1:
-        return "z-20 bottom-[20%] right-[25%] md:right-[28%] scale-100 hover:scale-110 opacity-80";
+      case 0: // Center (Active)
+        return `${baseTransition} z-30 mb-10 scale-[1.4] md:scale-[1.6] opacity-100 brightness-125 drop-shadow-[0_0_30px_rgba(0,243,255,0.5)] translate-x-0 grayscale-0 mix-blend-normal`;
+      case 1: // Right Near
+        return `${baseTransition} z-20 bottom-[20%] right-[20%] md:right-[25%] scale-75 opacity-40 blur-[2px] grayscale-[50%] mix-blend-screen pointer-events-none`;
+      case 4: // Left Near
+        return `${baseTransition} z-20 bottom-[20%] left-[20%] md:left-[25%] scale-75 opacity-40 blur-[2px] grayscale-[50%] mix-blend-screen pointer-events-none`;
+      case 2: // Right Far
+        return `${baseTransition} z-10 bottom-[10%] right-[10%] md:right-[15%] scale-40 opacity-0 blur-[10px] pointer-events-none`;
+      case 3: // Left Far
+        return `${baseTransition} z-10 bottom-[10%] left-[10%] md:left-[15%] scale-40 opacity-0 blur-[10px] pointer-events-none`;
       default:
         return "hidden";
     }
@@ -75,7 +78,7 @@ export default function Home() {
       <main className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-100px)] px-4 pb-20">
 
         {/* Text Content */}
-        <div className="text-center mb-24 space-y-6 max-w-4xl mx-auto relative">
+        <div className="text-center mb-12 space-y-6 max-w-4xl mx-auto relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -108,13 +111,13 @@ export default function Home() {
         </div>
 
         {/* Grand Stones Constellation (Carousel Layout) */}
-        <div className="relative w-full max-w-7xl h-[600px] flex items-end justify-center perspective-1000 pb-20">
+        <div className="relative w-full max-w-7xl h-[450px] flex items-end justify-center perspective-[1200px] pb-10">
 
           {/* Connecting Lines */}
-          <svg className="absolute inset-x-0 bottom-0 h-full w-full pointer-events-none opacity-20">
+          <svg className="absolute inset-x-0 bottom-0 h-full w-full pointer-events-none opacity-30 mix-blend-screen">
             <defs>
               <linearGradient id="beamGrad" x1="0.5" y1="1" x2="0.5" y2="0">
-                <stop offset="0%" stopColor="#00F3FF" stopOpacity="0.5" />
+                <stop offset="0%" stopColor="#00F3FF" stopOpacity="0.4" />
                 <stop offset="100%" stopColor="transparent" />
               </linearGradient>
             </defs>
@@ -132,10 +135,14 @@ export default function Home() {
             return (
               <div
                 key={stone.id}
-                className={`absolute transition-all duration-1000 ease-in-out ${getPositionStyles(delta)}`}
+                className={getPositionStyles(delta)}
               >
+                {/* Holographic Projection Base */}
                 {isCenter && (
-                  <div className="absolute inset-0 bg-cyan-500/20 rounded-full blur-[80px] group-hover:blur-[120px] group-hover:bg-cyan-400/30 transition-all duration-500 animate-pulse -z-10" />
+                  <>
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-32 h-8 bg-cyan-400/20 blur-xl rounded-[100%] pointer-events-none" />
+                    <div className="absolute inset-0 bg-cyan-400/10 rounded-full blur-md animate-pulse mix-blend-screen pointer-events-none" />
+                  </>
                 )}
 
                 <InfinityStone

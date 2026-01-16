@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Map, Compass } from 'lucide-react';
+import { Map, Compass, Network } from 'lucide-react';
+import { getSessionUserDoc } from '@/lib/session';
 
 const nodes = [
     { id: 'cs', title: 'CS Fundamentals', x: 10, y: 20, status: 'core' },
@@ -19,7 +20,24 @@ const edges = [
     ['chem', 'duels'],
 ];
 
-export default function LearningPathPage() {
+export default async function LearningPathPage() {
+    const data = await getSessionUserDoc();
+    const performance = data?.user?.performance;
+    const totalCorrect = performance?.totalCorrect || 0;
+
+    const skillNodes = [
+        { id: 'binary', label: 'Binary Foundations', threshold: 0, deps: [] as string[] },
+        { id: 'ds', label: 'Data Structures', threshold: 4, deps: ['binary'] },
+        { id: 'algo', label: 'Algorithms', threshold: 8, deps: ['ds'] },
+        { id: 'logic', label: 'Logic Gates', threshold: 6, deps: ['binary'] },
+        { id: 'systems', label: 'Systems Thinking', threshold: 12, deps: ['algo'] },
+        { id: 'networks', label: 'Networks', threshold: 14, deps: ['logic'] },
+    ];
+
+    const unlockedMap = skillNodes.reduce<Record<string, boolean>>((acc, node) => {
+        acc[node.id] = totalCorrect >= node.threshold;
+        return acc;
+    }, {});
     return (
         <div className="min-h-screen text-[#E2E8F0] p-6">
             <div className="max-w-6xl mx-auto space-y-6">
@@ -70,6 +88,32 @@ export default function LearningPathPage() {
                     <div className="absolute bottom-6 right-6 flex items-center gap-2 px-3 py-2 rounded-full bg-[#0B0014]/60 border border-cyan-500/30 text-xs text-slate-400">
                         <Compass size={14} /> Drag to explore (coming soon)
                     </div>
+                </div>
+
+                <div className="glass-cosmic rounded-3xl border border-cyan-500/30 p-6">
+                    <div className="flex items-center gap-3 mb-6">
+                        <Network className="text-violet-300" size={20} />
+                        <h2 className="text-lg font-bold text-violet-200 uppercase tracking-widest">Skill Graph</h2>
+                        <div className="h-px flex-1 bg-gradient-to-r from-violet-500/50 to-transparent" />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {skillNodes.map((node) => {
+                            const isUnlocked = unlockedMap[node.id];
+                            return (
+                                <div
+                                    key={node.id}
+                                    className={`p-4 rounded-2xl border transition-colors ${isUnlocked ? 'border-cyan-500/40 bg-cyan-500/10' : 'border-slate-700/40 bg-[#0B0014]/60'}`}
+                                >
+                                    <p className="text-xs uppercase tracking-widest text-slate-400">{isUnlocked ? 'Unlocked' : 'Locked'}</p>
+                                    <h3 className={`text-sm font-bold ${isUnlocked ? 'text-cyan-200' : 'text-slate-500'}`}>{node.label}</h3>
+                                    {node.deps.length > 0 && (
+                                        <p className="text-[10px] text-slate-500 mt-2">Prereq: {node.deps.map((dep) => skillNodes.find((n) => n.id === dep)?.label || dep).join(', ')}</p>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <p className="text-[10px] text-slate-500 mt-4">Unlocks are based on total correct answers. Keep solving questions to open new nodes.</p>
                 </div>
             </div>
         </div>

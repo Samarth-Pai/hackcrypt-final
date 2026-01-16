@@ -6,11 +6,22 @@ export type StoryQuestion = {
     correctAnswer: string;
 };
 
+export type StoryChoice = {
+    label: string;
+    nextId: string;
+};
+
+export type StoryCard = {
+    id?: string;
+    content: string;
+    choices?: StoryChoice[];
+};
+
 export type Story = {
     id: string;
     title: string;
     topic: string;
-    cards: string[];
+    cards: Array<string | StoryCard>;
     questions: StoryQuestion[];
 };
 

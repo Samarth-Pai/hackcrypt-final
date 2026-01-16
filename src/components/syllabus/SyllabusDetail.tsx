@@ -6,6 +6,7 @@ import MatchTheFollowing, { MatchPair } from '@/components/syllabus/MatchTheFoll
 import QuizInterface from '@/components/quiz/QuizInterface';
 
 interface SyllabusDetailProps {
+    slug: string;
     title: string;
     description: string;
     flashcards: Flashcard[];
@@ -13,7 +14,7 @@ interface SyllabusDetailProps {
     matchPairs: MatchPair[];
 }
 
-export default function SyllabusDetail({ title, description, flashcards, questions, matchPairs }: SyllabusDetailProps) {
+export default function SyllabusDetail({ slug, title, description, flashcards, questions, matchPairs }: SyllabusDetailProps) {
     const [showQuiz, setShowQuiz] = useState(false);
 
     return (
@@ -23,7 +24,7 @@ export default function SyllabusDetail({ title, description, flashcards, questio
                 <p className="text-sm text-slate-300">{description}</p>
             </div>
 
-            <Flashcards cards={flashcards} />
+            <Flashcards cards={flashcards} syllabusSlug={slug} />
 
             {matchPairs.length > 0 && <MatchTheFollowing pairs={matchPairs} />}
 

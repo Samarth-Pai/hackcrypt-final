@@ -77,6 +77,15 @@ function normalizeKey(value: string) {
     return value.replace(/\./g, '_').replace(/\$/g, '').trim();
 }
 
+function getWeekStart(date: Date) {
+    const day = date.getDay();
+    const diff = (day + 6) % 7;
+    const start = new Date(date);
+    start.setDate(date.getDate() - diff);
+    start.setHours(0, 0, 0, 0);
+    return start.toISOString().slice(0, 10);
+}
+
 export async function POST(request: Request) {
     const session = await getSessionUser();
     if (!session) {
@@ -145,6 +154,30 @@ export async function POST(request: Request) {
 
     const userId = session.userId;
 
+    const weekStart = getWeekStart(new Date());
+    const existingUser = await db.collection<UserDoc>('users').findOne(
+        { _id: userId },
+        { projection: { 'performance.weekly': 1 } }
+    );
+
+    if (existingUser?.performance?.weekly?.weekStart !== weekStart) {
+        await db.collection('users').updateOne(
+            { _id: userId },
+            {
+                $set: {
+                    'performance.weekly': {
+                        weekStart,
+                        questions: 0,
+                        correct: 0,
+                        quizzesCompleted: 0,
+                        storiesCompleted: 0,
+                        completedStoryIds: [],
+                    },
+                },
+            }
+        );
+    }
+
     await db.collection('users').updateOne(
         { _id: userId, 'gamification.completedLessons': { $type: 'array' } },
         { $set: { 'gamification.completedLessons': 0 } }
@@ -171,6 +204,9 @@ export async function POST(request: Request) {
                 'gamification.completedLessons': 1,
                 'performance.totalQuestions': totalQuestions,
                 'performance.totalCorrect': score,
+                'performance.weekly.questions': totalQuestions,
+                'performance.weekly.correct': score,
+                'performance.weekly.quizzesCompleted': 1,
                 ...perSubjectUpdates,
                 ...perDifficultyUpdates,
             },

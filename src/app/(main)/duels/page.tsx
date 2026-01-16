@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { Swords, Users, Trophy } from 'lucide-react';
+import { Swords, Users, Trophy, Info, X, Zap, Shield, Target } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type Question = {
     id: string;
@@ -35,6 +36,8 @@ export default function DuelsPage() {
     const [matchResult, setMatchResult] = useState<MatchResult | null>(null);
     const [answeredCount, setAnsweredCount] = useState(0);
     const [answerLog, setAnswerLog] = useState<Record<string, string | null>>({});
+    const [showRules, setShowRules] = useState(true);
+    const [systemReady, setSystemReady] = useState(false);
 
     useEffect(() => {
         const loadUser = async () => {
@@ -184,7 +187,12 @@ export default function DuelsPage() {
                     <Swords className="w-8 h-8 text-cyan-300" />
                     <div>
                         <h1 className="text-2xl font-bold text-cyan-200 text-glow">Live Duels</h1>
-                        <p className="text-sm text-slate-400">Match against another explorer and race to win.</p>
+                        <div className="flex items-center gap-2">
+                            <p className="text-sm text-slate-400">Match against another explorer and race to win.</p>
+                            <button onClick={() => setShowRules(true)} className="p-1 hover:bg-white/10 rounded-full text-cyan-400 transition-colors">
+                                <Info size={14} />
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -209,6 +217,29 @@ export default function DuelsPage() {
                     )}
                 </div>
             </div>
+
+            {/* System Ready Banner - appears after acknowledging rules */}
+            <AnimatePresence>
+                {systemReady && queueStatus === 'idle' && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0, marginBottom: 0 }}
+                        animate={{ opacity: 1, height: 'auto', marginBottom: 24 }}
+                        exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+                        className="overflow-hidden"
+                    >
+                        <div className="bg-cyan-950/30 border border-cyan-500/30 p-4 rounded-xl flex items-center gap-4 relative overflow-hidden group">
+                            <div className="absolute inset-0 bg-cyan-500/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                            <div className="p-2 bg-cyan-500/20 rounded-lg animate-pulse">
+                                <Zap className="text-cyan-400" size={20} />
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-cyan-200">SYSTEM ARMED</h3>
+                                <p className="text-xs text-cyan-400/70">Combat protocols initialized. ready for matchmaking.</p>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {queueStatus === 'matched' && (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -247,13 +278,12 @@ export default function DuelsPage() {
                                         <button
                                             key={option}
                                             onClick={() => handleAnswer(option)}
-                                            className={`p-3 rounded-lg border transition-colors ${
-                                                selectedOption === option
-                                                    ? option === currentQuestion.correctAnswer
-                                                        ? 'bg-cyan-500/30 border-cyan-400 text-white'
-                                                        : 'bg-red-900/70 border-red-500'
-                                                    : 'bg-[#0F061A] border-cyan-500/30 text-slate-200 hover:border-violet-500/60'
-                                            }`}
+                                            className={`p-3 rounded-lg border transition-colors ${selectedOption === option
+                                                ? option === currentQuestion.correctAnswer
+                                                    ? 'bg-cyan-500/30 border-cyan-400 text-white'
+                                                    : 'bg-red-900/70 border-red-500'
+                                                : 'bg-[#0F061A] border-cyan-500/30 text-slate-200 hover:border-violet-500/60'
+                                                }`}
                                         >
                                             {option}
                                         </button>
@@ -304,6 +334,86 @@ export default function DuelsPage() {
                     </div>
                 </div>
             )}
-        </div>
+
+            {/* Rules Modal */}
+            <AnimatePresence>
+                {showRules && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setShowRules(false)}
+                            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                        />
+                        <motion.div
+                            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                            className="relative w-full max-w-lg glass-cosmic p-8 rounded-3xl border border-cyan-500/30 shadow-2xl z-10"
+                        >
+                            <button
+                                onClick={() => setShowRules(false)}
+                                className="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors"
+                            >
+                                <X size={20} />
+                            </button>
+
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="p-3 bg-cyan-500/20 rounded-xl border border-cyan-500/30">
+                                    <Swords size={24} className="text-cyan-400" />
+                                </div>
+                                <div>
+                                    <h2 className="text-xl font-black uppercase tracking-wider text-white">Battle Protocols</h2>
+                                    <p className="text-xs text-cyan-400 font-mono">SYSTEM_INSTRUCTION_MANUAL</p>
+                                </div>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div className="p-4 bg-[#0A0A1F] rounded-xl border border-white/5 flex gap-4">
+                                    <Zap className="text-yellow-400 shrink-0" />
+                                    <div>
+                                        <h3 className="font-bold text-slate-200 text-sm mb-1">Speed is Power</h3>
+                                        <p className="text-xs text-slate-400 leading-relaxed">
+                                            Answer questions correctly to damage your opponent. The faster you answer, the more pressure you apply.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="p-4 bg-[#0A0A1F] rounded-xl border border-white/5 flex gap-4">
+                                    <Target className="text-cyan-400 shrink-0" />
+                                    <div>
+                                        <h3 className="font-bold text-slate-200 text-sm mb-1">Accuracy Check</h3>
+                                        <p className="text-xs text-slate-400 leading-relaxed">
+                                            Incorrect answers apply NO damage and lock your input for 2 seconds. Precision is key.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="p-4 bg-[#0A0A1F] rounded-xl border border-white/5 flex gap-4">
+                                    <Trophy className="text-purple-400 shrink-0" />
+                                    <div>
+                                        <h3 className="font-bold text-slate-200 text-sm mb-1">Victory Rewards</h3>
+                                        <p className="text-xs text-slate-400 leading-relaxed">
+                                            Winner takes +50 XP and ranking points. Loser gains +10 XP for participation.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={() => {
+                                    setShowRules(false);
+                                    setSystemReady(true);
+                                }}
+                                className="w-full mt-8 py-3 bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-500/50 text-cyan-300 rounded-xl font-bold uppercase tracking-widest transition-all"
+                            >
+                                Acknowledge
+                            </button>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+        </div >
     );
 }

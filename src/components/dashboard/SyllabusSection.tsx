@@ -2,72 +2,71 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Layers } from 'lucide-react';
+import { Map, Sparkles, Shield } from 'lucide-react';
 import SyllabusCard, { SyllabusStatus } from './SyllabusCard';
 import TopicContent, { TopicData } from './TopicContent';
-import CosmicCard from '@/components/cosmic/CosmicCard';
 
 const SYLLABUS_DATA: TopicData[] = [
     {
         id: 'cyber-fundamentals',
-        title: 'Cybersecurity Fundamentals',
-        description: 'Core concepts of information security, CIA triad, and attack vectors.',
-        status: 'completed',
+        title: 'Operation: Cyber Genesis',
+        description: 'Initialize S.H.I.E.L.D. recruit training. Covert communication basics, CIA triad protocols, and threat vectors.',
+        status: 'completed' as SyllabusStatus,
         sections: [
             {
-                title: 'The CIA Triad',
+                title: 'The CIA Triad Protocols',
                 content: [
-                    'Confidentiality: Protecting information from unauthorized access.',
-                    'Integrity: Ensuring data is accurate and unchanged.',
-                    'Availability: Guaranteeing timely and reliable access to data.'
+                    'Confidentiality: Protecting asset data from unauthorized Hydra access.',
+                    'Integrity: Ensuring data streams remain uncorrupted.',
+                    'Availability: Guaranteeing mission-critical system uptime.'
                 ]
             },
             {
-                title: 'Common Attack Vectors',
+                title: 'Threat Vector Analysis',
                 content: [
-                    'Phishing: Deceptive attempts to gather sensitive info.',
-                    'Malware: Software designed to disrupt or damage systems.',
-                    'Social Engineering: Manipulating people into breaking security procedures.'
+                    'Phishing: Identifying deceptive communication.',
+                    'Malware: Neutralizing malicious code variants.',
+                    'Social Engineering: Countering psychological manipulation.'
                 ]
             }
         ]
     },
     {
         id: 'cryptography-101',
-        title: 'Cryptography 101',
-        description: 'Introduction to encryption, hashing, and digital signatures.',
-        status: 'in_progress',
+        title: 'Project: Enigma Code',
+        description: 'Advanced encryption techniques. Master the arts of hashing, digital signatures, and securing the Grid.',
+        status: 'in_progress' as SyllabusStatus,
         sections: [
             {
-                title: 'Symmetric vs Asymmetric',
+                title: 'Encryption Paradigms',
                 content: [
-                    'Symmetric: Same key for encryption and decryption (speed).',
-                    'Asymmetric: Public/Private key pair (security/exchange).',
-                    'Use AES for data at rest, RSA/ECC for key exchange.'
+                    'Symmetric: High-speed tactical encryption.',
+                    'Asymmetric: Public/Private key exchange protocols.',
+                    'Strategic deployment of AES and RSA algorithms.'
                 ]
             },
             {
-                title: 'Hashing Functions',
+                title: 'Hashing Integrity',
                 content: [
-                    'One-way transformation of data into a fixed string.',
-                    'Crucial for password storage and data integrity verification.',
-                    'Common algorithms: SHA-256, MD5 (legacy/insecure).'
+                    'One-way data transformation verification.',
+                    'Validating mission data integrity.',
+                    'Algorithm analysis: SHA-256 vs legacy MD5.'
                 ]
             }
         ]
     },
     {
         id: 'network-defense',
-        title: 'Network Defense',
-        description: 'Firewalls, IDS/IPS, and securing network architecture.',
-        status: 'locked',
-        sections: [] // Locked content content usually hidden/empty until unlocked
+        title: 'Stark Perimeter Defense',
+        description: 'Deploying Firewalls, IDS/IPS grids, and securing the network architecture against invasion.',
+        status: 'locked' as SyllabusStatus,
+        sections: []
     },
     {
         id: 'ethical-hacking',
-        title: 'Ethical Hacking Basics',
-        description: 'Reconnaissance, scanning, and vulnerability assessment.',
-        status: 'locked',
+        title: 'Widow\'s Infiltration',
+        description: 'Offensive security reconnaissance, scanning, and vulnerability assessment methods.',
+        status: 'locked' as SyllabusStatus,
         sections: []
     }
 ];
@@ -78,27 +77,44 @@ export default function SyllabusSection() {
     const selectedTopic = SYLLABUS_DATA.find(t => t.id === selectedTopicId);
 
     return (
-        <div className="mt-8">
-            <div className="flex items-center gap-3 mb-6">
-                <Layers className="text-cyan-400" size={20} />
-                <h2 className="text-xl font-black italic uppercase tracking-tighter text-slate-100">
-                    Training Syllabus
-                </h2>
-                <div className="h-px flex-1 bg-gradient-to-r from-cyan-500/50 to-transparent" />
+        <div className="mt-8 relative z-10 font-sans">
+            {/* Marvel Header */}
+            <div className="flex items-center gap-4 mb-8">
+                <div className="relative">
+                    <div className="absolute inset-0 bg-cyan-500 blur-xl opacity-20 animate-pulse" />
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-cyan-900 to-black border border-cyan-500/50 text-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.3)] relative z-10">
+                        <Map size={32} />
+                    </div>
+                </div>
+                <div>
+                    <h2 className="text-3xl font-black italic uppercase tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-cyan-500 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">
+                        MISSION DIRECTIVES
+                    </h2>
+                    <p className="text-xs text-cyan-500/80 font-mono tracking-[0.2em] flex items-center gap-2 mt-1">
+                        <Shield size={12} /> S.H.I.E.L.D. CLEARANCE: LEVEL 4
+                    </p>
+                </div>
+                <div className="h-px flex-1 bg-gradient-to-r from-cyan-500/50 via-cyan-900/20 to-transparent ml-6" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {SYLLABUS_DATA.map((topic, idx) => (
-                    <SyllabusCard
-                        key={topic.id}
-                        id={topic.id}
-                        title={topic.title}
-                        description={topic.description}
-                        status={topic.status}
-                        onClick={setSelectedTopicId}
-                        delay={idx * 0.1}
-                    />
-                ))}
+            {/* Campaign Grid with Connecting Lines */}
+            <div className="relative">
+                {/* Connecting Background Line - stylized as a circuit trace */}
+                <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-cyan-500 to-slate-800 -translate-y-1/2 hidden lg:block opacity-30 blur-[2px]" />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+                    {SYLLABUS_DATA.map((topic, idx) => (
+                        <SyllabusCard
+                            key={topic.id}
+                            id={topic.id}
+                            title={topic.title}
+                            description={topic.description}
+                            status={topic.status as SyllabusStatus}
+                            onClick={setSelectedTopicId}
+                            delay={idx * 0.15}
+                        />
+                    ))}
+                </div>
             </div>
 
             {/* Modal Overlay */}
@@ -110,20 +126,25 @@ export default function SyllabusSection() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setSelectedTopicId(null)}
-                            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                            className="absolute inset-0 bg-[#050510]/95 backdrop-blur-xl"
                         />
 
                         <motion.div
                             layoutId={selectedTopic.id}
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.9, opacity: 0 }}
-                            className="relative z-10 w-full max-w-2xl"
+                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                            className="relative z-10 w-full max-w-3xl"
                         >
-                            <TopicContent
-                                topic={selectedTopic}
-                                onClose={() => setSelectedTopicId(null)}
-                            />
+                            <div className="border border-cyan-500/20 rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.25)] bg-[#0A0A1F] relative">
+                                {/* Tech overlay lines */}
+                                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-transparent" />
+
+                                <TopicContent
+                                    topic={selectedTopic}
+                                    onClose={() => setSelectedTopicId(null)}
+                                />
+                            </div>
                         </motion.div>
                     </div>
                 )}

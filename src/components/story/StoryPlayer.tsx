@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CheckCircle, XCircle } from 'lucide-react';
-import { Story, StoryQuestion } from '@/lib/stories';
+import { Story, StoryCard, StoryQuestion } from '@/lib/stories';
 
 const formatOptions = (question: StoryQuestion) => {
     if (question.type === 'true_false') {
@@ -15,8 +15,22 @@ const formatOptions = (question: StoryQuestion) => {
 export default function StoryPlayer({ story }: { story: Story }) {
     const router = useRouter();
     const steps = useMemo(() => {
+        const cardSteps = story.cards.map((card, index) => {
+            if (typeof card === 'string') {
+                return { type: 'card' as const, content: card, id: `card-${index}` };
+            }
+
+            const typedCard = card as StoryCard;
+            return {
+                type: 'card' as const,
+                content: typedCard.content,
+                choices: typedCard.choices,
+                id: typedCard.id || `card-${index}`,
+            };
+        });
+
         return [
-            ...story.cards.map((content, index) => ({ type: 'card' as const, content, id: `card-${index}` })),
+            ...cardSteps,
             ...story.questions.map((question) => ({ type: 'question' as const, question, id: question.id })),
         ];
     }, [story]);
@@ -49,6 +63,14 @@ export default function StoryPlayer({ story }: { story: Story }) {
         });
     };
 
+    const goToStep = (nextId: string) => {
+        const nextIndex = steps.findIndex((item) => item.id === nextId);
+        if (nextIndex === -1) return;
+        setStepIndex(nextIndex);
+        setSelected(null);
+        setSubmitted(false);
+    };
+
     const nextStep = () => {
         if (stepIndex < steps.length - 1) {
             setStepIndex((prev) => prev + 1);
@@ -74,12 +96,29 @@ export default function StoryPlayer({ story }: { story: Story }) {
                 <div className="space-y-4">
                     <h2 className="text-xl font-bold text-cyan-200">Story Intel</h2>
                     <p className="text-sm text-slate-200 whitespace-pre-line leading-relaxed">{step.content}</p>
-                    <button
-                        onClick={nextStep}
-                        className="px-4 py-2 bg-cyan-500/20 text-cyan-100 rounded-full border border-cyan-500/40 hover:border-violet-500/70 hover:text-white transition-colors"
-                    >
-                        {stepIndex === steps.length - 1 ? 'Finish Story' : 'Continue'}
-                    </button>
+                    {step.choices && step.choices.length > 0 ? (
+                        <div className="space-y-3">
+                            <p className="text-xs uppercase tracking-widest text-slate-400">Choose a path</p>
+                            <div className="flex flex-wrap gap-3">
+                                {step.choices.map((choice) => (
+                                    <button
+                                        key={choice.nextId}
+                                        onClick={() => goToStep(choice.nextId)}
+                                        className="px-4 py-2 bg-cyan-500/20 text-cyan-100 rounded-full border border-cyan-500/40 hover:border-violet-500/70 hover:text-white transition-colors"
+                                    >
+                                        {choice.label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    ) : (
+                        <button
+                            onClick={nextStep}
+                            className="px-4 py-2 bg-cyan-500/20 text-cyan-100 rounded-full border border-cyan-500/40 hover:border-violet-500/70 hover:text-white transition-colors"
+                        >
+                            {stepIndex === steps.length - 1 ? 'Finish Story' : 'Continue'}
+                        </button>
+                    )}
                 </div>
             ) : (
                 <div className="space-y-4">

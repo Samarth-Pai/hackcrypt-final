@@ -1,14 +1,17 @@
 import Link from 'next/link';
-import { Map } from 'lucide-react';
+import { Map, Lock, FolderOpen } from 'lucide-react';
 import clientPromise from '@/lib/mongodb';
 import type { StoryGroup } from '@/lib/stories';
+import HolographicMap from '@/components/story/HolographicMap';
 
 export const dynamic = 'force-dynamic';
 
 export default async function StoryMapPage() {
     const client = await clientPromise;
     const db = client.db();
-    const storyGroups = await db.collection<StoryGroup>('stories').find({}).toArray();
+    const rawStoryGroups = await db.collection<StoryGroup>('stories').find({}).toArray();
+    // Serialize for Client Component
+    const storyGroups = JSON.parse(JSON.stringify(rawStoryGroups));
 
     const nodes = [
         { slug: 'cs-fundamentals', x: 12, y: 18 },
@@ -19,48 +22,75 @@ export default async function StoryMapPage() {
     ];
 
     return (
-        <div className="min-h-screen text-[#E2E8F0] p-6">
-            <div className="max-w-6xl mx-auto space-y-6">
-                <div className="flex items-center gap-3">
-                    <Map className="w-8 h-8 text-cyan-300" />
+        <div className="min-h-screen text-[#E2E8F0] p-6 relative overflow-hidden">
+            {/* Background Effects */}
+            <div className="absolute inset-0 bg-[url('/assets/cosmic/bg-stars.png')] bg-cover opacity-20 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900/90 to-slate-950 pointer-events-none" />
+
+            <div className="max-w-7xl mx-auto space-y-8 relative z-10">
+                {/* Header */}
+                <div className="flex items-center gap-4 border-b border-cyan-500/30 pb-6">
+                    <div className="p-3 bg-cyan-500/10 rounded-xl border border-cyan-500/30">
+                        <Map className="w-8 h-8 text-cyan-300" />
+                    </div>
                     <div>
-                        <h1 className="text-3xl font-bold text-cyan-200 text-glow">Story Mode Map</h1>
-                        <p className="text-sm text-slate-400">Follow story arcs by syllabus and unlock topic missions.</p>
+                        <h1 className="text-3xl font-black text-white uppercase tracking-[0.2em] flex items-center gap-3">
+                            Campaign Map <span className="text-cyan-500 text-sm bg-cyan-950/50 px-2 py-0.5 rounded border border-cyan-500/30">v.4.0.2</span>
+                        </h1>
+                        <p className="text-sm text-cyan-400/60 font-mono tracking-widest mt-1">S.H.I.E.L.D. AUTHORIZED PERSONNEL ONLY</p>
                     </div>
                 </div>
 
-                <div className="relative h-160 rounded-3xl border border-cyan-500/30 glass-cosmic overflow-hidden">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(217,0,255,0.18),transparent_45%)]" />
-                    <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '50px 50px' }} />
+                {/* Holographic Map */}
+                <div className="relative rounded-3xl border border-cyan-500/20 bg-slate-950/50 backdrop-blur-sm overflow-visible">
+                    <div className="absolute top-0 left-0 p-4 font-mono text-[10px] text-cyan-500/40">
+                        TACTICAL OVERVIEW
+                        <br />
+                        SECURE CONNECTION ESTABLISHED
+                    </div>
 
-                    {nodes.map((node) => {
-                        const group = storyGroups.find((g) => g.syllabusSlug === node.slug);
-                        if (!group) return null;
-                        return (
-                            <Link
-                                key={node.slug}
-                                href={`/story/${node.slug}`}
-                                className="absolute -translate-x-1/2 -translate-y-1/2 px-4 py-3 rounded-2xl border border-cyan-400/40 bg-cyan-500/10 text-cyan-100 font-bold text-sm hover:bg-cyan-500/20 transition-all"
-                                style={{ left: `${node.x}%`, top: `${node.y}%` }}
-                            >
-                                <span className="block text-[10px] uppercase tracking-widest text-slate-400">{group.stories.length} stories</span>
-                                {group.syllabusTitle}
-                            </Link>
-                        );
-                    })}
+                    <HolographicMap nodes={nodes} storyGroups={storyGroups} />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {storyGroups.map((group) => (
-                        <Link
-                            key={group.syllabusSlug}
-                            href={`/story/${group.syllabusSlug}`}
-                            className="glass-cosmic p-5 rounded-xl border border-cyan-500/20 hover:border-violet-500/60 transition-colors"
-                        >
-                            <h2 className="text-lg font-bold text-cyan-200 mb-1">{group.syllabusTitle}</h2>
-                            <p className="text-xs text-slate-400">{group.stories.length} story missions available</p>
-                        </Link>
-                    ))}
+                {/* Mission Dossiers */}
+                <div className="space-y-4">
+                    <h2 className="text-xl font-bold text-cyan-200 uppercase tracking-widest flex items-center gap-2">
+                        <FolderOpen className="text-cyan-500" size={20} />
+                        Mission Files
+                    </h2>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {storyGroups.map((group) => (
+                            <Link
+                                key={group.syllabusSlug}
+                                href={`/story/${group.syllabusSlug}`}
+                                className="group relative overflow-hidden bg-slate-900/80 border-l-4 border-cyan-500/50 hover:border-cyan-400 transition-all duration-300 rounded-r-xl border-y border-r border-y-white/5 border-r-white/5 hover:bg-slate-800/80"
+                            >
+                                {/* Top Secret Stamp */}
+                                <div className="absolute -right-4 -top-2 rotate-12 border-2 border-red-500/20 text-red-500/20 px-2 py-1 text-[10px] font-black uppercase tracking-widest pointer-events-none group-hover:text-red-500/40 group-hover:border-red-500/40 transition-colors">
+                                    Confidential
+                                </div>
+
+                                <div className="p-5">
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className="bg-cyan-950 px-2 py-1 rounded text-[10px] font-mono text-cyan-400 border border-cyan-500/20">
+                                            SEC-9
+                                        </div>
+                                        <Lock className="w-4 h-4 text-slate-600 group-hover:text-cyan-400/50 transition-colors" />
+                                    </div>
+
+                                    <h3 className="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors mb-1">{group.syllabusTitle}</h3>
+                                    <div className="flex items-center gap-2 mb-4">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
+                                        <p className="text-xs text-slate-400 font-mono">{group.stories.length} ACTIVE MISSIONS</p>
+                                    </div>
+
+                                    {/* Decoration Lines */}
+                                    <div className="w-full h-px bg-gradient-to-r from-cyan-500/20 to-transparent group-hover:from-cyan-500/50 transition-all" />
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

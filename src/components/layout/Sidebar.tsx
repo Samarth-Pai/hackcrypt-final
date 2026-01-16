@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { LayoutDashboard, LogOut, Swords, Cpu, User, BookOpen } from 'lucide-react';
+import { LayoutDashboard, LogOut, Swords, Cpu, User, BookOpen, Trophy, Map, Book } from 'lucide-react';
 import { getUserProfile } from '@/lib/user';
 import { logoutAction } from '@/app/actions/auth';
 import SidebarProfile from './SidebarProfile';
@@ -54,10 +54,28 @@ export default async function Sidebar() {
                     <div className="absolute left-0 top-0 w-0.5 h-full bg-green-neon/0 group-hover:bg-green-neon transition-all" />
                 </Link>
 
+                <Link href="/learning-path" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-all border border-transparent hover:border-white/5 group relative overflow-hidden">
+                    <Map className="w-5 h-5 group-hover:text-sun transition-colors" />
+                    <span className="text-sm font-bold uppercase tracking-wider">Learning Path</span>
+                    <div className="absolute left-0 top-0 w-0.5 h-full bg-sun/0 group-hover:bg-sun transition-all" />
+                </Link>
+
+                <Link href="/story" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-all border border-transparent hover:border-white/5 group relative overflow-hidden">
+                    <Book className="w-5 h-5 group-hover:text-growth transition-colors" />
+                    <span className="text-sm font-bold uppercase tracking-wider">Story Mode</span>
+                    <div className="absolute left-0 top-0 w-0.5 h-full bg-growth/0 group-hover:bg-growth transition-all" />
+                </Link>
+
                 <Link href="/duels" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-all border border-transparent hover:border-white/5 group relative overflow-hidden">
                     <Swords className="w-5 h-5 group-hover:text-gold-streak transition-colors" />
                     <span className="text-sm font-bold uppercase tracking-wider">Battle Rift</span>
                     <div className="absolute left-0 top-0 w-0.5 h-full bg-gold-streak/0 group-hover:bg-gold-streak transition-all" />
+                </Link>
+
+                <Link href="/leaderboard" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-all border border-transparent hover:border-white/5 group relative overflow-hidden">
+                    <Trophy className="w-5 h-5 group-hover:text-sun transition-colors" />
+                    <span className="text-sm font-bold uppercase tracking-wider">Global Leaderboard</span>
+                    <div className="absolute left-0 top-0 w-0.5 h-full bg-sun/0 group-hover:bg-sun transition-all" />
                 </Link>
 
                 <div className="h-px bg-white/5 my-4 mx-4" />

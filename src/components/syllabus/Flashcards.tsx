@@ -18,9 +18,9 @@ export default function Flashcards({ cards }: { cards: Flashcard[] }) {
                 <h3 className="text-lg font-bold text-growth">Flashcards</h3>
                 <span className="text-xs text-gray-400">{index + 1} / {cards.length}</span>
             </div>
-            <div className="bg-earth/80 border border-[#5D4037] rounded-xl p-6 min-h-[140px]">
+            <div className="bg-earth/80 border border-[#5D4037] rounded-xl p-6 min-h-35">
                 <p className="text-sm text-sun font-semibold mb-2">{card.title}</p>
-                <p className="text-sm text-gray-200">{card.content}</p>
+                <p className="text-sm text-gray-200 whitespace-pre-line leading-relaxed">{card.content}</p>
             </div>
             <div className="mt-4 flex items-center justify-between">
                 <button

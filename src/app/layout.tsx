@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Press_Start_2P, Pixelify_Sans } from "next/font/google";
 import "./globals.css";
+import TopNav from '@/components/layout/TopNav';
 
 const pressStart = Press_Start_2P({
   weight: "400",
@@ -33,11 +34,12 @@ export default function RootLayout({
           <div className="absolute inset-0 bg-teal-bg" />
           <div className="absolute inset-0 pixel-grid-v2 opacity-30" />
           <div className="absolute inset-0 neural-bg opacity-50" />
-          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-ai/50 to-transparent animate-scanline opacity-20" />
+          <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-purple-ai/50 to-transparent animate-scanline opacity-20" />
         </div>
 
         {/* Content Layer */}
         <div className="relative z-10">
+          <TopNav />
           {children}
         </div>
       </body>

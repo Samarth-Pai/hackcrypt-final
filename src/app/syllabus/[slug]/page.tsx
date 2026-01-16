@@ -33,6 +33,7 @@ export default async function SyllabusDetailPage({ params }: { params: Promise<{
                     description={syllabus.description}
                     flashcards={syllabus.flashcards || []}
                     questions={formatted}
+                    matchPairs={syllabus.matchPairs || []}
                 />
             </div>
         </div>

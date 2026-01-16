@@ -1,8 +1,7 @@
-import { Suspense } from 'react';
-import Leaderboard from '@/components/gamification/Leaderboard';
 import { getUserProfile } from '@/lib/user';
 import MissionControl from '@/components/dashboard/MissionControl';
 import BadgeUnlock from '@/components/gamification/BadgeUnlock';
+import ActiveMissions from '../../components/dashboard/ActiveMissions';
 
 export default async function DashboardPage() {
     const user = await getUserProfile();
@@ -20,7 +19,7 @@ export default async function DashboardPage() {
 
             <div className="grid grid-cols-12 gap-8">
                 {/* Asymmetrical Main Area */}
-                <div className="col-span-12 lg:col-span-9">
+                <div className="col-span-12 lg:col-span-8">
                     {/* Welcome Metadata */}
                     <div className="mb-8 flex justify-between items-end px-10">
                         <div>
@@ -37,16 +36,9 @@ export default async function DashboardPage() {
                     <MissionControl user={JSON.parse(JSON.stringify(user))} />
                 </div>
 
-                {/* Tactical Sidebar Layer (Leaderboard / Ranking) */}
-                <div className="col-span-12 lg:col-span-3 space-y-8">
-                    <div className="glass-v2 p-6 rounded-[32px] border border-white/5 h-full">
-                        <h3 className="text-sm font-black text-white uppercase tracking-widest mb-6 flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-sun animate-pulse" /> Global_Ranks
-                        </h3>
-                        <Suspense fallback={<div className="h-64 bg-white/5 rounded-3xl animate-pulse" />}>
-                            <Leaderboard />
-                        </Suspense>
-                    </div>
+                {/* Tactical Sidebar Layer (Active Missions) */}
+                <div className="col-span-12 lg:col-span-4 space-y-8">
+                    <ActiveMissions />
                 </div>
             </div>
         </div>

@@ -141,6 +141,20 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
     }, [currentQuestionIndex, handleTimeUp, isCompleted, selectedOption]);
 
     if (isCompleted) {
+        const rating = score >= 9
+            ? 'S'
+            : score >= 8
+                ? 'A'
+                : score >= 6
+                    ? 'B'
+                    : score >= 4
+                        ? 'C'
+                        : 'D';
+        const ratingMessage = score >= 8
+            ? 'Congratulations! You nailed this quest.'
+            : score >= 6
+                ? 'Solid effort. A little more practice will level you up.'
+                : 'Keep going. Review the concepts and try again.';
         return (
             <div className="flex flex-col items-center justify-center p-8 bg-earth text-[#ededed] rounded-xl shadow-2xl max-w-2xl mx-auto mt-10 border border-forest">
                 <motion.div
@@ -151,7 +165,8 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
                 >
                     <Trophy className="w-24 h-24 text-sun mx-auto mb-4" />
                     <h2 className="text-3xl font-bold mb-2 text-growth">Quiz Completed!</h2>
-                    <p className="text-xl mb-6">You scored {score} / {questions.length}</p>
+                    <p className="text-xl mb-2">You scored {score} / {questions.length}</p>
+                    <p className="text-sm text-gray-300 mb-4">Rating: <span className="text-sun font-bold">{rating}</span></p>
 
                     {isSubmitting ? (
                         <div className="flex items-center justify-center space-x-2 text-growth">
@@ -161,7 +176,7 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
                     ) : (
                         <div className="bg-forest/20 p-6 rounded-lg border border-forest">
                             <p className="text-2xl font-bold text-sun">+{xpGained} XP</p>
-                            <p className="text-sm text-gray-300">Great job cultivating your knowledge!</p>
+                            <p className="text-sm text-gray-300">{ratingMessage}</p>
                             {feedback.length > 0 && (
                                 <div className="mt-6 space-y-3 text-left">
                                     <p className="text-sm text-growth font-bold">Review</p>

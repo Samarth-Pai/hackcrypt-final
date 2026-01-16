@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Flashcards, { Flashcard } from '@/components/syllabus/Flashcards';
+import MatchTheFollowing, { MatchPair } from '@/components/syllabus/MatchTheFollowing';
 import QuizInterface from '@/components/quiz/QuizInterface';
 
 interface SyllabusDetailProps {
@@ -9,9 +10,10 @@ interface SyllabusDetailProps {
     description: string;
     flashcards: Flashcard[];
     questions: Array<{ id: string; text: string; options: string[]; correctAnswer: string }>;
+    matchPairs: MatchPair[];
 }
 
-export default function SyllabusDetail({ title, description, flashcards, questions }: SyllabusDetailProps) {
+export default function SyllabusDetail({ title, description, flashcards, questions, matchPairs }: SyllabusDetailProps) {
     const [showQuiz, setShowQuiz] = useState(false);
 
     return (
@@ -22,6 +24,8 @@ export default function SyllabusDetail({ title, description, flashcards, questio
             </div>
 
             <Flashcards cards={flashcards} />
+
+            {matchPairs.length > 0 && <MatchTheFollowing pairs={matchPairs} />}
 
             <div className="bg-[#3E2723]/70 p-6 rounded-xl border border-[#5D4037]">
                 <button

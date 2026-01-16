@@ -1,10 +1,12 @@
 import clientPromise from '@/lib/mongodb';
 import { Trophy, Medal, Crown } from 'lucide-react';
+import Link from 'next/link';
 
 // Force dynamic rendering to ensure leaderboard is up-to-date
 export const dynamic = 'force-dynamic';
 
 interface LeaderboardUser {
+    _id: string | { toString: () => string };
     name: string;
     gamification: {
         level: number;
@@ -24,6 +26,7 @@ export default async function Leaderboard() {
             { $limit: 10 },
             {
                 $project: {
+                    _id: 1,
                     name: 1,
                     'gamification.level': 1,
                     'gamification.xp': 1,
@@ -48,7 +51,14 @@ export default async function Leaderboard() {
         <div className="overflow-hidden">
             <div className="space-y-3">
                 {topUsers.map((user, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 glass-v2 border border-white/5 rounded-2xl hover:border-purple-ai/30 transition-all group relative overflow-hidden">
+                    (() => {
+                        const userId = typeof user._id === 'string' ? user._id : user._id.toString();
+                        return (
+                    <Link
+                        key={userId}
+                        href={`/profile/${userId}`}
+                        className="flex items-center justify-between p-4 glass-v2 border border-white/5 rounded-2xl hover:border-purple-ai/30 transition-all group relative overflow-hidden"
+                    >
                         <div className="absolute top-0 right-0 p-2 opacity-5">
                             {index === 0 && <Crown className="text-sun" size={40} />}
                         </div>
@@ -68,7 +78,9 @@ export default async function Leaderboard() {
                             <p className="font-mono text-white font-black text-lg neon-text-ai" style={{ color: index === 0 ? '#FACC15' : '#A855F7' }}>{user.gamification.xp}</p>
                             <p className="text-[8px] text-gray-500 uppercase tracking-[0.3em] font-black">Points_Sync</p>
                         </div>
-                    </div>
+                    </Link>
+                        );
+                    })()
                 ))}
 
                 {topUsers.length === 0 && (

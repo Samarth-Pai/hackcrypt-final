@@ -1,0 +1,302 @@
+[
+  {
+    "syllabusSlug": "cs-fundamentals",
+    "syllabusTitle": "CS Fundamentals",
+    "stories": [
+      {
+        "id": "binary-foundations",
+        "title": "Signals in Binary",
+        "topic": "Binary Representation",
+        "cards": [
+          "Binary encodes information using two states: 0 and 1. These states map to voltage levels in hardware, which makes binary reliable for storage and processing.\n\nWhen you think of binary, imagine switches that are either on or off. By combining many switches, we can represent large numbers and complex data.",
+          "Every bit position has a place value. From right to left, the values are 1, 2, 4, 8, 16, and so on.\n\nTo convert from binary to decimal, multiply each bit by its place value and sum the results.",
+          "Binary also drives logic operations. AND, OR, and XOR gates take binary inputs and produce binary outputs.\n\nThese gates form the building blocks of processors and allow computers to make decisions.",
+          "Binary is used in data encoding schemes such as ASCII and Unicode.\n\nThese encodings map characters to binary patterns so text can be stored and transmitted accurately.",
+          "Error detection methods like parity bits and checksums add extra binary data to catch mistakes.\n\nThis keeps digital communication reliable even in noisy environments." 
+        ],
+        "questions": [
+          {
+            "id": "bin-tf-1",
+            "type": "true_false",
+            "prompt": "A binary digit can represent exactly two states.",
+            "correctAnswer": "True"
+          },
+          {
+            "id": "bin-mcq-1",
+            "type": "mcq",
+            "prompt": "What is the decimal value of binary 1011?",
+            "options": ["9", "10", "11", "12"],
+            "correctAnswer": "11"
+          }
+        ]
+      },
+      {
+        "id": "stack-trails",
+        "title": "The Stack Trail",
+        "topic": "Stacks & Recursion",
+        "cards": [
+          "A stack stores items in Last-In, First-Out order. The newest item is always removed first.\n\nThis behavior matches how nested tasks work in programming and problem solving.",
+          "Function calls use a call stack. Each call pushes a frame with local data; returning pops that frame.\n\nIf the stack grows too large, programs can crash with a stack overflow.",
+          "Recursion relies on the stack to remember the path. Each recursive call adds a new frame until a base case stops the recursion.",
+          "Depth-first search uses a stack, either explicitly or through recursion.\n\nThis lets you explore one path fully before backtracking.",
+          "Stack operations are constant time, which makes them predictable and fast.\n\nThis performance makes stacks ideal for parsing, undo systems, and navigation history." 
+        ],
+        "questions": [
+          {
+            "id": "stack-tf-1",
+            "type": "true_false",
+            "prompt": "In a stack, the first element added is the first removed.",
+            "correctAnswer": "False"
+          },
+          {
+            "id": "stack-mcq-1",
+            "type": "mcq",
+            "prompt": "Which data structure best models function call order?",
+            "options": ["Queue", "Stack", "Graph", "Tree"],
+            "correctAnswer": "Stack"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "syllabusSlug": "mathematics-core",
+    "syllabusTitle": "Mathematics Core",
+    "stories": [
+      {
+        "id": "probability-path",
+        "title": "The Probability Path",
+        "topic": "Probability Basics",
+        "cards": [
+          "Probability measures how likely an event is to occur, ranging from 0 (impossible) to 1 (certain).\n\nIt is calculated as favorable outcomes divided by total outcomes.",
+          "Events can be independent or dependent. Independent events do not affect each other; dependent events do.\n\nThis distinction changes how you multiply probabilities.",
+          "Conditional probability answers the question: what is the chance of A, given that B happened?\n\nIt helps refine predictions using additional information.",
+          "Probability distributions describe how outcomes are spread across possible values.\n\nThey let you compute expected values and variability.",
+          "In real decisions, probability informs risk.\n\nThis is why probability shows up in finance, science, and game strategy." 
+        ],
+        "questions": [
+          {
+            "id": "prob-tf-1",
+            "type": "true_false",
+            "prompt": "The probability of a certain event is 1.",
+            "correctAnswer": "True"
+          },
+          {
+            "id": "prob-mcq-1",
+            "type": "mcq",
+            "prompt": "If a fair die is rolled, what is the probability of getting a 4?",
+            "options": ["1/2", "1/3", "1/6", "1/12"],
+            "correctAnswer": "1/6"
+          }
+        ]
+      },
+      {
+        "id": "derivative-drill",
+        "title": "Derivative Drift",
+        "topic": "Derivatives",
+        "cards": [
+          "A derivative captures instantaneous rate of change. It tells how fast a function value changes at a specific point.\n\nThis is the slope of the tangent line on a graph.",
+          "If the derivative is positive, the function increases. If negative, the function decreases.\n\nWhen the derivative is zero, the function may have a peak or valley.",
+          "Derivatives power optimization. Setting the derivative to zero helps find maximum or minimum values in real problems.",
+          "Second derivatives describe how the rate of change itself changes.\n\nThey help classify points as minima, maxima, or inflection points.",
+          "In physics, derivatives connect position, velocity, and acceleration.\n\nThis chain explains how motion evolves over time." 
+        ],
+        "questions": [
+          {
+            "id": "deriv-tf-1",
+            "type": "true_false",
+            "prompt": "A zero derivative always means a maximum value.",
+            "correctAnswer": "False"
+          },
+          {
+            "id": "deriv-mcq-1",
+            "type": "mcq",
+            "prompt": "What does the derivative of position represent?",
+            "options": ["Velocity", "Acceleration", "Distance", "Mass"],
+            "correctAnswer": "Velocity"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "syllabusSlug": "biology-basics",
+    "syllabusTitle": "Biology Basics",
+    "stories": [
+      {
+        "id": "photo-quest",
+        "title": "Sunlight to Sugar",
+        "topic": "Photosynthesis",
+        "cards": [
+          "Photosynthesis converts light energy into chemical energy. Plants use sunlight, water, and carbon dioxide to create glucose.\n\nOxygen is released as a byproduct.",
+          "Chloroplasts contain chlorophyll, the pigment that captures sunlight.\n\nThis energy drives the reactions that build sugar molecules.",
+          "The process fuels plant growth and supports most food chains. It also affects Earth’s carbon balance.",
+          "Photosynthesis happens in two stages: light-dependent reactions and the Calvin cycle.\n\nEach stage plays a distinct role in energy capture and sugar production.",
+          "Environmental factors like light intensity, CO₂ levels, and temperature influence photosynthesis speed.\n\nThese limits shape plant growth and crop yield." 
+        ],
+        "questions": [
+          {
+            "id": "photo-tf-1",
+            "type": "true_false",
+            "prompt": "Photosynthesis releases oxygen.",
+            "correctAnswer": "True"
+          },
+          {
+            "id": "photo-mcq-1",
+            "type": "mcq",
+            "prompt": "Which organelle is responsible for photosynthesis?",
+            "options": ["Mitochondria", "Nucleus", "Chloroplast", "Ribosome"],
+            "correctAnswer": "Chloroplast"
+          }
+        ]
+      },
+      {
+        "id": "cell-energy",
+        "title": "Powerhouse Patrol",
+        "topic": "Cellular Respiration",
+        "cards": [
+          "Mitochondria produce ATP, the energy currency of the cell.\n\nThey convert nutrients into usable energy through cellular respiration.",
+          "Cellular respiration uses oxygen and glucose to create ATP, carbon dioxide, and water.\n\nThis process keeps cells functioning efficiently.",
+          "When energy demands rise, cells increase respiration rates.\n\nThat’s why breathing and heart rate increase during exercise.",
+          "Mitochondria have their own DNA, suggesting they evolved from ancient bacteria.\n\nThis endosymbiotic origin is a key evolutionary insight.",
+          "Disruptions in mitochondrial function can lead to fatigue and disease.\n\nThat’s why energy metabolism is a major focus in health science." 
+        ],
+        "questions": [
+          {
+            "id": "cell-tf-1",
+            "type": "true_false",
+            "prompt": "Mitochondria are primarily responsible for ATP production.",
+            "correctAnswer": "True"
+          },
+          {
+            "id": "cell-mcq-1",
+            "type": "mcq",
+            "prompt": "Which gas is required for aerobic respiration?",
+            "options": ["Carbon dioxide", "Oxygen", "Nitrogen", "Helium"],
+            "correctAnswer": "Oxygen"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "syllabusSlug": "physics-core",
+    "syllabusTitle": "Physics Core",
+    "stories": [
+      {
+        "id": "force-vector",
+        "title": "Force Vectors",
+        "topic": "Force & Acceleration",
+        "cards": [
+          "Force changes motion. According to Newton’s Second Law, net force equals mass times acceleration.\n\nDoubling the force doubles acceleration if mass stays constant.",
+          "Net force is the sum of all forces on an object. If forces cancel, net force is zero and motion stays constant.\n\nThis is the idea behind equilibrium.",
+          "Friction opposes motion and reduces net force. Accounting for friction makes predictions match real-world results.",
+          "Forces are vectors, meaning they have magnitude and direction.\n\nAdding forces requires vector addition, not just arithmetic.",
+          "Free-body diagrams help you visualize all forces acting on an object.\n\nThey are the first step to solving many mechanics problems." 
+        ],
+        "questions": [
+          {
+            "id": "force-tf-1",
+            "type": "true_false",
+            "prompt": "If net force is zero, an object must be at rest.",
+            "correctAnswer": "False"
+          },
+          {
+            "id": "force-mcq-1",
+            "type": "mcq",
+            "prompt": "Which equation represents Newton’s Second Law?",
+            "options": ["F = m × a", "E = m × c", "P = m × v", "V = I × R"],
+            "correctAnswer": "F = m × a"
+          }
+        ]
+      },
+      {
+        "id": "velocity-flow",
+        "title": "Velocity Flow",
+        "topic": "Velocity & Motion",
+        "cards": [
+          "Velocity describes speed with direction. A change in direction counts as a change in velocity.\n\nThat means you can accelerate even if speed is constant.",
+          "Displacement measures the change in position from start to end, not total path.\n\nIt is a vector with both magnitude and direction.",
+          "On a position-time graph, the slope represents velocity.\n\nSteeper slopes mean faster motion.",
+          "Average velocity is total displacement divided by total time.\n\nInstantaneous velocity is found using the derivative of position.",
+          "Velocity vectors can be combined to understand relative motion.\n\nThis is crucial for analyzing moving frames and navigation." 
+        ],
+        "questions": [
+          {
+            "id": "velo-tf-1",
+            "type": "true_false",
+            "prompt": "A constant velocity means zero acceleration.",
+            "correctAnswer": "True"
+          },
+          {
+            "id": "velo-mcq-1",
+            "type": "mcq",
+            "prompt": "The slope of a position-time graph represents:",
+            "options": ["Velocity", "Acceleration", "Distance", "Force"],
+            "correctAnswer": "Velocity"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "syllabusSlug": "chemistry-core",
+    "syllabusTitle": "Chemistry Core",
+    "stories": [
+      {
+        "id": "bonding-bridge",
+        "title": "Bonding Bridge",
+        "topic": "Chemical Bonds",
+        "cards": [
+          "Atoms bond to reach stable electron configurations. Covalent bonds share electrons, while ionic bonds transfer electrons.\n\nBoth create stable structures but behave differently.",
+          "Covalent molecules can be polar or nonpolar depending on electron sharing.\n\nThis affects boiling points and solubility.",
+          "Ionic compounds form crystal lattices and often dissolve in water.\n\nThey conduct electricity when molten or in solution.",
+          "Metallic bonds create a sea of electrons that allow metals to conduct electricity.\n\nThis explains why metals are malleable and conductive.",
+          "Intermolecular forces such as hydrogen bonds influence boiling points and surface tension.\n\nThese weaker forces still shape material properties." 
+        ],
+        "questions": [
+          {
+            "id": "bond-tf-1",
+            "type": "true_false",
+            "prompt": "Ionic bonds involve sharing electrons.",
+            "correctAnswer": "False"
+          },
+          {
+            "id": "bond-mcq-1",
+            "type": "mcq",
+            "prompt": "Which bond type shares electrons?",
+            "options": ["Ionic", "Covalent", "Metallic", "Hydrogen"],
+            "correctAnswer": "Covalent"
+          }
+        ]
+      },
+      {
+        "id": "mole-mastery",
+        "title": "Mole Mastery",
+        "topic": "Moles & Avogadro",
+        "cards": [
+          "A mole is a counting unit equal to $6.02 \times 10^{23}$ particles.\n\nIt connects microscopic atoms to measurable laboratory amounts.",
+          "Moles allow you to convert between mass and number of particles.\n\nThis is essential for balancing chemical equations and predicting yields.",
+          "Stoichiometry uses mole ratios to relate reactants and products.\n\nThis helps chemists plan reactions efficiently.",
+          "Molar mass links the periodic table to lab measurements.\n\nIt tells you how many grams are in one mole of a substance.",
+          "Limiting reactants determine how much product can form.\n\nIdentifying the limiting reactant prevents wasted materials." 
+        ],
+        "questions": [
+          {
+            "id": "mole-tf-1",
+            "type": "true_false",
+            "prompt": "One mole contains $6.02 \times 10^{23}$ particles.",
+            "correctAnswer": "True"
+          },
+          {
+            "id": "mole-mcq-1",
+            "type": "mcq",
+            "prompt": "What does a mole help you relate?",
+            "options": ["Mass and particles", "Velocity and time", "Force and distance", "Voltage and current"],
+            "correctAnswer": "Mass and particles"
+          }
+        ]
+      }
+    ]
+  }
+]

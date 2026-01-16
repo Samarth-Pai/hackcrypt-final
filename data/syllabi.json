@@ -5,10 +5,16 @@
     "subject": "Computer Science",
     "description": "Binary systems, core data structures, and algorithm basics.",
     "flashcards": [
-      { "title": "Binary", "content": "Base-2 number system using digits 0 and 1." },
-      { "title": "Stack", "content": "LIFO structure: last in, first out." },
-      { "title": "Queue", "content": "FIFO structure: first in, first out." },
-      { "title": "Big-O", "content": "Describes how runtime grows with input size." }
+      { "title": "Binary", "content": "Binary is the base-2 number system that represents every value using only 0 and 1. Computers store all data as bits, so understanding binary helps you reason about memory, CPU operations, and how text, images, and programs are encoded. Converting between binary and decimal builds intuition for how machines count and compare values. Binary also powers logic gates and hardware circuits that physically implement computation." },
+      { "title": "Stack", "content": "A stack is a Last-In, First-Out data structure where the most recently added item is removed first. It powers function call execution, undo systems, and expression parsing. When you push and pop items, you model nested tasks and backtracking efficiently without scanning the whole collection. Stack discipline is also critical for managing recursion safely." },
+      { "title": "Queue", "content": "A queue is a First-In, First-Out structure that processes items in the order they arrive. It’s essential for scheduling tasks, handling network requests, and breadth-first search. Queues model real-world waiting lines and ensure fairness when multiple tasks compete for resources. Many systems use queues to smooth bursts of work and stabilize throughput." },
+      { "title": "Big-O", "content": "Big-O notation describes how an algorithm’s time or memory usage grows as input size increases. It helps you compare approaches and choose scalable solutions. By focusing on dominant terms, Big-O highlights whether performance stays reasonable as data grows large.\n\nUnderstanding Big-O helps you select data structures and avoid bottlenecks. It also guides trade-offs between speed, memory, and implementation complexity." }
+    ],
+    "matchPairs": [
+      { "left": "LIFO data structure", "right": "Stack" },
+      { "left": "FIFO data structure", "right": "Queue" },
+      { "left": "Base-2 number system", "right": "Binary" },
+      { "left": "Growth rate notation", "right": "Big-O" }
     ]
   },
   {
@@ -17,10 +23,16 @@
     "subject": "Mathematics",
     "description": "Algebra, geometry, and probability essentials.",
     "flashcards": [
-      { "title": "Linear Equation", "content": "Solve for x by isolating the variable." },
-      { "title": "Triangle", "content": "Interior angles always sum to 180°." },
-      { "title": "Probability", "content": "Favorable outcomes divided by total outcomes." },
-      { "title": "Derivative", "content": "Instant rate of change of a function." }
+      { "title": "Linear Equation", "content": "A linear equation models a straight-line relationship between variables, typically written in the form ax + b = c. Solving it means isolating the variable using inverse operations. Linear equations are foundational for algebra, economics, and modeling growth or change. Graphing them reveals slope and intercept, which describe how one variable responds to another." },
+      { "title": "Triangle", "content": "The sum of the interior angles in any triangle is 180 degrees. This rule allows you to solve for missing angles and supports geometric proofs. Triangles are building blocks for more complex shapes and trigonometry. Knowing triangle properties helps in navigation, engineering, and design." },
+      { "title": "Probability", "content": "Probability measures the likelihood of an event by dividing favorable outcomes by total possible outcomes. It helps quantify uncertainty in data, experiments, and decision-making. A solid grasp of probability underpins statistics, risk analysis, and machine learning. Even simple probability models can guide better predictions." },
+      { "title": "Derivative", "content": "A derivative represents the instantaneous rate of change of a function at a point. It captures how fast a value is increasing or decreasing and is central to optimization and modeling motion. Understanding derivatives enables advanced calculus and real-world modeling.\n\nDerivatives also help find maxima, minima, and rates in economics and physics. They let you interpret slopes on graphs and predict trends." }
+    ],
+    "matchPairs": [
+      { "left": "Straight-line equation", "right": "Linear Equation" },
+      { "left": "Interior angles sum", "right": "Triangle" },
+      { "left": "Likelihood measure", "right": "Probability" },
+      { "left": "Instant change rate", "right": "Derivative" }
     ]
   },
   {
@@ -29,10 +41,16 @@
     "subject": "Biology",
     "description": "Cells, genetics, ecosystems, and body systems.",
     "flashcards": [
-      { "title": "Nucleus", "content": "Control center containing DNA." },
-      { "title": "Mitochondrion", "content": "Powerhouse generating ATP." },
-      { "title": "Community", "content": "All populations living in an area." },
-      { "title": "Photosynthesis", "content": "Process plants use to make glucose." }
+      { "title": "Nucleus", "content": "The nucleus stores DNA and directs cellular activity by regulating gene expression. It functions like a command center, telling the cell when to grow, divide, or produce proteins. Healthy nuclear regulation is vital for proper development and repair. Changes in nuclear signaling can lead to disease or abnormal growth." },
+      { "title": "Mitochondrion", "content": "Mitochondria convert nutrients into ATP, the energy currency of the cell, through cellular respiration. They power almost every cellular process, from muscle contraction to signaling. Their efficiency impacts endurance, metabolism, and overall cell health. Mitochondria also play roles in cell signaling and apoptosis." },
+      { "title": "Community", "content": "A biological community is all populations of different species living and interacting in an ecosystem. These interactions include competition, predation, and symbiosis. Community dynamics determine biodiversity and ecological stability. Studying communities reveals how energy and resources flow through ecosystems." },
+      { "title": "Photosynthesis", "content": "Photosynthesis is the process by which plants convert sunlight, water, and carbon dioxide into glucose and oxygen. It fuels plant growth and forms the base of most food chains. This process also regulates atmospheric oxygen levels and carbon cycling.\n\nPhotosynthesis efficiency shapes global climate and agricultural productivity. Understanding it explains how ecosystems store energy and carbon." }
+    ],
+    "matchPairs": [
+      { "left": "Energy production organelle", "right": "Mitochondrion" },
+      { "left": "Genetic control center", "right": "Nucleus" },
+      { "left": "Species interactions", "right": "Community" },
+      { "left": "Light-driven sugar creation", "right": "Photosynthesis" }
     ]
   },
   {
@@ -41,10 +59,16 @@
     "subject": "Physics",
     "description": "Motion, forces, energy, and basic electricity.",
     "flashcards": [
-      { "title": "Acceleration", "content": "Rate of change of velocity." },
-      { "title": "Newton's 2nd", "content": "Force equals mass times acceleration." },
-      { "title": "Energy", "content": "Capacity to do work." },
-      { "title": "Ohm's Law", "content": "Voltage equals current times resistance." }
+      { "title": "Acceleration", "content": "Acceleration measures how quickly velocity changes over time, whether in speed or direction. It explains why a car speeds up, slows down, or turns. Understanding acceleration helps connect motion graphs, forces, and real-world dynamics. In physics problems, acceleration links displacement and velocity equations." },
+      { "title": "Newton's 2nd", "content": "Newton’s Second Law states that force equals mass times acceleration, linking how much push is needed to change motion. Heavier objects need more force to accelerate. This law is central for predicting motion in mechanics. It also explains why reducing mass or friction changes performance." },
+      { "title": "Energy", "content": "Energy is the capacity to do work and comes in many forms, such as kinetic, potential, thermal, and electrical. The conservation of energy tells us energy changes form but is not created or destroyed. This principle powers everything from engines to circuits. Energy diagrams help track transformations in complex systems." },
+      { "title": "Ohm's Law", "content": "Ohm’s Law describes the relationship between voltage, current, and resistance in an electrical circuit. It shows how changes in resistance affect current flow for a given voltage. This law is essential for analyzing and designing circuits.\n\nIt helps predict power usage and component limits, ensuring circuits remain safe and efficient under load." }
+    ],
+    "matchPairs": [
+      { "left": "Force-mass-acceleration rule", "right": "Newton's 2nd" },
+      { "left": "Rate of velocity change", "right": "Acceleration" },
+      { "left": "Capacity to do work", "right": "Energy" },
+      { "left": "V = I × R", "right": "Ohm's Law" }
     ]
   },
   {
@@ -53,10 +77,16 @@
     "subject": "Chemistry",
     "description": "Atoms, bonds, reactions, and the periodic table.",
     "flashcards": [
-      { "title": "Element", "content": "Substance made of one type of atom." },
-      { "title": "Covalent Bond", "content": "Atoms share electrons." },
-      { "title": "Ionic Bond", "content": "Electrons are transferred." },
-      { "title": "Mole", "content": "6.02×10^23 particles." }
+      { "title": "Element", "content": "An element is a pure substance made of one type of atom, defined by its number of protons. Elements are the building blocks of all matter and are organized in the periodic table. Knowing element properties helps predict chemical behavior. Element groups reveal patterns like reactivity and bonding style." },
+      { "title": "Covalent Bond", "content": "A covalent bond forms when atoms share electrons to achieve stable outer shells. This sharing creates molecules with specific shapes and properties. Covalent bonds are common in organic compounds and many everyday substances. Bond polarity influences boiling points and solubility." },
+      { "title": "Ionic Bond", "content": "Ionic bonds form when one atom transfers electrons to another, creating positively and negatively charged ions that attract. This bond type forms crystalline structures like salts. Ionic compounds often dissolve in water and conduct electricity when molten. Ionic bonding explains the brittleness and high melting points of salts." },
+      { "title": "Mole", "content": "A mole is a counting unit equal to $6.02 \times 10^{23}$ particles, allowing chemists to relate microscopic atoms to measurable masses. It connects atomic scale to laboratory quantities and is essential for stoichiometry and reaction calculations.\n\nMastering the mole concept helps balance equations and compute yields. It also bridges the gap between atomic theory and real lab measurements." }
+    ],
+    "matchPairs": [
+      { "left": "Single-atom substance", "right": "Element" },
+      { "left": "Shared electrons", "right": "Covalent Bond" },
+      { "left": "Electron transfer", "right": "Ionic Bond" },
+      { "left": "$6.02 \times 10^{23}$ particles", "right": "Mole" }
     ]
   }
 ]

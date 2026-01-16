@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Cpu,
@@ -8,15 +8,12 @@ import {
     Target,
     Trophy,
     Activity,
-    Shield,
     TrendingUp,
-    ChevronRight,
     Info,
     X,
     Lock,
     MessageSquare
 } from 'lucide-react';
-import Link from 'next/link';
 import AnimatedNumber from '@/components/ui/AnimatedNumber';
 
 interface TacticalOrbProps {
@@ -60,14 +57,13 @@ const TacticalOrb = ({ id, icon, label, value, color, x, y, delay, onClick }: Ta
             </div>
 
             {/* Connector line to center (visual only) */}
-            <div className="absolute top-1/2 left-1/2 w-[100px] h-[1px] bg-gradient-to-r from-transparent to-white/5 -z-10 origin-left -translate-x-full opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute top-1/2 left-1/2 w-25 h-px bg-linear-to-r from-transparent to-white/5 -z-10 origin-left -translate-x-full opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
     </motion.div>
 );
 
 export default function MissionControl({ user }: { user: any }) {
     const [activeTab, setActiveTab] = useState<string | null>(null);
-    const [quests, setQuests] = useState<Array<{ id: string; title: string; description: string; progress: number; target: number; rewardXp: number }>>([]);
     const xp = user?.gamification?.xp || 0;
     const level = user?.gamification?.level || 1;
     const accuracy = user?.performance?.totalQuestions > 0
@@ -117,7 +113,7 @@ export default function MissionControl({ user }: { user: any }) {
                                 <motion.div
                                     initial={{ height: 0 }}
                                     animate={{ height: `${h}%` }}
-                                    className="w-full bg-gradient-to-t from-green-neon/20 to-green-neon rounded-t-sm"
+                                    className="w-full bg-linear-to-t from-green-neon/20 to-green-neon rounded-t-sm"
                                 />
                                 <span className="text-[8px] text-gray-500">D{i + 1}</span>
                             </div>
@@ -131,26 +127,14 @@ export default function MissionControl({ user }: { user: any }) {
         )
     };
 
-    useEffect(() => {
-        const loadQuests = async () => {
-            const response = await fetch('/api/quests');
-            if (response.ok) {
-                const data = await response.json();
-                setQuests(data.quests || []);
-            }
-        };
-
-        loadQuests();
-    }, []);
-
     return (
-        <div className="relative w-full h-[800px] flex items-center justify-center select-none">
+        <div className="relative w-full h-200 flex items-center justify-center select-none">
 
             {/* Background Orbital Rings */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-10">
-                <div className="w-[400px] h-[400px] border border-purple-ai rounded-full animate-pulse" />
-                <div className="absolute w-[600px] h-[600px] border border-white/10 rounded-full border-dashed animate-spin-slow" />
-                <div className="absolute w-[800px] h-[800px] border border-purple-ai/20 rounded-full animate-reverse-spin" />
+                <div className="w-100 h-100 border border-purple-ai rounded-full animate-pulse" />
+                <div className="absolute w-150 h-150 border border-white/10 rounded-full border-dashed animate-spin-slow" />
+                <div className="absolute w-200 h-200 border border-purple-ai/20 rounded-full animate-reverse-spin" />
             </div>
 
             {/* Main AI Neural Core */}
@@ -180,7 +164,7 @@ export default function MissionControl({ user }: { user: any }) {
                     </div>
 
                     {/* Scanline Effect */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-ai/10 to-transparent h-1 w-full animate-scanline pointer-events-none" />
+                    <div className="absolute inset-0 bg-linear-to-b from-transparent via-purple-ai/10 to-transparent h-1 w-full animate-scanline pointer-events-none" />
                 </motion.div>
 
                 {/* Core Info Tooltip */}
@@ -195,47 +179,6 @@ export default function MissionControl({ user }: { user: any }) {
             {orbs.map(orb => (
                 <TacticalOrb key={orb.id} {...orb} onClick={setActiveTab} />
             ))}
-
-            {/* Floating Mission Center Brief (Right) */}
-            <div className="absolute right-10 bottom-10 w-96 z-40">
-                <div className="glass-v2 p-6 rounded-3xl border-l-4 border-purple-ai relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4 opacity-5">
-                        <Shield size={100} className="text-purple-ai" />
-                    </div>
-                    <h3 className="text-xs uppercase tracking-[0.3em] text-purple-ai font-black mb-6 flex items-center gap-2">
-                        <Activity size={16} /> Active_Mission
-                    </h3>
-                    <div className="space-y-4">
-                        {quests.length === 0 && (
-                            <div className="p-4 rounded-xl bg-white/5 border border-white/5 text-xs text-gray-400">
-                                Missions syncing...
-                            </div>
-                        )}
-                        {quests.map((quest) => {
-                            const progressPct = Math.min(100, Math.round((quest.progress / quest.target) * 100));
-                            return (
-                                <div key={quest.id} className="p-4 rounded-xl bg-white/5 border border-white/5 group hover:bg-white/10 transition-all cursor-pointer">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <div>
-                                            <h4 className="text-sm font-bold text-white mb-1">{quest.title}</h4>
-                                            <p className="text-[10px] text-gray-500 font-bold">REWARD: +{quest.rewardXp} XP</p>
-                                            <p className="text-[10px] text-gray-500">{quest.description}</p>
-                                        </div>
-                                        <div className="px-2 py-1 rounded bg-purple-ai text-white text-[9px] font-black">{progressPct}% COM</div>
-                                    </div>
-                                    <div className="w-full h-1 bg-teal-bg rounded-full overflow-hidden mt-3">
-                                        <div className="h-full bg-purple-ai" style={{ width: `${progressPct}%` }} />
-                                    </div>
-                                    <div className="mt-2 text-[10px] text-gray-400">{quest.progress} / {quest.target}</div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                    <Link href="/quiz" className="mt-8 w-full py-4 rounded-xl bg-white text-teal-bg font-black uppercase text-xs tracking-widest flex items-center justify-center gap-2 hover:bg-purple-ai hover:text-white transition-all">
-                        Start Quest <ChevronRight size={16} />
-                    </Link>
-                </div>
-            </div>
 
             {/* Side HUD: Live Feed (Left) */}
             <div className="absolute left-10 bottom-10 w-72 z-40">
@@ -267,14 +210,14 @@ export default function MissionControl({ user }: { user: any }) {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setActiveTab(null)}
-                            className="fixed inset-0 z-[100] bg-teal-bg/90 backdrop-blur-xl"
+                            className="fixed inset-0 z-100 bg-teal-bg/90 backdrop-blur-xl"
                         />
                         <motion.div
                             layoutId={activeTab}
                             initial={{ scale: 0.9, opacity: 0, y: 20 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                            className="fixed inset-0 z-[110] flex items-center justify-center pointer-events-none"
+                            className="fixed inset-0 z-110 flex items-center justify-center pointer-events-none"
                         >
                             <div className="w-full max-w-xl glass-v2 p-12 rounded-[40px] border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.8)] pointer-events-auto relative">
                                 <button

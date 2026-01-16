@@ -5,28 +5,30 @@ import { verifyJWT } from '@/lib/auth';
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
-    // Protect dashboard, quiz, and duels routes
-    if (pathname.startsWith('/dashboard') || pathname.startsWith('/quiz') || pathname.startsWith('/duels')) {
-        const token = request.cookies.get('session')?.value;
+    const publicRoutes = new Set(['/', '/login', '/signup']);
+    const isPublicRoute = publicRoutes.has(pathname);
+    const isAssetRoute = pathname.startsWith('/_next') || pathname.startsWith('/assets') || pathname === '/favicon.ico';
+    const isApiRoute = pathname.startsWith('/api');
 
-        if (!token) {
-            return NextResponse.redirect(new URL('/login', request.url));
-        }
-
-        const payload = await verifyJWT(token);
-
-        if (!payload) {
-            // Token is invalid
-            return NextResponse.redirect(new URL('/login', request.url));
-        }
-
-        // Allowed
+    if (isPublicRoute || isAssetRoute || isApiRoute) {
         return NextResponse.next();
+    }
+
+    const token = request.cookies.get('session')?.value;
+
+    if (!token) {
+        return NextResponse.redirect(new URL('/login', request.url));
+    }
+
+    const payload = await verifyJWT(token);
+
+    if (!payload) {
+        return NextResponse.redirect(new URL('/login', request.url));
     }
 
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/dashboard/:path*', '/quiz/:path*', '/duels/:path*'],
+    matcher: '/:path*',
 };

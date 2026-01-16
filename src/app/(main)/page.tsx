@@ -1,11 +1,52 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Cpu, Sparkles, BookOpen, Map, Swords, Compass } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Cpu, Sparkles } from 'lucide-react';
+import InfinityStone from '@/components/cosmic/InfinityStone';
 import { motion } from 'framer-motion';
 
 export default function Home() {
+  const router = useRouter();
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const enterSyllabus = () => {
+    router.push('/syllabus');
+  };
+
+  const STONES = [
+    { id: 'center', label: 'CS FUNDAMENTALS', src: '/assets/cosmic/stone-ai.png', color: '#00F3FF', locked: false, onClick: enterSyllabus },
+    { id: 'mid-left', label: 'CHEMISTRY', src: '/assets/cosmic/stone-data.png', color: '#f472b6', locked: true },
+    { id: 'far-left', label: 'MATHEMATICS', src: '/assets/cosmic/stone-algo.png', color: '#fbbf24', locked: true },
+    { id: 'far-right', label: 'BIOLOGY', src: '/assets/cosmic/stone-networks.png', color: '#22c55e', locked: true },
+    { id: 'mid-right', label: 'PHYSICS', src: '/assets/cosmic/stone-security.png', color: '#a855f7', locked: true },
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % 5);
+    }, 2500);
+    return () => clearInterval(timer);
+  }, []);
+
+  const getPositionStyles = (delta: number) => {
+    switch (delta) {
+      case 0:
+        return "z-30 mb-10 scale-150 md:scale-[1.8] hover:scale-[2.0] translate-x-0 opacity-100 grayscale-0 brightness-100";
+      case 4:
+        return "z-20 bottom-[20%] left-[25%] md:left-[28%] scale-100 hover:scale-110 opacity-80";
+      case 3:
+        return "z-10 bottom-[10%] left-[5%] md:left-[10%] scale-90 hover:scale-105 opacity-60";
+      case 2:
+        return "z-0 bottom-[10%] right-[5%] md:right-[10%] scale-75 opacity-0";
+      case 1:
+        return "z-20 bottom-[20%] right-[25%] md:right-[28%] scale-100 hover:scale-110 opacity-80";
+      default:
+        return "hidden";
+    }
+  };
+
   return (
     <div className="min-h-screen text-slate-100 overflow-hidden relative selection:bg-cyan-500/30">
 
@@ -30,7 +71,7 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Main Hero */}
+      {/* Main Hero & Stones */}
       <main className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-100px)] px-4 pb-20">
 
         {/* Text Content */}
@@ -66,43 +107,49 @@ export default function Home() {
           </motion.p>
         </div>
 
-        {/* Mission Links */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
-          <Link href="/syllabus" className="glass-cosmic rounded-2xl border border-cyan-500/30 p-6 hover:border-violet-500/60 transition-colors">
-            <div className="flex items-center gap-3 mb-3">
-              <BookOpen className="text-cyan-300" size={22} />
-              <h2 className="text-lg font-bold text-cyan-200">CS Fundamentals</h2>
-            </div>
-            <p className="text-sm text-slate-300">Start with the core syllabus and climb your mastery curve.</p>
-          </Link>
-          <Link href="/learning-path" className="glass-cosmic rounded-2xl border border-cyan-500/30 p-6 hover:border-violet-500/60 transition-colors">
-            <div className="flex items-center gap-3 mb-3">
-              <Map className="text-violet-300" size={22} />
-              <h2 className="text-lg font-bold text-violet-200">Learning Path</h2>
-            </div>
-            <p className="text-sm text-slate-300">Visualize your progression and unlock challenge nodes.</p>
-          </Link>
-          <Link href="/story" className="glass-cosmic rounded-2xl border border-cyan-500/30 p-6 hover:border-violet-500/60 transition-colors">
-            <div className="flex items-center gap-3 mb-3">
-              <Compass className="text-blue-300" size={22} />
-              <h2 className="text-lg font-bold text-blue-200">Story Map</h2>
-            </div>
-            <p className="text-sm text-slate-300">Embark on story missions by topic and syllabus.</p>
-          </Link>
-          <Link href="/duels" className="glass-cosmic rounded-2xl border border-cyan-500/30 p-6 hover:border-violet-500/60 transition-colors">
-            <div className="flex items-center gap-3 mb-3">
-              <Swords className="text-rose-300" size={22} />
-              <h2 className="text-lg font-bold text-rose-200">Live Duels</h2>
-            </div>
-            <p className="text-sm text-slate-300">Match with rivals in real-time knowledge battles.</p>
-          </Link>
-          <Link href="/dashboard" className="glass-cosmic rounded-2xl border border-cyan-500/30 p-6 hover:border-violet-500/60 transition-colors">
-            <div className="flex items-center gap-3 mb-3">
-              <Cpu className="text-cyan-300" size={22} />
-              <h2 className="text-lg font-bold text-cyan-200">Command Center</h2>
-            </div>
-            <p className="text-sm text-slate-300">Track performance, missions, and rewards.</p>
-          </Link>
+        {/* Grand Stones Constellation (Carousel Layout) */}
+        <div className="relative w-full max-w-7xl h-[600px] flex items-end justify-center perspective-1000 pb-20">
+
+          {/* Connecting Lines */}
+          <svg className="absolute inset-x-0 bottom-0 h-full w-full pointer-events-none opacity-20">
+            <defs>
+              <linearGradient id="beamGrad" x1="0.5" y1="1" x2="0.5" y2="0">
+                <stop offset="0%" stopColor="#00F3FF" stopOpacity="0.5" />
+                <stop offset="100%" stopColor="transparent" />
+              </linearGradient>
+            </defs>
+            <path d="M50% 100% L50% 20%" stroke="url(#beamGrad)" strokeWidth="2" />
+            <path d="M30% 100% L35% 30%" stroke="url(#beamGrad)" strokeWidth="1" />
+            <path d="M70% 100% L65% 30%" stroke="url(#beamGrad)" strokeWidth="1" />
+            <path d="M10% 100% L20% 40%" stroke="url(#beamGrad)" strokeWidth="1" />
+            <path d="M90% 100% L80% 40%" stroke="url(#beamGrad)" strokeWidth="1" />
+          </svg>
+
+          {STONES.map((stone, index) => {
+            const delta = (index - activeIndex + 5) % 5;
+            const isCenter = delta === 0;
+
+            return (
+              <div
+                key={stone.id}
+                className={`absolute transition-all duration-1000 ease-in-out ${getPositionStyles(delta)}`}
+              >
+                {isCenter && (
+                  <div className="absolute inset-0 bg-cyan-500/20 rounded-full blur-[80px] group-hover:blur-[120px] group-hover:bg-cyan-400/30 transition-all duration-500 animate-pulse -z-10" />
+                )}
+
+                <InfinityStone
+                  label={stone.label}
+                  imageSrc={stone.src}
+                  color={stone.color}
+                  locked={stone.locked && !isCenter}
+                  onClick={stone.onClick}
+                  delay={0}
+                />
+              </div>
+            );
+          })}
+
         </div>
 
       </main>

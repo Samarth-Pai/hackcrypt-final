@@ -1,216 +1,78 @@
 @import "tailwindcss";
 
 :root {
-  --background: #1E1E1E;
-  --foreground: #FFFFFF;
+  --background: #020617;
+  /* Deep Space Navy */
+  --foreground: #E2E8F0;
+  /* Slate 200 for readability */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-pixelify), cursive;
-  --font-mono: var(--font-press-start), monospace;
-  --font-pixel: var(--font-press-start), cursive;
-  --font-pixelify: var(--font-pixelify), cursive;
 
-  /* Command Center V4 Palette (Neon Slate) */
-  --color-teal-bg: #1E1E1E;
-  /* Deep Slate (User Specified) */
-  --color-teal-muted: #121212;
-  /* Darker Slate */
-  --color-purple-ai: #1ED760;
-  /* Neon Green (primary accent) */
-  --color-green-neon: #1ED760;
-  /* Neon Green (success/growth) */
-  --color-gold-streak: #FFFFFF;
-  /* White (high contrast) */
-  --color-coral-error: #FF5252;
-  /* Standard Red for errors */
-  --color-cyber-blue: #FFFFFF;
-  /* Simplified to White for monochrome feel */
+  /* Cosmic Palette */
+  --color-cosmic-bg: #020617;
+  --color-cosmic-card: rgba(15, 23, 42, 0.6);
+  /* Slate 900 with opacity */
+  --color-cosmic-border: rgba(56, 189, 248, 0.2);
+  /* Light Sky Blue trace */
+
+  --color-cyan-cosmic: #00F3FF;
+  --color-violet-nebula: #9D00FF;
+  --color-blue-electric: #2E51FF;
+
+  --color-text-primary: #F8FAFC;
+  /* Slate 50 */
+  --color-text-secondary: #94A3B8;
+  /* Slate 400 */
+
+  /* Gradients */
+  --image-gradient-cosmic: linear-gradient(135deg, rgba(2, 6, 23, 1) 0%, rgba(15, 23, 42, 1) 100%);
+  --image-gradient-glow: radial-gradient(circle at top center, rgba(0, 243, 255, 0.1) 0%, transparent 70%);
+
+  --font-sans: var(--font-outfit), sans-serif;
 }
-
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-pixelify), cursive;
-  font-size: 1.15rem;
-  line-height: 1.4;
+  font-family: var(--font-outfit), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1,
-.font-press-start,
-.logo {
-  font-family: var(--font-press-start), cursive;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.85em;
-  /* Press Start is very big, needs relative scaling */
-}
-
-h2,
-h3,
-h4,
-h5,
-h6,
-.font-pixel,
-.stats-value {
-  font-family: var(--font-pixelify), cursive;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 500;
-}
-
-/* Premium Micro-interactions */
-.btn-glow {
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.btn-glow:hover {
-  box-shadow: 0 0 20px rgba(198, 255, 0, 0.3);
-  transform: translateY(-1px);
-}
-
-.hover-lift {
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.hover-lift:hover {
-  transform: translateY(-4px);
-}
-
-.glass-morphism {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-@keyframes float {
-  0% {
-    transform: translateY(0px) rotate(0deg);
-  }
-
-  50% {
-    transform: translateY(-15px) rotate(2deg);
-  }
-
-  100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-}
-
-@keyframes pulse-neon {
-
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(198, 255, 0, 0.4), inset 0 0 10px rgba(198, 255, 0, 0.2);
-  }
-
-  50% {
-    box-shadow: 0 0 40px rgba(198, 255, 0, 0.7), inset 0 0 20px rgba(198, 255, 0, 0.4);
-  }
-}
-
-@keyframes orbit {
-  from {
-    transform: rotate(0deg) translateX(120px) rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg) translateX(120px) rotate(-360deg);
-  }
-}
-
-@keyframes scanline {
-  0% {
-    transform: translateY(-100%);
-  }
-
-  100% {
-    transform: translateY(100%);
-  }
-}
-
-@keyframes neural-pulse {
-
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(30, 215, 96, 0.2);
-  }
-
-  50% {
-    box-shadow: 0 0 50px rgba(30, 215, 96, 0.4);
-  }
-}
-
-@keyframes glitch {
-  0% {
-    transform: translate(0);
-  }
-
-  20% {
-    transform: translate(-2px, 2px);
-  }
-
-  40% {
-    transform: translate(-2px, -2px);
-  }
-
-  60% {
-    transform: translate(2px, 2px);
-  }
-
-  80% {
-    transform: translate(2px, -2px);
-  }
-
-  100% {
-    transform: translate(0);
-  }
-}
-
-.neon-border-purple {
-  border: 1px solid rgba(30, 215, 96, 0.3);
-  box-shadow: 0 0 15px rgba(30, 215, 96, 0.1);
-}
-
-.neon-border-green {
-  border: 1px solid rgba(30, 215, 96, 0.3);
-  box-shadow: 0 0 15px rgba(30, 215, 96, 0.1);
-}
-
-.neon-text-ai {
-  text-shadow: 0 0 10px rgba(30, 215, 96, 0.5);
-}
-
-.glass-v2 {
-  background: rgba(10, 31, 38, 0.4);
-  backdrop-filter: blur(12px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-}
-
-.glass-v2-glow {
-  background: rgba(10, 31, 38, 0.6);
+/* Cosmic Utilities */
+.glass-cosmic {
+  background: var(--color-cosmic-card);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(30, 215, 96, 0.2);
-  box-shadow: 0 0 20px rgba(30, 215, 96, 0.1);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-cosmic-border);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.pixel-grid-v2 {
-  background-image:
-    linear-gradient(rgba(30, 215, 96, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(30, 215, 96, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
+.text-glow {
+  text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
 }
 
-.neural-bg {
-  background: radial-gradient(circle at center, rgba(30, 215, 96, 0.1) 0%, transparent 70%);
+.border-glow {
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
 }

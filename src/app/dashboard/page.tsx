@@ -8,7 +8,7 @@ export default async function DashboardPage() {
     const streakDays = user?.gamification?.streak?.count || 0;
 
     return (
-        <div className="relative min-h-screen">
+        <div className="relative min-h-screen p-6 md:p-8">
             {/* Achievement Layer */}
             {streakDays > 0 && (
                 <BadgeUnlock
@@ -21,14 +21,22 @@ export default async function DashboardPage() {
                 {/* Asymmetrical Main Area */}
                 <div className="col-span-12 lg:col-span-8">
                     {/* Welcome Metadata */}
-                    <div className="mb-8 flex justify-between items-end px-10">
+                    <div className="mb-8 flex flex-col md:flex-row justify-between md:items-end px-2 gap-4">
                         <div>
-                            <h2 className="text-4xl font-black text-white italic tracking-tighter neon-text-ai">MISSION_HUB_V2</h2>
-                            <p className="text-xs tracking-[0.4em] text-purple-ai font-bold">WELCOME_BACK // {user?.name?.toUpperCase() || 'EXPLORER'}</p>
+                            <h2 className="text-4xl font-bold italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 text-glow">
+                                MISSION_HUB_V2
+                            </h2>
+                            <p className="text-xs tracking-[0.4em] text-cyan-500/80 font-bold mt-2">
+                                WELCOME DECLARATION • {user?.name?.toUpperCase() ?? 'EXPLORER'}
+                            </p>
                         </div>
                         <div className="text-right hidden md:block">
-                            <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Sector_Clearance</p>
-                            <p className="text-xs font-mono text-purple-ai bg-purple-ai/10 px-3 py-1 rounded border border-purple-ai/20">LEVEL_4_AUTH</p>
+                            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">
+                                Sector_Clearance
+                            </p>
+                            <p className="text-xs font-mono text-cyan-400 bg-cyan-900/20 px-3 py-1 rounded border border-cyan-500/30">
+                                LEVEL_4_AUTH
+                            </p>
                         </div>
                     </div>
 

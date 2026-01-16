@@ -3,10 +3,12 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { topPerformers, strugglingTopics } from '@/lib/teacher-data';
 import { Trophy, AlertCircle, TrendingUp, TrendingDown } from 'lucide-react';
 
-export function TopicInsights() {
+type TopPerformer = { name: string; score: number; progress: number };
+type StrugglingTopic = { topic: string; studentCount: number; difficulty: 'High' | 'Medium' | 'Low' };
+
+export function TopicInsights({ topPerformers, strugglingTopics }: { topPerformers: TopPerformer[]; strugglingTopics: StrugglingTopic[] }) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Top Performers */}

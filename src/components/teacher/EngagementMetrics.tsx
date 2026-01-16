@@ -2,15 +2,22 @@
 'use client';
 
 import React from 'react';
-import { engagementMetrics } from '@/lib/teacher-data';
 import { Users, Clock, CheckCircle, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export function EngagementMetrics() {
+type EngagementMetricsData = {
+    activeStudents: number;
+    totalStudents: number;
+    avgTimeSpent: string;
+    completionRate: number;
+    engagementTrend: number;
+};
+
+export function EngagementMetrics({ data }: { data: EngagementMetricsData }) {
     const stats = [
-        { label: 'Active Students', value: engagementMetrics.activeStudents, total: engagementMetrics.totalStudents, icon: Users, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-        { label: 'Avg Time Spent', value: engagementMetrics.avgTimeSpent, icon: Clock, color: 'text-purple-400', bg: 'bg-purple-500/10' },
-        { label: 'Completion Rate', value: `${engagementMetrics.completionRate}%`, icon: CheckCircle, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+        { label: 'Active Students', value: data.activeStudents, total: data.totalStudents, icon: Users, color: 'text-blue-400', bg: 'bg-blue-500/10' },
+        { label: 'Avg Time Spent', value: data.avgTimeSpent, icon: Clock, color: 'text-purple-400', bg: 'bg-purple-500/10' },
+        { label: 'Completion Rate', value: `${data.completionRate}%`, icon: CheckCircle, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
     ];
 
     return (
@@ -41,7 +48,7 @@ export function EngagementMetrics() {
                         {index === 0 && (
                             <div className="mt-4 flex items-center gap-2 text-emerald-400 text-xs font-bold">
                                 <TrendingUp size={14} />
-                                <span>{engagementMetrics.engagementTrend}% from last week</span>
+                                <span>{data.engagementTrend}% from last week</span>
                             </div>
                         )}
                     </div>

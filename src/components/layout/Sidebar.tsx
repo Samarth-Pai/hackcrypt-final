@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { LayoutDashboard, Gamepad2, LogOut, BarChart3, Swords, Cpu } from 'lucide-react';
+import { LayoutDashboard, LogOut, Swords, Cpu, User, BookOpen } from 'lucide-react';
 import { getUserProfile } from '@/lib/user';
 import { logoutAction } from '@/app/actions/auth';
 import SidebarProfile from './SidebarProfile';
@@ -44,28 +44,29 @@ export default async function Sidebar() {
                 <Link href="/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-all border border-transparent hover:border-white/5 group relative overflow-hidden">
                     <LayoutDashboard className="w-5 h-5 group-hover:text-green-neon transition-colors" />
                     <span className="text-sm font-bold uppercase tracking-wider">Control Hub</span>
-                    <div className="absolute left-0 top-0 w-[2px] h-full bg-green-neon/0 group-hover:bg-green-neon transition-all" />
+                    <div className="absolute left-0 top-0 w-0.5 h-full bg-green-neon/0 group-hover:bg-green-neon transition-all" />
                 </Link>
 
-                <Link href="/quiz" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-all border border-transparent hover:border-white/5 group relative overflow-hidden">
-                    <Gamepad2 className="w-5 h-5 group-hover:text-cyber-blue transition-colors" />
-                    <span className="text-sm font-bold uppercase tracking-wider">Mission Deck</span>
-                    <div className="absolute left-0 top-0 w-[2px] h-full bg-cyber-blue/0 group-hover:bg-cyber-blue transition-all" />
+
+                <Link href="/syllabus" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-all border border-transparent hover:border-white/5 group relative overflow-hidden">
+                    <BookOpen className="w-5 h-5 group-hover:text-green-neon transition-colors" />
+                    <span className="text-sm font-bold uppercase tracking-wider">Syllabus Hub</span>
+                    <div className="absolute left-0 top-0 w-0.5 h-full bg-green-neon/0 group-hover:bg-green-neon transition-all" />
                 </Link>
 
                 <Link href="/duels" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-all border border-transparent hover:border-white/5 group relative overflow-hidden">
                     <Swords className="w-5 h-5 group-hover:text-gold-streak transition-colors" />
                     <span className="text-sm font-bold uppercase tracking-wider">Battle Rift</span>
-                    <div className="absolute left-0 top-0 w-[2px] h-full bg-gold-streak/0 group-hover:bg-gold-streak transition-all" />
+                    <div className="absolute left-0 top-0 w-0.5 h-full bg-gold-streak/0 group-hover:bg-gold-streak transition-all" />
                 </Link>
 
-                <div className="h-[1px] bg-white/5 my-4 mx-4" />
-                <p className="px-4 text-[9px] uppercase tracking-[0.3em] text-gray-500 font-black mb-4">Tactical_Grid</p>
+                <div className="h-px bg-white/5 my-4 mx-4" />
+                <p className="px-4 text-[9px] uppercase tracking-[0.3em] text-gray-500 font-black mb-4">Social_Link</p>
 
-                <Link href="/teacher/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-all border border-transparent hover:border-white/5 group relative overflow-hidden">
-                    <BarChart3 className="w-5 h-5 group-hover:text-green-neon transition-colors" />
-                    <span className="text-sm font-bold uppercase tracking-wider">Cmd Center</span>
-                    <div className="absolute left-0 top-0 w-[2px] h-full bg-green-neon/0 group-hover:bg-green-neon transition-all" />
+                <Link href={`/profile/${user?._id}`} className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-all border border-transparent hover:border-white/5 group relative overflow-hidden">
+                    <User className="w-5 h-5 group-hover:text-purple-ai transition-colors" />
+                    <span className="text-sm font-bold uppercase tracking-wider">My Profile</span>
+                    <div className="absolute left-0 top-0 w-0.5 h-full bg-purple-ai/0 group-hover:bg-purple-ai transition-all" />
                 </Link>
             </nav>
 

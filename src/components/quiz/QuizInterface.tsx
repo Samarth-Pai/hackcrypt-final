@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { Loader2, CheckCircle, XCircle, Trophy } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import ChatTutor from '@/components/chat/ChatTutor';
 
 interface Question {
     id: string;
@@ -172,6 +173,17 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
                                     ))}
                                 </div>
                             )}
+                            <div className="mt-6">
+                                <ChatTutor
+                                    context={feedback
+                                        .map((item) => {
+                                            const question = questions.find((q) => q.id === item.questionId);
+                                            const userAnswer = answers.find((a) => a.questionId === item.questionId)?.selectedOption ?? 'No answer';
+                                            return `Q: ${question?.text || item.questionId}\nCorrect: ${item.correctAnswer || 'N/A'}\nExplanation: ${item.explanation || 'No explanation available.'}`;
+                                        })
+                                        .join('\n\n')}
+                                />
+                            </div>
                             <button
                                 onClick={() => router.push('/dashboard')}
                                 className="mt-6 px-6 py-2 bg-forest hover:bg-[#1B5E20] text-white rounded-full transition-colors font-bold"
@@ -225,17 +237,17 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
 
                             if (selectedOption === option) {
                                 if (isCorrect) {
-                                    optionClass += "bg-[#2E7D32] border-[#C6FF00] text-white";
+                                    optionClass += "bg-forest border-growth text-white";
                                 } else if (isCorrect === false) {
                                     optionClass += "bg-red-900/80 border-red-500 text-white";
                                 } else {
-                                    optionClass += "bg-[#5D4037] border-[#FFD600] text-white";
+                                    optionClass += "bg-[#5D4037] border-sun text-white";
                                 }
                             } else if (selectedOption !== null && option === currentQuestion.correctAnswer) {
                                 // Show correct answer if user picked wrong
-                                optionClass += "bg-[#2E7D32]/50 border-[#2E7D32] text-gray-200";
+                                optionClass += "bg-forest/50 border-forest text-gray-200";
                             } else {
-                                optionClass += "bg-[#1B1B1B] border-transparent hover:border-[#FFD600] hover:bg-[#202020] text-gray-300";
+                                optionClass += "bg-[#1B1B1B] border-transparent hover:border-sun hover:bg-[#202020] text-gray-300";
                             }
 
                             return (

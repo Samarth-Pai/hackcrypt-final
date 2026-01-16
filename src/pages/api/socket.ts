@@ -16,6 +16,10 @@ type MatchState = {
     progress: Record<string, number>;
     accuracy: Record<string, number>;
     finished: Set<string>;
+    bids: Record<string, number>;
+    pot: number;
+    stakesLocked: boolean;
+    answers: Record<string, Record<string, string | null>>;
 };
 
 type QueueEntry = {
@@ -56,6 +60,10 @@ const startMatch = (io: SocketIOServer, playerA: QueueEntry, playerB: QueueEntry
         progress: {},
         accuracy: {},
         finished: new Set(),
+        bids: {},
+        pot: 0,
+        stakesLocked: false,
+        answers: {},
     };
 
     const store = getStore();
@@ -64,7 +72,7 @@ const startMatch = (io: SocketIOServer, playerA: QueueEntry, playerB: QueueEntry
     io.sockets.sockets.get(playerA.socketId)?.join(roomId);
     io.sockets.sockets.get(playerB.socketId)?.join(roomId);
 
-    io.to(roomId).emit('start_quiz', {
+    io.to(roomId).emit('match_found', {
         roomId,
         players: match.players,
     });
@@ -122,11 +130,63 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 );
             });
 
-            socket.on('answer', ({ roomId, progress }: { roomId: string; progress: number }) => {
+            socket.on('submit_bid', async ({ roomId, bid }: { roomId: string; bid: number }) => {
+                const match = store.matches?.get(roomId);
+                if (!match || !match.players.includes(userId)) return;
+                if (match.stakesLocked) return;
+
+                const sanitizedBid = Math.max(0, Math.floor(Number(bid)));
+                if (!sanitizedBid) {
+                    socket.emit('bid_error', { message: 'Bid must be at least 1 XP.' });
+                    return;
+                }
+
+                const client = await clientPromise;
+                const db = client.db();
+                const user = await db.collection('users').findOne({ _id: new ObjectId(userId) });
+                const xp = Number(user?.gamification?.xp || 0);
+
+                if (xp < sanitizedBid) {
+                    socket.emit('bid_error', { message: 'Insufficient XP for this bid.' });
+                    return;
+                }
+
+                match.bids[userId] = sanitizedBid;
+                io.to(roomId).emit('bid_update', { bids: match.bids });
+
+                if (match.players.every((id) => match.bids[id] && match.bids[id] > 0)) {
+                    const [playerA, playerB] = match.players;
+                    const bidA = match.bids[playerA];
+                    const bidB = match.bids[playerB];
+
+                    if (!bidA || !bidB) return;
+
+                    await db.collection('users').updateOne(
+                        { _id: new ObjectId(playerA), 'gamification.xp': { $gte: bidA } },
+                        { $inc: { 'gamification.xp': -bidA } }
+                    );
+                    await db.collection('users').updateOne(
+                        { _id: new ObjectId(playerB), 'gamification.xp': { $gte: bidB } },
+                        { $inc: { 'gamification.xp': -bidB } }
+                    );
+
+                    match.stakesLocked = true;
+                    match.pot = bidA + bidB;
+
+                    io.to(roomId).emit('bids_locked', { bids: match.bids, pot: match.pot });
+                    io.to(roomId).emit('start_quiz', { roomId, players: match.players });
+                }
+            });
+
+            socket.on('answer', ({ roomId, progress, questionId, selectedOption }: { roomId: string; progress: number; questionId: string; selectedOption: string | null }) => {
                 const match = store.matches?.get(roomId);
                 if (!match || !match.players.includes(userId)) return;
 
                 match.progress[userId] = Math.max(0, Math.min(1, progress));
+                if (!match.answers[userId]) match.answers[userId] = {};
+                if (questionId) {
+                    match.answers[userId][questionId] = selectedOption ?? null;
+                }
 
                 const opponentId = match.players.find((id) => id !== userId);
                 if (opponentId) {
@@ -153,17 +213,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     if (accA > accB) winnerId = playerA;
                     if (accB > accA) winnerId = playerB;
 
+                    const client = await clientPromise;
+                    const db = client.db();
+
                     if (winnerId) {
-                        const client = await clientPromise;
-                        const db = client.db();
                         await db.collection('users').updateOne(
                             { _id: new ObjectId(winnerId) },
                             {
                                 $inc: {
                                     'gamification.winStreak': 1,
-                                    'gamification.xp': 50,
+                                    'gamification.xp': match.pot + 50,
                                 },
                             }
+                        );
+                    } else if (match.stakesLocked) {
+                        await db.collection('users').updateOne(
+                            { _id: new ObjectId(playerA) },
+                            { $inc: { 'gamification.xp': match.bids[playerA] || 0 } }
+                        );
+                        await db.collection('users').updateOne(
+                            { _id: new ObjectId(playerB) },
+                            { $inc: { 'gamification.xp': match.bids[playerB] || 0 } }
                         );
                     }
 
@@ -171,6 +241,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         winnerId,
                         accuracy: match.accuracy,
                         winBonusXp: 50,
+                        pot: match.pot,
+                        bids: match.bids,
+                        answers: match.answers,
                     });
 
                     store.matches?.delete(roomId);

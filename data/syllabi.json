@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "cs-fundamentals",
+    "title": "CS Fundamentals",
+    "subject": "Computer Science",
+    "description": "Binary systems, core data structures, and algorithm basics.",
+    "flashcards": [
+      { "title": "Binary", "content": "Base-2 number system using digits 0 and 1." },
+      { "title": "Stack", "content": "LIFO structure: last in, first out." },
+      { "title": "Queue", "content": "FIFO structure: first in, first out." },
+      { "title": "Big-O", "content": "Describes how runtime grows with input size." }
+    ]
+  },
+  {
+    "slug": "mathematics-core",
+    "title": "Mathematics Core",
+    "subject": "Mathematics",
+    "description": "Algebra, geometry, and probability essentials.",
+    "flashcards": [
+      { "title": "Linear Equation", "content": "Solve for x by isolating the variable." },
+      { "title": "Triangle", "content": "Interior angles always sum to 180°." },
+      { "title": "Probability", "content": "Favorable outcomes divided by total outcomes." },
+      { "title": "Derivative", "content": "Instant rate of change of a function." }
+    ]
+  },
+  {
+    "slug": "biology-basics",
+    "title": "Biology Basics",
+    "subject": "Biology",
+    "description": "Cells, genetics, ecosystems, and body systems.",
+    "flashcards": [
+      { "title": "Nucleus", "content": "Control center containing DNA." },
+      { "title": "Mitochondrion", "content": "Powerhouse generating ATP." },
+      { "title": "Community", "content": "All populations living in an area." },
+      { "title": "Photosynthesis", "content": "Process plants use to make glucose." }
+    ]
+  },
+  {
+    "slug": "physics-core",
+    "title": "Physics Core",
+    "subject": "Physics",
+    "description": "Motion, forces, energy, and basic electricity.",
+    "flashcards": [
+      { "title": "Acceleration", "content": "Rate of change of velocity." },
+      { "title": "Newton's 2nd", "content": "Force equals mass times acceleration." },
+      { "title": "Energy", "content": "Capacity to do work." },
+      { "title": "Ohm's Law", "content": "Voltage equals current times resistance." }
+    ]
+  },
+  {
+    "slug": "chemistry-core",
+    "title": "Chemistry Core",
+    "subject": "Chemistry",
+    "description": "Atoms, bonds, reactions, and the periodic table.",
+    "flashcards": [
+      { "title": "Element", "content": "Substance made of one type of atom." },
+      { "title": "Covalent Bond", "content": "Atoms share electrons." },
+      { "title": "Ionic Bond", "content": "Electrons are transferred." },
+      { "title": "Mole", "content": "6.02×10^23 particles." }
+    ]
+  }
+]

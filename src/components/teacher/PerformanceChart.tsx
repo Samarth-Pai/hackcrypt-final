@@ -2,10 +2,11 @@
 'use client';
 
 import React from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
-import { classPerformanceData } from '@/lib/teacher-data';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-export function PerformanceChart() {
+type PerformancePoint = { month: string; accuracy: number; engagement: number };
+
+export function PerformanceChart({ data }: { data: PerformancePoint[] }) {
     return (
         <div className="bg-[#0f172a]/80 backdrop-blur-xl border border-slate-800 p-6 rounded-3xl shadow-2xl h-[400px]">
             <div className="flex justify-between items-center mb-6">
@@ -26,7 +27,7 @@ export function PerformanceChart() {
             </div>
 
             <ResponsiveContainer width="100%" height="80%">
-                <AreaChart data={classPerformanceData}>
+                <AreaChart data={data}>
                     <defs>
                         <linearGradient id="colorAccuracy" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="5%" stopColor="#a3e635" stopOpacity={0.3} />

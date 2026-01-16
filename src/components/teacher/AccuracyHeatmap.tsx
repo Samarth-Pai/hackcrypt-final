@@ -3,9 +3,10 @@
 
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { topicAccuracyData } from '@/lib/teacher-data';
 
-export function AccuracyHeatmap() {
+type TopicAccuracy = { topic: string; accuracy: number; students: number };
+
+export function AccuracyHeatmap({ data }: { data: TopicAccuracy[] }) {
     const getBarColor = (accuracy: number) => {
         if (accuracy >= 80) return '#a3e635'; // Lime-400
         if (accuracy >= 60) return '#fbbf24'; // Amber-400
@@ -22,7 +23,7 @@ export function AccuracyHeatmap() {
             <ResponsiveContainer width="100%" height="80%">
                 <BarChart
                     layout="vertical"
-                    data={topicAccuracyData}
+                    data={data}
                     margin={{ left: 40, right: 40 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" horizontal={false} />
@@ -45,7 +46,7 @@ export function AccuracyHeatmap() {
                         }}
                     />
                     <Bar dataKey="accuracy" radius={[0, 10, 10, 0]} barSize={20}>
-                        {topicAccuracyData.map((entry, index) => (
+                        {data.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={getBarColor(entry.accuracy)} />
                         ))}
                     </Bar>

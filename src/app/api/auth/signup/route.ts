@@ -29,6 +29,8 @@ export async function POST(request: Request) {
             password: hashedPassword,
             role: 'student', // Default role
             createdAt: new Date(),
+            followers: [],
+            following: [],
             gamification: {
                 xp: 0,
                 level: 1,

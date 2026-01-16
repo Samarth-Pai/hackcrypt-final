@@ -34,7 +34,7 @@ export async function generateQuiz(params: { topic?: string; rawText?: string })
     ].filter(Boolean).join('\n');
 
     const { object } = await generateObject({
-        model: google('gemini-1.5-pro'),
+        model: google('gemini-2.5-pro'),
         schema: quizSchema,
         prompt,
         temperature: 0.7,
@@ -51,7 +51,7 @@ export async function generateQuiz(params: { topic?: string; rawText?: string })
         topic: topic || null,
         sourceText: rawText || null,
         createdAt: new Date(),
-        model: 'gemini-1.5-pro',
+        model: 'gemini-2.5-pro',
         provider: 'google',
     };
 

@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import { LayoutDashboard, Gamepad2, LogOut } from 'lucide-react';
+import { LayoutDashboard, Gamepad2, LogOut, BarChart3 } from 'lucide-react';
 import { getUserProfile } from '@/lib/user';
 import { logoutAction } from '@/app/actions/auth';
+import AnimatedNumber from '@/components/ui/AnimatedNumber';
 
 export default async function Sidebar() {
     const user = await getUserProfile();
@@ -48,17 +49,23 @@ export default async function Sidebar() {
                         style={{ width: `${Math.min(100, Math.max(0, progressPercent))}%` }}
                     ></div>
                 </div>
-                <p className="text-[10px] text-gray-400 mt-1 text-right">{Math.floor(currentLevelProgress)} / {xpForNextLevel} XP</p>
+                <p className="text-[10px] text-gray-400 mt-1 text-right">
+                    <AnimatedNumber value={Math.floor(currentLevelProgress)} /> / {xpForNextLevel} XP
+                </p>
             </div>
 
             <nav className="flex-1 p-4 space-y-2">
-                <Link href="/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#2E7D32]/20 text-gray-300 hover:text-white transition-colors">
-                    <LayoutDashboard className="w-5 h-5" />
+                <Link href="/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#2E7D32]/20 text-gray-300 hover:text-white transition-colors hover-lift group">
+                    <LayoutDashboard className="w-5 h-5 group-hover:text-[#C6FF00] transition-colors" />
                     <span>Dashboard</span>
                 </Link>
-                <Link href="/quiz" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#2E7D32]/20 text-gray-300 hover:text-white transition-colors">
-                    <Gamepad2 className="w-5 h-5" />
+                <Link href="/quiz" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#2E7D32]/20 text-gray-300 hover:text-white transition-colors hover-lift group">
+                    <Gamepad2 className="w-5 h-5 group-hover:text-[#C6FF00] transition-colors" />
                     <span>Quests</span>
+                </Link>
+                <Link href="/teacher/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#2E7D32]/20 text-gray-300 hover:text-white transition-colors border-l-2 border-lime-500/0 hover:border-lime-500/50 hover-lift group">
+                    <BarChart3 className="w-5 h-5 text-lime-400 group-hover:text-lime-300 transition-colors" />
+                    <span className="text-lime-50">Analytics</span>
                 </Link>
             </nav>
 

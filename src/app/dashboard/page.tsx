@@ -3,6 +3,8 @@ import Leaderboard from '@/components/gamification/Leaderboard';
 import { getUserProfile } from '@/lib/user';
 import { Calendar, CheckCircle, Target } from 'lucide-react';
 import Link from 'next/link';
+import AnimatedNumber from '@/components/ui/AnimatedNumber';
+import BadgeUnlock from '@/components/gamification/BadgeUnlock';
 
 export default async function DashboardPage() {
     const user = await getUserProfile();
@@ -12,7 +14,14 @@ export default async function DashboardPage() {
     const streakDays = user?.gamification?.streak?.count || 0;
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 animate-in fade-in duration-700">
+            {/* Achievement Demo - Only for demonstration */}
+            {streakDays > 0 && (
+                <BadgeUnlock
+                    badgeName="First Sprint"
+                    description="You've completed your first day of quests! Keep the momentum going."
+                />
+            )}
             {/* Welcome Banner */}
             <div className="bg-gradient-to-r from-[#2E7D32] to-[#1B5E20] p-8 rounded-2xl shadow-xl flex justify-between items-center text-white border border-[#C6FF00]/30 relative overflow-hidden">
                 <div className="relative z-10">
@@ -27,26 +36,32 @@ export default async function DashboardPage() {
                 <div className="lg:col-span-2 space-y-8">
                     {/* Stats Row */}
                     <div className="grid grid-cols-3 gap-4">
-                        <div className="bg-[#5D4037]/40 p-6 rounded-xl border border-[#5D4037]">
-                            <div className="flex items-center gap-3 mb-2 text-gray-400">
+                        <div className="bg-[#5D4037]/40 p-6 rounded-xl border border-[#5D4037] hover-lift transition-all hover:bg-[#5D4037]/60 cursor-default group">
+                            <div className="flex items-center gap-3 mb-2 text-gray-400 group-hover:text-lime-400 transition-colors">
                                 <CheckCircle className="w-5 h-5" />
                                 <span>Completed</span>
                             </div>
-                            <p className="text-2xl font-bold text-[#ededed]">{user?.gamification?.completedLessons || 0}</p>
+                            <p className="text-2xl font-bold text-[#ededed]">
+                                <AnimatedNumber value={user?.gamification?.completedLessons || 0} />
+                            </p>
                         </div>
-                        <div className="bg-[#5D4037]/40 p-6 rounded-xl border border-[#5D4037]">
-                            <div className="flex items-center gap-3 mb-2 text-gray-400">
+                        <div className="bg-[#5D4037]/40 p-6 rounded-xl border border-[#5D4037] hover-lift transition-all hover:bg-[#5D4037]/60 cursor-default group">
+                            <div className="flex items-center gap-3 mb-2 text-gray-400 group-hover:text-lime-400 transition-colors">
                                 <Target className="w-5 h-5" />
                                 <span>Accuracy</span>
                             </div>
-                            <p className="text-2xl font-bold text-[#ededed]">{accuracy.toFixed(0)}%</p>
+                            <p className="text-2xl font-bold text-[#ededed]">
+                                <AnimatedNumber value={Math.round(accuracy)} />%
+                            </p>
                         </div>
-                        <div className="bg-[#5D4037]/40 p-6 rounded-xl border border-[#5D4037]">
-                            <div className="flex items-center gap-3 mb-2 text-gray-400">
+                        <div className="bg-[#5D4037]/40 p-6 rounded-xl border border-[#5D4037] hover-lift transition-all hover:bg-[#5D4037]/60 cursor-default group">
+                            <div className="flex items-center gap-3 mb-2 text-gray-400 group-hover:text-[#FFD600] transition-colors">
                                 <Calendar className="w-5 h-5" />
                                 <span>Streak</span>
                             </div>
-                            <p className="text-2xl font-bold text-[#FFD600]">{streakDays} Days</p>
+                            <p className="text-2xl font-bold text-[#FFD600]">
+                                <AnimatedNumber value={streakDays} /> Days
+                            </p>
                         </div>
                     </div>
 

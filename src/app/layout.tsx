@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
-import TopNav from '@/components/layout/TopNav';
+import CosmicBackground from "@/components/ui/CosmicBackground";
+
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -28,20 +29,12 @@ export default function RootLayout({
           color: 'var(--color-text-primary)'
         }}
       >
-        {/* Cosmic Background System */}
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#020617] to-[#020617]" />
-          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent opacity-30" />
-          <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-500/50 to-transparent opacity-30" />
-        </div>
+
+
+        <CosmicBackground />
 
         {/* Content Layer */}
-        <div className="relative z-10 flex flex-col min-h-screen">
-          <TopNav />
-          <main className="flex-grow">
-            {children}
-          </main>
-        </div>
+        {children}
       </body>
     </html>
   );

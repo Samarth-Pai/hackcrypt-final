@@ -50,10 +50,10 @@ export default function MatchTheFollowing({ pairs }: { pairs: MatchPair[] }) {
     };
 
     return (
-        <div className="bg-[#5D4037]/40 p-6 rounded-xl border border-[#5D4037]">
+        <div className="glass-cosmic p-6 rounded-xl border border-cyan-500/30">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-growth">Match the Following</h3>
-                <span className="text-xs text-gray-400">{submitted ? `${correctCount} / ${pairs.length}` : `${Object.keys(selections).length} / ${pairs.length}`}</span>
+                <h3 className="text-lg font-bold text-cyan-200">Match the Following</h3>
+                <span className="text-xs text-slate-400">{submitted ? `${correctCount} / ${pairs.length}` : `${Object.keys(selections).length} / ${pairs.length}`}</span>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -71,23 +71,23 @@ export default function MatchTheFollowing({ pairs }: { pairs: MatchPair[] }) {
                                     const payload = event.dataTransfer.getData('text/plain');
                                     if (payload) handleAssign(pair.left, payload);
                                 }}
-                                className={`p-4 rounded-xl border ${isCorrect ? 'border-growth' : isWrong ? 'border-red-500' : 'border-[#5D4037]'} bg-earth/80 transition-colors`}
+                                className={`p-4 rounded-xl border ${isCorrect ? 'border-cyan-400' : isWrong ? 'border-red-500' : 'border-cyan-500/30'} bg-[#140A28]/80 transition-colors`}
                             >
-                                <p className="text-sm text-white mb-3">{pair.left}</p>
+                                <p className="text-sm text-slate-200 mb-3">{pair.left}</p>
                                 <div className="flex items-center gap-3">
-                                    <div className={`flex-1 px-3 py-2 rounded-lg text-sm ${selected ? 'bg-[#1B1B1B] text-gray-200 border border-[#5D4037]' : 'bg-[#2E1E1A] text-gray-500 border border-dashed border-[#5D4037]'}`}>
+                                    <div className={`flex-1 px-3 py-2 rounded-lg text-sm ${selected ? 'bg-[#0F061A] text-slate-200 border border-cyan-500/30' : 'bg-[#120821] text-slate-500 border border-dashed border-cyan-500/30'}`}>
                                         {selected || 'Drag a match here'}
                                     </div>
                                     {selected && (
                                         <button
                                             onClick={() => handleUnassign(pair.left)}
-                                            className="text-xs text-gray-400 hover:text-white"
+                                            className="text-xs text-slate-400 hover:text-white"
                                         >
                                             Clear
                                         </button>
                                     )}
                                     {submitted && (
-                                        <span className={`text-xs ${isCorrect ? 'text-growth' : isWrong ? 'text-red-300' : 'text-gray-400'}`}>
+                                        <span className={`text-xs ${isCorrect ? 'text-cyan-200' : isWrong ? 'text-red-300' : 'text-slate-400'}`}>
                                             {isCorrect ? 'Correct' : isWrong ? `Correct: ${pair.right}` : ''}
                                         </span>
                                     )}
@@ -97,7 +97,7 @@ export default function MatchTheFollowing({ pairs }: { pairs: MatchPair[] }) {
                     })}
                 </div>
                 <div className="space-y-3">
-                    <p className="text-xs uppercase tracking-widest text-gray-400 font-bold">Drag these</p>
+                    <p className="text-xs uppercase tracking-widest text-slate-400 font-bold">Drag these</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {rightOptions.map((option) => {
                             const isUsed = Object.values(selections).includes(option);
@@ -110,7 +110,7 @@ export default function MatchTheFollowing({ pairs }: { pairs: MatchPair[] }) {
                                         event.dataTransfer.setData('text/plain', option);
                                     }}
                                     onDragEnd={() => setDragging(null)}
-                                    className={`px-3 py-2 rounded-lg text-sm border transition-colors ${isUsed ? 'bg-[#2E1E1A] border-[#3E2723] text-gray-500 cursor-not-allowed' : dragging === option ? 'bg-forest/30 border-growth text-growth' : 'bg-[#1B1B1B] border-[#5D4037] text-gray-200 cursor-grab'}`}
+                                    className={`px-3 py-2 rounded-lg text-sm border transition-colors ${isUsed ? 'bg-[#140A28]/60 border-cyan-500/20 text-slate-500 cursor-not-allowed' : dragging === option ? 'bg-violet-500/20 border-violet-400 text-violet-200' : 'bg-[#0F061A] border-cyan-500/30 text-slate-200 cursor-grab'}`}
                                 >
                                     {option}
                                 </div>
@@ -123,13 +123,13 @@ export default function MatchTheFollowing({ pairs }: { pairs: MatchPair[] }) {
             <div className="mt-6 flex flex-wrap gap-3">
                 <button
                     onClick={handleSubmit}
-                    className="px-4 py-2 bg-forest text-white rounded-full hover:bg-[#1B5E20]"
+                    className="px-4 py-2 bg-cyan-500/20 text-cyan-100 rounded-full border border-cyan-500/40 hover:border-violet-500/70 hover:text-white transition-colors"
                 >
                     Check Answers
                 </button>
                 <button
                     onClick={handleReset}
-                    className="px-4 py-2 bg-[#3E2723] text-gray-200 rounded-full border border-[#5D4037] hover:border-sun"
+                    className="px-4 py-2 bg-[#140A28] text-slate-200 rounded-full border border-cyan-500/30 hover:border-violet-500/60 transition-colors"
                 >
                     Reset
                 </button>

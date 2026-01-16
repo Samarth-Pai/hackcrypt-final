@@ -21,18 +21,18 @@ const edges = [
 
 export default function LearningPathPage() {
     return (
-        <div className="min-h-screen bg-earth text-[#ededed] p-6">
+        <div className="min-h-screen text-[#E2E8F0] p-6">
             <div className="max-w-6xl mx-auto space-y-6">
                 <div className="flex items-center gap-3">
-                    <Map className="w-8 h-8 text-sun" />
+                    <Map className="w-8 h-8 text-cyan-300" />
                     <div>
-                        <h1 className="text-3xl font-bold text-growth">Learning Path Map</h1>
-                        <p className="text-sm text-gray-400">Navigate your quest line and unlock mastery nodes.</p>
+                        <h1 className="text-3xl font-bold text-cyan-200 text-glow">Learning Path Map</h1>
+                        <p className="text-sm text-slate-400">Navigate your quest line and unlock mastery nodes.</p>
                     </div>
                 </div>
 
-                <div className="relative h-160 rounded-3xl border border-[#5D4037] bg-[#2E1E1A]/70 overflow-hidden">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(198,255,0,0.15),transparent_45%)]" />
+                <div className="relative h-160 rounded-3xl border border-cyan-500/30 glass-cosmic overflow-hidden">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(217,0,255,0.18),transparent_45%)]" />
                     <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '50px 50px' }} />
 
                     <svg className="absolute inset-0 w-full h-full" aria-hidden="true">
@@ -47,7 +47,7 @@ export default function LearningPathPage() {
                                     y1={`${start.y}%`}
                                     x2={`${end.x}%`}
                                     y2={`${end.y}%`}
-                                    stroke="rgba(198,255,0,0.25)"
+                                    stroke="rgba(0,243,255,0.25)"
                                     strokeWidth="2"
                                     strokeDasharray="6 8"
                                 />
@@ -59,15 +59,15 @@ export default function LearningPathPage() {
                         <Link
                             key={node.id}
                             href={node.id === 'duels' ? '/duels' : '/syllabus'}
-                            className={`absolute -translate-x-1/2 -translate-y-1/2 px-4 py-3 rounded-2xl border text-sm font-bold transition-all ${node.status === 'core' ? 'bg-forest/30 border-growth text-growth' : node.status === 'challenge' ? 'bg-sun/10 border-sun text-sun' : node.status === 'arena' ? 'bg-purple-ai/20 border-purple-ai text-purple-ai' : 'bg-[#3E2723]/70 border-[#5D4037] text-gray-200'}`}
+                            className={`absolute -translate-x-1/2 -translate-y-1/2 px-4 py-3 rounded-2xl border text-sm font-bold transition-all ${node.status === 'core' ? 'bg-cyan-500/15 border-cyan-400/50 text-cyan-200' : node.status === 'challenge' ? 'bg-violet-500/15 border-violet-400/50 text-violet-200' : node.status === 'arena' ? 'bg-blue-500/20 border-blue-400/50 text-blue-200' : 'bg-[#0B0014]/60 border-cyan-500/20 text-slate-200'}`}
                             style={{ left: `${node.x}%`, top: `${node.y}%` }}
                         >
-                            <span className="block text-[10px] uppercase tracking-widest text-gray-400">{node.status}</span>
+                            <span className="block text-[10px] uppercase tracking-widest text-slate-400">{node.status}</span>
                             {node.title}
                         </Link>
                     ))}
 
-                    <div className="absolute bottom-6 right-6 flex items-center gap-2 px-3 py-2 rounded-full bg-[#1B1B1B] border border-[#5D4037] text-xs text-gray-400">
+                    <div className="absolute bottom-6 right-6 flex items-center gap-2 px-3 py-2 rounded-full bg-[#0B0014]/60 border border-cyan-500/30 text-xs text-slate-400">
                         <Compass size={14} /> Drag to explore (coming soon)
                     </div>
                 </div>

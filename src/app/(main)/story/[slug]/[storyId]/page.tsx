@@ -17,11 +17,11 @@ export default async function StoryDetailPage({ params }: { params: Promise<{ sl
     }
 
     return (
-        <div className="min-h-screen bg-earth text-[#ededed] p-6">
+        <div className="min-h-screen text-[#E2E8F0] p-6">
             <div className="max-w-4xl mx-auto space-y-6">
-                <div className="bg-[#5D4037]/40 p-6 rounded-xl border border-[#5D4037]">
-                    <h1 className="text-2xl font-bold text-growth mb-2">{story.title}</h1>
-                    <p className="text-sm text-gray-300">Topic: {story.topic}</p>
+                <div className="glass-cosmic p-6 rounded-xl border border-cyan-500/30">
+                    <h1 className="text-2xl font-bold text-cyan-200 text-glow mb-2">{story.title}</h1>
+                    <p className="text-sm text-slate-300">Topic: {story.topic}</p>
                 </div>
                 <StoryPlayer story={story} />
             </div>

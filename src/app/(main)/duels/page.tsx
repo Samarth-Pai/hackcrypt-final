@@ -23,15 +23,10 @@ type MatchResult = {
 export default function DuelsPage() {
     const [socket, setSocket] = useState<Socket | null>(null);
     const [queueStatus, setQueueStatus] = useState<'idle' | 'queued' | 'matched'>('idle');
-    const [duelPhase, setDuelPhase] = useState<'bidding' | 'in_progress' | 'completed'>('bidding');
+    const [duelPhase, setDuelPhase] = useState<'in_progress' | 'completed'>('in_progress');
     const [roomId, setRoomId] = useState<string | null>(null);
     const [players, setPlayers] = useState<string[]>([]);
     const [userId, setUserId] = useState<string | null>(null);
-    const [userXp, setUserXp] = useState(0);
-    const [bidValue, setBidValue] = useState(25);
-    const [bidError, setBidError] = useState('');
-    const [bids, setBids] = useState<Record<string, number>>({});
-    const [pot, setPot] = useState(0);
     const [ghostProgress, setGhostProgress] = useState(0);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -47,7 +42,6 @@ export default function DuelsPage() {
             if (response.ok) {
                 const data = await response.json();
                 setUserId(String(data.id));
-                setUserXp(Number(data?.gamification?.xp || 0));
             }
         };
 
@@ -67,10 +61,7 @@ export default function DuelsPage() {
                 setQueueStatus('matched');
                 setRoomId(payload.roomId);
                 setPlayers(payload.players);
-                setDuelPhase('bidding');
-                setBids({});
-                setPot(0);
-                setBidError('');
+                setDuelPhase('in_progress');
                 setMatchResult(null);
                 setQuestions([]);
                 setCurrentIndex(0);
@@ -79,19 +70,6 @@ export default function DuelsPage() {
                 setSelectedOption(null);
                 setScore(0);
                 setGhostProgress(0);
-            });
-
-            socketInstance.on('bid_update', (payload: { bids: Record<string, number> }) => {
-                setBids(payload.bids || {});
-            });
-
-            socketInstance.on('bids_locked', (payload: { bids: Record<string, number>; pot: number }) => {
-                setBids(payload.bids || {});
-                setPot(payload.pot || 0);
-            });
-
-            socketInstance.on('bid_error', (payload: { message: string }) => {
-                setBidError(payload.message || 'Failed to submit bid.');
             });
 
             socketInstance.on('start_quiz', async (payload: { roomId: string; players: string[] }) => {
@@ -106,7 +84,6 @@ export default function DuelsPage() {
                 setDuelPhase('in_progress');
                 setAnswerLog({});
                 setSelectedOption(null);
-                setBidError('');
 
                 const response = await fetch('/api/quiz/questions?limit=5&subject=Computer%20Science');
                 const data: { questions?: Array<{ _id: string; text: string; options: string[]; correctAnswer: string }> } = await response.json();
@@ -161,12 +138,6 @@ export default function DuelsPage() {
         setQueueStatus('idle');
     };
 
-    const handleSubmitBid = () => {
-        if (!roomId) return;
-        setBidError('');
-        socket?.emit('submit_bid', { roomId, bid: bidValue });
-    };
-
     const handleAnswer = (option: string) => {
         if (!currentQuestion || selectedOption) return;
 
@@ -195,9 +166,9 @@ export default function DuelsPage() {
 
         setTimeout(() => {
             if (nextIndex >= questions.length) {
-                const accuracy = questions.length > 0 ? nextScore / questions.length : 0;
-                if (roomId) {
-                    socket?.emit('finish', { roomId, accuracy });
+                if (questions.length > 0 && roomId) {
+                    const accuracy = nextScore / questions.length;
+                    socket?.emit('finish', { roomId, accuracy, totalQuestions: questions.length });
                 }
             } else {
                 setCurrentIndex(nextIndex);
@@ -207,20 +178,20 @@ export default function DuelsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-earth text-[#ededed] p-6 space-y-8">
+        <div className="min-h-screen text-[#E2E8F0] p-6 space-y-8">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <Swords className="w-8 h-8 text-sun" />
+                    <Swords className="w-8 h-8 text-cyan-300" />
                     <div>
-                        <h1 className="text-2xl font-bold text-growth">Live Duels</h1>
-                        <p className="text-sm text-gray-400">Match against another explorer and race to win.</p>
+                        <h1 className="text-2xl font-bold text-cyan-200 text-glow">Live Duels</h1>
+                        <p className="text-sm text-slate-400">Match against another explorer and race to win.</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
                     {queueStatus === 'idle' && (
                         <button
                             onClick={handleJoinQueue}
-                            className="px-4 py-2 bg-forest hover:bg-[#1B5E20] rounded-full font-semibold"
+                            className="px-4 py-2 bg-cyan-500/20 text-cyan-100 rounded-full border border-cyan-500/40 hover:border-violet-500/70 hover:text-white transition-colors"
                         >
                             Join Matchmaking
                         </button>
@@ -228,13 +199,13 @@ export default function DuelsPage() {
                     {queueStatus === 'queued' && (
                         <button
                             onClick={handleCancelQueue}
-                            className="px-4 py-2 bg-[#5D4037] hover:bg-[#4E342E] rounded-full font-semibold"
+                            className="px-4 py-2 bg-[#140A28] hover:border-violet-500/60 rounded-full font-semibold border border-cyan-500/30 text-slate-200 transition-colors"
                         >
                             Cancel Queue
                         </button>
                     )}
                     {queueStatus === 'queued' && (
-                        <span className="text-xs text-sun">Searching for opponent...</span>
+                        <span className="text-xs text-violet-300">Searching for opponent...</span>
                     )}
                 </div>
             </div>
@@ -242,74 +213,34 @@ export default function DuelsPage() {
             {queueStatus === 'matched' && (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-[#5D4037]/40 p-6 rounded-xl border border-[#5D4037]">
+                        <div className="glass-cosmic p-6 rounded-xl border border-cyan-500/30">
                             <div className="flex items-center justify-between mb-4">
-                                <div className="flex items-center gap-2 text-growth">
-                                    <Users className="w-5 h-5" />
-                                    <span className="font-semibold">XP Bid</span>
-                                </div>
-                                <span className="text-xs text-gray-400">Your XP: {userXp}</span>
-                            </div>
-                            {duelPhase === 'bidding' ? (
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-3">
-                                        <input
-                                            type="number"
-                                            min={1}
-                                            max={userXp}
-                                            value={bidValue}
-                                            onChange={(event) => setBidValue(Math.max(1, Number(event.target.value) || 1))}
-                                            className="w-32 bg-[#1B1B1B] border border-[#5D4037] rounded-lg px-3 py-2 text-sm"
-                                        />
-                                        <button
-                                            onClick={handleSubmitBid}
-                                            className="px-4 py-2 bg-sun text-[#1B1B1B] rounded-full font-semibold"
-                                        >
-                                            Lock Bid
-                                        </button>
-                                        <span className="text-xs text-gray-400">
-                                            {bids[userId || ''] ? 'Waiting for opponent...' : 'Submit your bid to start.'}
-                                        </span>
-                                    </div>
-                                    {bidError && <p className="text-xs text-red-300">{bidError}</p>}
-                                    <div className="text-xs text-gray-400">
-                                        Your bid: {bids[userId || ''] || '—'} | Opponent bid: {opponentId ? bids[opponentId] || '—' : '—'} | Pot: {pot || 0}
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="text-xs text-gray-400">
-                                    Bids locked. Pot: {pot}. Duel in progress.
-                                </div>
-                            )}
-                        </div>
-                        <div className="bg-[#5D4037]/40 p-6 rounded-xl border border-[#5D4037]">
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="flex items-center gap-2 text-growth">
+                                <div className="flex items-center gap-2 text-cyan-200">
                                     <Users className="w-5 h-5" />
                                     <span className="font-semibold">Duel Progress</span>
                                 </div>
-                                <span className="text-xs text-gray-400">Room: {roomId?.slice(-6)}</span>
+                                <span className="text-xs text-slate-400">Room: {roomId?.slice(-6)}</span>
                             </div>
-                            <p className="text-xs text-gray-400 mb-4">Players matched: {players.length} / 2</p>
+                            <p className="text-xs text-slate-400 mb-4">Players matched: {players.length} / 2</p>
                             <div className="space-y-3">
                                 <div>
-                                    <p className="text-xs text-gray-400 mb-2">You</p>
-                                    <div className="h-2 bg-[#1B1B1B] rounded-full overflow-hidden">
-                                        <div className="h-full bg-growth" style={{ width: `${progress * 100}%` }}></div>
+                                    <p className="text-xs text-slate-400 mb-2">You</p>
+                                    <div className="h-2 bg-[#0F061A] rounded-full overflow-hidden border border-cyan-500/20">
+                                        <div className="h-full bg-cyan-400" style={{ width: `${progress * 100}%` }}></div>
                                     </div>
                                 </div>
                                 <div>
-                                    <p className="text-xs text-gray-400 mb-2">Opponent Ghost</p>
-                                    <div className="h-2 bg-[#1B1B1B] rounded-full overflow-hidden">
-                                        <div className="h-full bg-sun" style={{ width: `${ghostProgress * 100}%` }}></div>
+                                    <p className="text-xs text-slate-400 mb-2">Opponent Ghost</p>
+                                    <div className="h-2 bg-[#0F061A] rounded-full overflow-hidden border border-cyan-500/20">
+                                        <div className="h-full bg-violet-400" style={{ width: `${ghostProgress * 100}%` }}></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         {currentQuestion && !matchResult && duelPhase === 'in_progress' && (
-                            <div className="bg-earth/80 p-6 rounded-xl border border-[#5D4037]">
-                                <p className="text-sm text-gray-400 mb-2">Question {currentIndex + 1} / {questions.length}</p>
+                            <div className="glass-cosmic p-6 rounded-xl border border-cyan-500/30">
+                                <p className="text-sm text-slate-400 mb-2">Question {currentIndex + 1} / {questions.length}</p>
                                 <h2 className="text-xl font-semibold mb-4">{currentQuestion.text}</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     {currentQuestion.options.map((option) => (
@@ -319,9 +250,9 @@ export default function DuelsPage() {
                                             className={`p-3 rounded-lg border transition-colors ${
                                                 selectedOption === option
                                                     ? option === currentQuestion.correctAnswer
-                                                        ? 'bg-forest border-growth'
+                                                        ? 'bg-cyan-500/30 border-cyan-400 text-white'
                                                         : 'bg-red-900/70 border-red-500'
-                                                    : 'bg-[#1B1B1B] border-[#5D4037] hover:border-sun'
+                                                    : 'bg-[#0F061A] border-cyan-500/30 text-slate-200 hover:border-violet-500/60'
                                             }`}
                                         >
                                             {option}
@@ -333,8 +264,8 @@ export default function DuelsPage() {
                     </div>
 
                     <div className="space-y-6">
-                        <div className="bg-[#5D4037]/40 p-6 rounded-xl border border-[#5D4037]">
-                            <div className="flex items-center gap-2 text-sun mb-4">
+                        <div className="glass-cosmic p-6 rounded-xl border border-cyan-500/30">
+                            <div className="flex items-center gap-2 text-cyan-200 mb-4">
                                 <Trophy className="w-5 h-5" />
                                 <span className="font-semibold">Duel Result</span>
                             </div>
@@ -348,24 +279,23 @@ export default function DuelsPage() {
                                                 : 'Opponent'
                                             : 'Tie'}
                                     </p>
-                                    <p>Pot: {matchResult.pot}</p>
                                     <p>Bonus XP: {matchResult.winBonusXp}</p>
                                 </div>
                             ) : (
-                                <p className="text-sm text-gray-400">Finish the duel to see results.</p>
+                                <p className="text-sm text-slate-400">Finish the duel to see results.</p>
                             )}
                         </div>
 
                         {matchResult && questions.length > 0 && (
-                            <div className="bg-[#5D4037]/40 p-6 rounded-xl border border-[#5D4037]">
-                                <p className="text-sm text-growth font-semibold mb-4">Duel Progress Review</p>
+                            <div className="glass-cosmic p-6 rounded-xl border border-cyan-500/30">
+                                <p className="text-sm text-cyan-200 font-semibold mb-4">Duel Progress Review</p>
                                 <div className="space-y-3 text-xs">
                                     {questions.map((question, index) => (
-                                        <div key={question.id} className="p-3 bg-earth/70 rounded-lg border border-[#5D4037]">
-                                            <p className="text-gray-300 mb-1">Q{index + 1}: {question.text}</p>
-                                            <p className="text-gray-400">Correct: {question.correctAnswer}</p>
-                                            <p className="text-gray-400">You: {answerLog[question.id] ?? 'No answer'}</p>
-                                            <p className="text-gray-400">Opponent: {opponentAnswers?.[question.id] ?? 'No answer'}</p>
+                                        <div key={question.id} className="p-3 bg-[#140A28]/70 rounded-lg border border-cyan-500/20">
+                                            <p className="text-slate-300 mb-1">Q{index + 1}: {question.text}</p>
+                                            <p className="text-slate-400">Correct: {question.correctAnswer}</p>
+                                            <p className="text-slate-400">You: {answerLog[question.id] ?? 'No answer'}</p>
+                                            <p className="text-slate-400">Opponent: {opponentAnswers?.[question.id] ?? 'No answer'}</p>
                                         </div>
                                     ))}
                                 </div>

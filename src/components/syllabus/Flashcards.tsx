@@ -13,25 +13,25 @@ export default function Flashcards({ cards }: { cards: Flashcard[] }) {
     const card = cards[index];
 
     return (
-        <div className="bg-[#5D4037]/40 p-6 rounded-xl border border-[#5D4037]">
+        <div className="glass-cosmic p-6 rounded-xl border border-cyan-500/30">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-growth">Flashcards</h3>
-                <span className="text-xs text-gray-400">{index + 1} / {cards.length}</span>
+                <h3 className="text-lg font-bold text-cyan-200">Flashcards</h3>
+                <span className="text-xs text-slate-400">{index + 1} / {cards.length}</span>
             </div>
-            <div className="bg-earth/80 border border-[#5D4037] rounded-xl p-6 min-h-35">
-                <p className="text-sm text-sun font-semibold mb-2">{card.title}</p>
-                <p className="text-sm text-gray-200 whitespace-pre-line leading-relaxed">{card.content}</p>
+            <div className="bg-[#140A28]/80 border border-cyan-500/30 rounded-xl p-6 min-h-35">
+                <p className="text-sm text-violet-300 font-semibold mb-2">{card.title}</p>
+                <p className="text-sm text-slate-200 whitespace-pre-line leading-relaxed">{card.content}</p>
             </div>
             <div className="mt-4 flex items-center justify-between">
                 <button
                     onClick={() => setIndex((prev) => (prev - 1 + cards.length) % cards.length)}
-                    className="px-3 py-2 bg-[#3E2723] border border-[#5D4037] rounded-lg text-gray-300 hover:text-white"
+                    className="px-3 py-2 bg-[#140A28] border border-cyan-500/30 rounded-lg text-slate-300 hover:text-white hover:border-violet-500/60 transition-colors"
                 >
                     <ChevronLeft className="w-4 h-4" />
                 </button>
                 <button
                     onClick={() => setIndex((prev) => (prev + 1) % cards.length)}
-                    className="px-3 py-2 bg-[#3E2723] border border-[#5D4037] rounded-lg text-gray-300 hover:text-white"
+                    className="px-3 py-2 bg-[#140A28] border border-cyan-500/30 rounded-lg text-slate-300 hover:text-white hover:border-violet-500/60 transition-colors"
                 >
                     <ChevronRight className="w-4 h-4" />
                 </button>

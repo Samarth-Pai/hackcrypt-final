@@ -11,25 +11,22 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  /* Cosmic Palette */
-  --color-cosmic-bg: #020617;
-  --color-cosmic-card: rgba(15, 23, 42, 0.6);
-  /* Slate 900 with opacity */
-  --color-cosmic-border: rgba(56, 189, 248, 0.2);
-  /* Light Sky Blue trace */
+  /* Vibrant Cosmic Palette */
+  --color-cosmic-bg: #0B0014; /* Deep Tech Violet */
+  --color-cosmic-card: rgba(20, 10, 40, 0.7); /* Translucent Violet */
+  --color-cosmic-border: rgba(0, 243, 255, 0.3); /* Neon Cyan Border */
 
-  --color-cyan-cosmic: #00F3FF;
-  --color-violet-nebula: #9D00FF;
-  --color-blue-electric: #2E51FF;
+  --color-cyan-cosmic: #00F3FF;   /* Electric Cyan */
+  --color-violet-nebula: #D900FF; /* Neon Magenta/Violet */
+  --color-blue-electric: #2E51FF; /* Deep Electric Blue */
+  --color-gold-star: #FFB800;     /* Cosmic Gold */
 
-  --color-text-primary: #F8FAFC;
-  /* Slate 50 */
-  --color-text-secondary: #94A3B8;
-  /* Slate 400 */
+  --color-text-primary: #F8FAFC;   /* Bright White */
+  --color-text-secondary: #94A3B8; /* Cool Grey */
 
   /* Gradients */
-  --image-gradient-cosmic: linear-gradient(135deg, rgba(2, 6, 23, 1) 0%, rgba(15, 23, 42, 1) 100%);
-  --image-gradient-glow: radial-gradient(circle at top center, rgba(0, 243, 255, 0.1) 0%, transparent 70%);
+  --image-gradient-cosmic: linear-gradient(135deg, #0B0014 0%, #1A0529 100%);
+  --image-gradient-glow: radial-gradient(circle at top center, rgba(217, 0, 255, 0.15) 0%, transparent 70%);
 
   --font-sans: var(--font-outfit), sans-serif;
 }

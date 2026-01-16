@@ -16,9 +16,7 @@ type MatchState = {
     progress: Record<string, number>;
     accuracy: Record<string, number>;
     finished: Set<string>;
-    bids: Record<string, number>;
-    pot: number;
-    stakesLocked: boolean;
+    answeredIds: Record<string, Set<string>>;
     answers: Record<string, Record<string, string | null>>;
 };
 
@@ -60,9 +58,7 @@ const startMatch = (io: SocketIOServer, playerA: QueueEntry, playerB: QueueEntry
         progress: {},
         accuracy: {},
         finished: new Set(),
-        bids: {},
-        pot: 0,
-        stakesLocked: false,
+        answeredIds: {},
         answers: {},
     };
 
@@ -76,6 +72,8 @@ const startMatch = (io: SocketIOServer, playerA: QueueEntry, playerB: QueueEntry
         roomId,
         players: match.players,
     });
+
+    io.to(roomId).emit('start_quiz', { roomId, players: match.players });
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -130,54 +128,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 );
             });
 
-            socket.on('submit_bid', async ({ roomId, bid }: { roomId: string; bid: number }) => {
-                const match = store.matches?.get(roomId);
-                if (!match || !match.players.includes(userId)) return;
-                if (match.stakesLocked) return;
-
-                const sanitizedBid = Math.max(0, Math.floor(Number(bid)));
-                if (!sanitizedBid) {
-                    socket.emit('bid_error', { message: 'Bid must be at least 1 XP.' });
-                    return;
-                }
-
-                const client = await clientPromise;
-                const db = client.db();
-                const user = await db.collection('users').findOne({ _id: new ObjectId(userId) });
-                const xp = Number(user?.gamification?.xp || 0);
-
-                if (xp < sanitizedBid) {
-                    socket.emit('bid_error', { message: 'Insufficient XP for this bid.' });
-                    return;
-                }
-
-                match.bids[userId] = sanitizedBid;
-                io.to(roomId).emit('bid_update', { bids: match.bids });
-
-                if (match.players.every((id) => match.bids[id] && match.bids[id] > 0)) {
-                    const [playerA, playerB] = match.players;
-                    const bidA = match.bids[playerA];
-                    const bidB = match.bids[playerB];
-
-                    if (!bidA || !bidB) return;
-
-                    await db.collection('users').updateOne(
-                        { _id: new ObjectId(playerA), 'gamification.xp': { $gte: bidA } },
-                        { $inc: { 'gamification.xp': -bidA } }
-                    );
-                    await db.collection('users').updateOne(
-                        { _id: new ObjectId(playerB), 'gamification.xp': { $gte: bidB } },
-                        { $inc: { 'gamification.xp': -bidB } }
-                    );
-
-                    match.stakesLocked = true;
-                    match.pot = bidA + bidB;
-
-                    io.to(roomId).emit('bids_locked', { bids: match.bids, pot: match.pot });
-                    io.to(roomId).emit('start_quiz', { roomId, players: match.players });
-                }
-            });
-
             socket.on('answer', ({ roomId, progress, questionId, selectedOption }: { roomId: string; progress: number; questionId: string; selectedOption: string | null }) => {
                 const match = store.matches?.get(roomId);
                 if (!match || !match.players.includes(userId)) return;
@@ -186,6 +136,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 if (!match.answers[userId]) match.answers[userId] = {};
                 if (questionId) {
                     match.answers[userId][questionId] = selectedOption ?? null;
+                    if (!match.answeredIds[userId]) match.answeredIds[userId] = new Set();
+                    match.answeredIds[userId].add(questionId);
                 }
 
                 const opponentId = match.players.find((id) => id !== userId);
@@ -197,9 +149,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 }
             });
 
-            socket.on('finish', async ({ roomId, accuracy }: { roomId: string; accuracy: number }) => {
+            socket.on('finish', async ({ roomId, accuracy, totalQuestions }: { roomId: string; accuracy: number; totalQuestions: number }) => {
                 const match = store.matches?.get(roomId);
                 if (!match || !match.players.includes(userId)) return;
+
+                const answeredCount = match.answeredIds[userId]?.size || 0;
+                const expectedTotal = Math.max(0, Math.floor(Number(totalQuestions) || 0));
+                if (expectedTotal === 0 || answeredCount < expectedTotal) return;
 
                 match.accuracy[userId] = Math.max(0, Math.min(1, accuracy));
                 match.finished.add(userId);
@@ -222,18 +178,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                             {
                                 $inc: {
                                     'gamification.winStreak': 1,
-                                    'gamification.xp': match.pot + 50,
+                                    'gamification.xp': 50,
                                 },
                             }
-                        );
-                    } else if (match.stakesLocked) {
-                        await db.collection('users').updateOne(
-                            { _id: new ObjectId(playerA) },
-                            { $inc: { 'gamification.xp': match.bids[playerA] || 0 } }
-                        );
-                        await db.collection('users').updateOne(
-                            { _id: new ObjectId(playerB) },
-                            { $inc: { 'gamification.xp': match.bids[playerB] || 0 } }
                         );
                     }
 
@@ -241,8 +188,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         winnerId,
                         accuracy: match.accuracy,
                         winBonusXp: 50,
-                        pot: match.pot,
-                        bids: match.bids,
+                        pot: 0,
+                        bids: {},
                         answers: match.answers,
                     });
 

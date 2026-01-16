@@ -3,9 +3,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Lock } from 'lucide-react';
+import Image from 'next/image';
 
 interface InfinityStoneProps {
     label: string;
+    imageSrc: string;
     color: string;
     locked?: boolean;
     onClick?: () => void;
@@ -14,6 +16,7 @@ interface InfinityStoneProps {
 
 const InfinityStone: React.FC<InfinityStoneProps> = ({
     label,
+    imageSrc,
     color,
     locked = false,
     onClick,
@@ -30,35 +33,40 @@ const InfinityStone: React.FC<InfinityStoneProps> = ({
             <div className="relative">
                 <motion.div
                     animate={!locked ? {
-                        boxShadow: [
-                            `0 0 20px ${color}40`,
-                            `0 0 60px ${color}80`,
-                            `0 0 20px ${color}40`,
-                        ],
-                        scale: [1, 1.05, 1],
+                        y: [-5, 5, -5],
+                        filter: [
+                            `drop-shadow(0 0 10px ${color}40)`,
+                            `drop-shadow(0 0 25px ${color}60)`,
+                            `drop-shadow(0 0 10px ${color}40)`,
+                        ]
                     } : {}}
                     transition={{
-                        duration: 3,
-                        repeat: Infinity,
+                        duration: 4,
+                        repeat: 999999, // Effectively infinite
                         ease: "easeInOut"
                     }}
                     className={`
-            w-32 h-48 md:w-40 md:h-56 
-            clip-path-crystal backdrop-blur-[12px]
-            flex items-center justify-center
-            transition-all duration-500
-            ${locked ? 'bg-slate-900/40 grayscale brightness-50' : 'bg-gradient-to-br from-white/10 to-transparent'}
-          `}
-                    style={{
-                        border: `1px solid ${locked ? '#334155' : color}`,
-                        background: locked ? undefined : `linear-gradient(135deg, ${color}20 0%, transparent 100%)`
-                    }}
+                        w-48 h-48 md:w-56 md:h-56
+                        flex items-center justify-center
+                        transition-all duration-500
+                        relative
+                        ${locked ? 'grayscale brightness-75 opacity-90' : 'hover:scale-110'}
+                    `}
                 >
-                    {locked ? (
-                        <Lock className="text-slate-600" size={32} />
-                    ) : (
-                        <div className="w-full h-full relative overflow-hidden">
-                            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/20 to-transparent opacity-30 animate-scanline" />
+                    <Image
+                        src={imageSrc}
+                        alt={label}
+                        width={256}
+                        height={256}
+                        className={`object-contain w-full h-full drop-shadow-2xl transition-all duration-300 ${!locked ? 'group-hover:drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]' : ''}`}
+                        style={{
+                            filter: !locked ? `drop-shadow(0 0 15px ${color})` : undefined
+                        }}
+                    />
+
+                    {locked && (
+                        <div className="absolute inset-0 flex items-center justify-center z-10">
+                            <Lock className="text-slate-400/80 drop-shadow-lg" size={48} />
                         </div>
                     )}
                 </motion.div>
@@ -66,26 +74,19 @@ const InfinityStone: React.FC<InfinityStoneProps> = ({
                 {/* Glow behind */}
                 {!locked && (
                     <div
-                        className="absolute inset-0 -z-10 blur-[40px] opacity-40 transition-all duration-500 group-hover:opacity-60"
+                        className="absolute inset-0 -z-10 blur-[50px] opacity-20 transition-all duration-500 group-hover:opacity-50"
                         style={{ background: color }}
                     />
                 )}
             </div>
 
-            <div className="text-center space-y-1">
-                <h3 className={`font-mono text-sm tracking-[0.2em] uppercase font-bold transition-colors ${locked ? 'text-slate-600' : 'text-slate-100 group-hover:text-white'}`}>
+            <div className="text-center space-y-1 relative z-10">
+                <h3 className={`font-mono text-sm tracking-[0.2em] uppercase font-bold transition-all duration-300 ${locked ? 'text-slate-500' : 'text-slate-100 group-hover:text-cyan-300 group-hover:shadow-[0_0_20px_currentColor]'}`}
+                    style={{ textShadow: !locked ? `0 0 10px ${color}` : 'none' }}
+                >
                     {label}
                 </h3>
-                {locked && (
-                    <p className="text-[10px] text-slate-700 uppercase tracking-widest">Locked</p>
-                )}
             </div>
-
-            <style jsx>{`
-        .clip-path-crystal {
-          clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-        }
-      `}</style>
         </motion.div>
     );
 };

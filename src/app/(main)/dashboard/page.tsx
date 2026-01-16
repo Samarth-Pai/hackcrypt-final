@@ -1,7 +1,8 @@
 import { getUserProfile } from '@/lib/user';
 import MissionControl from '@/components/dashboard/MissionControl';
 import BadgeUnlock from '@/components/gamification/BadgeUnlock';
-import ActiveMissions from '../../components/dashboard/ActiveMissions';
+import ActiveMissions from '@/components/dashboard/ActiveMissions';
+import SyllabusSection from '@/components/dashboard/SyllabusSection';
 
 export default async function DashboardPage() {
     const user = await getUserProfile();
@@ -47,6 +48,11 @@ export default async function DashboardPage() {
                 {/* Tactical Sidebar Layer (Active Missions) */}
                 <div className="col-span-12 lg:col-span-4 space-y-8">
                     <ActiveMissions />
+                </div>
+
+                {/* Syllabus Section (Full Width) */}
+                <div className="col-span-12">
+                    <SyllabusSection />
                 </div>
             </div>
         </div>

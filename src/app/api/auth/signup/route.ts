@@ -45,6 +45,7 @@ export async function POST(request: Request) {
                 totalCorrect: 0,
                 bySubject: {},
                 byDifficulty: {},
+                hiddenDifficultyRank: 3,
             },
         };
 

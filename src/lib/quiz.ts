@@ -12,6 +12,32 @@ export type QuestionDoc = {
     explanation: string;
 };
 
+export type UserStatsInput = {
+    userId: ObjectId;
+    hiddenDifficultyRank?: number;
+    subject?: string;
+};
+
+type HistoryDoc = {
+    _id?: ObjectId;
+    userId: ObjectId;
+    score: number;
+    totalQuestions: number;
+    accuracy: number; // 0-1
+    subjects: string[];
+    topics: string[];
+    createdAt: Date;
+};
+
+const foundationTopicsBySubject: Record<string, string[]> = {
+    'Computer Science': ['Binary Basics', 'Data Structures Fundamentals', 'Algorithm Basics'],
+    Mathematics: ['Algebra Foundations', 'Geometry Basics', 'Number Sense'],
+    Physics: ['Forces & Motion Basics', 'Units & Measurement', 'Energy Fundamentals'],
+    Biology: ['Cell Structure Basics', 'Genetics Foundations', 'Body Systems Overview'],
+    History: ['World History Basics', 'Major Events Timeline', 'Civics Fundamentals'],
+    General: ['Core Concepts', 'Key Vocabulary', 'Fundamental Principles'],
+};
+
 const seedQuestions: QuestionDoc[] = [
     {
         subject: 'Computer Science',
@@ -150,4 +176,45 @@ export async function fetchAdaptiveQuestions(params: {
     }
 
     return results;
+}
+
+export async function calculateNextDifficulty(userStats: UserStatsInput) {
+    const client = await clientPromise;
+    const db = client.db();
+
+    const recentAttempts = await db
+        .collection<HistoryDoc>('history')
+        .find({ userId: userStats.userId })
+        .sort({ createdAt: -1 })
+        .limit(5)
+        .toArray();
+
+    const movingAverage = recentAttempts.length > 0
+        ? recentAttempts.reduce((sum, attempt) => sum + attempt.accuracy, 0) / recentAttempts.length
+        : 0.65;
+
+    const currentRank = clampDifficulty(userStats.hiddenDifficultyRank ?? 3);
+    let nextRank = currentRank;
+    let foundationTopics: string[] = [];
+
+    if (movingAverage > 0.85) {
+        nextRank = clampDifficulty(currentRank + 1);
+    } else if (movingAverage < 0.6) {
+        nextRank = clampDifficulty(currentRank - 1);
+        const subjectKey = userStats.subject || 'General';
+        foundationTopics = foundationTopicsBySubject[subjectKey] || foundationTopicsBySubject.General;
+    }
+
+    if (nextRank !== currentRank || userStats.hiddenDifficultyRank === undefined) {
+        await db.collection('users').updateOne(
+            { _id: userStats.userId },
+            { $set: { 'performance.hiddenDifficultyRank': nextRank } }
+        );
+    }
+
+    return {
+        difficultyRank: nextRank,
+        movingAverage,
+        foundationTopics,
+    };
 }

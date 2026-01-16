@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { fetchAdaptiveQuestions } from '@/lib/quiz';
+import { calculateNextDifficulty, fetchAdaptiveQuestions } from '@/lib/quiz';
 import { getSessionUserDoc } from '@/lib/session';
 
 export async function GET(request: Request) {
@@ -14,16 +14,30 @@ export async function GET(request: Request) {
         ? performance.totalCorrect / performance.totalQuestions
         : 0.65;
 
+    const rankResult = data?.user?._id
+        ? await calculateNextDifficulty({
+            userId: data.user._id,
+            hiddenDifficultyRank: performance?.hiddenDifficultyRank,
+            subject: subject || undefined,
+        })
+        : { difficultyRank: undefined, movingAverage: accuracy, foundationTopics: [] };
+
+    const difficultyFromRank = typeof rankResult.difficultyRank === 'number'
+        ? rankResult.difficultyRank
+        : undefined;
+
     const questions = await fetchAdaptiveQuestions({
         subject,
         limit,
         accuracy,
-        difficulty,
+        difficulty: difficulty ?? difficultyFromRank,
     });
 
     return NextResponse.json({
         subject: subject || 'Mixed',
-        difficulty: difficulty ?? null,
+        difficulty: (difficulty ?? difficultyFromRank) ?? null,
+        movingAverageAccuracy: rankResult.movingAverage,
+        foundationTopics: rankResult.foundationTopics,
         questions,
     });
 }

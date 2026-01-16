@@ -107,6 +107,7 @@ export async function POST(request: Request) {
     let score = 0;
     const perSubjectInc: Record<string, { total: number; correct: number }> = {};
     const perDifficultyInc: Record<string, { total: number; correct: number }> = {};
+    const topics: string[] = [];
 
     const feedback = answers.map((answer) => {
         const question = questionMap.get(answer.questionId);
@@ -116,6 +117,10 @@ export async function POST(request: Request) {
         if (question) {
             const subjectKey = normalizeKey(question.subject || 'General');
             const difficultyKey = String(question.difficulty || 1);
+
+            if (question.topic) {
+                topics.push(question.topic);
+            }
 
             perSubjectInc[subjectKey] = perSubjectInc[subjectKey] || { total: 0, correct: 0 };
             perSubjectInc[subjectKey].total += 1;
@@ -136,6 +141,7 @@ export async function POST(request: Request) {
 
     const totalQuestions = answers.length;
     const xpGained = score * 10;
+    const accuracy = totalQuestions > 0 ? score / totalQuestions : 0;
 
     const userId = session.userId;
 
@@ -175,6 +181,19 @@ export async function POST(request: Request) {
         },
         { returnDocument: 'after' }
     );
+
+    const subjectList = Object.keys(perSubjectInc).map((key) => key.replace(/_/g, ' '));
+    const uniqueTopics = Array.from(new Set(topics));
+
+    await db.collection('history').insertOne({
+        userId,
+        score,
+        totalQuestions,
+        accuracy,
+        subjects: subjectList.length > 0 ? subjectList : ['General'],
+        topics: uniqueTopics,
+        createdAt: new Date(),
+    });
 
     const updatedUser = updatedUserResult || null;
     if (updatedUser) {

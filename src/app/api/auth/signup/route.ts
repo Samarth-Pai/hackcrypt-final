@@ -39,6 +39,7 @@ export async function POST(request: Request) {
                     count: 0,
                     lastActive: null,
                 },
+                winStreak: 0,
             },
             performance: {
                 totalQuestions: 0,

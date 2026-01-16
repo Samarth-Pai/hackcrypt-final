@@ -5,8 +5,8 @@ import { verifyJWT } from '@/lib/auth';
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
-    // Protect dashboard and quiz routes
-    if (pathname.startsWith('/dashboard') || pathname.startsWith('/quiz')) {
+    // Protect dashboard, quiz, and duels routes
+    if (pathname.startsWith('/dashboard') || pathname.startsWith('/quiz') || pathname.startsWith('/duels')) {
         const token = request.cookies.get('session')?.value;
 
         if (!token) {
@@ -28,5 +28,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/dashboard/:path*', '/quiz/:path*'],
+    matcher: ['/dashboard/:path*', '/quiz/:path*', '/duels/:path*'],
 };

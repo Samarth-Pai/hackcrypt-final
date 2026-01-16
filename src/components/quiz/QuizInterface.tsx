@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { Loader2, CheckCircle, XCircle, Trophy } from 'lucide-react';
@@ -40,68 +40,9 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
 
     const currentQuestion = questions[currentQuestionIndex];
 
-    // Timer Effect
-    useEffect(() => {
-        if (isCompleted || selectedOption !== null) return;
+    const finishQuiz = useCallback(async () => {
+        if (!currentQuestion) return;
 
-        const timer = setInterval(() => {
-            setTimeLeft((prev) => {
-                if (prev <= 1) {
-                    handleTimeUp();
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, [currentQuestionIndex, isCompleted, selectedOption]);
-
-    const handleTimeUp = () => {
-        handleOptionSelect(null); // Treat timeout as incorrect/no selection
-    };
-
-    const handleOptionSelect = (option: string | null) => {
-        if (selectedOption !== null) return; // Prevent multiple selects
-
-        setSelectedOption(option);
-
-        setAnswers((prev) => {
-            const next = [...prev];
-            const existingIndex = next.findIndex((a) => a.questionId === currentQuestion.id);
-            if (existingIndex >= 0) {
-                next[existingIndex] = { questionId: currentQuestion.id, selectedOption: option };
-                return next;
-            }
-            next.push({ questionId: currentQuestion.id, selectedOption: option });
-            return next;
-        });
-
-        const correct = option === currentQuestion.correctAnswer;
-        setIsCorrect(correct);
-
-        if (correct) {
-            setScore((prev) => prev + 1);
-        }
-
-        // Wait for animation frame before moving next
-        setTimeout(() => {
-            handleNextQuestion();
-        }, 1500); // 1.5s delay for feedback
-    };
-
-    const handleNextQuestion = () => {
-        if (currentQuestionIndex < questions.length - 1) {
-            setCurrentQuestionIndex((prev) => prev + 1);
-            setSelectedOption(null);
-            setIsCorrect(null);
-            setTimeLeft(15);
-        } else {
-            finishQuiz();
-        }
-    };
-
-    const finishQuiz = async () => {
         setIsSubmitting(true);
         // Optimistic completion state
         setIsCompleted(true);
@@ -136,7 +77,68 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
             }
         }
         setIsSubmitting(false);
-    };
+    }, [answers, currentQuestion, selectedOption]);
+
+    const handleNextQuestion = useCallback(() => {
+        if (currentQuestionIndex < questions.length - 1) {
+            setCurrentQuestionIndex((prev) => prev + 1);
+            setSelectedOption(null);
+            setIsCorrect(null);
+            setTimeLeft(15);
+        } else {
+            finishQuiz();
+        }
+    }, [currentQuestionIndex, finishQuiz, questions.length]);
+
+    const handleOptionSelect = useCallback((option: string | null) => {
+        if (!currentQuestion || selectedOption !== null) return; // Prevent multiple selects
+
+        setSelectedOption(option);
+
+        setAnswers((prev) => {
+            const next = [...prev];
+            const existingIndex = next.findIndex((a) => a.questionId === currentQuestion.id);
+            if (existingIndex >= 0) {
+                next[existingIndex] = { questionId: currentQuestion.id, selectedOption: option };
+                return next;
+            }
+            next.push({ questionId: currentQuestion.id, selectedOption: option });
+            return next;
+        });
+
+        const correct = option === currentQuestion.correctAnswer;
+        setIsCorrect(correct);
+
+        if (correct) {
+            setScore((prev) => prev + 1);
+        }
+
+        // Wait for animation frame before moving next
+        setTimeout(() => {
+            handleNextQuestion();
+        }, 1500); // 1.5s delay for feedback
+    }, [currentQuestion, handleNextQuestion, selectedOption]);
+
+    const handleTimeUp = useCallback(() => {
+        handleOptionSelect(null); // Treat timeout as incorrect/no selection
+    }, [handleOptionSelect]);
+
+    // Timer Effect
+    useEffect(() => {
+        if (isCompleted || selectedOption !== null) return;
+
+        const timer = setInterval(() => {
+            setTimeLeft((prev) => {
+                if (prev <= 1) {
+                    handleTimeUp();
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [currentQuestionIndex, handleTimeUp, isCompleted, selectedOption]);
 
     if (isCompleted) {
         return (
@@ -173,13 +175,48 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
                                     ))}
                                 </div>
                             )}
+                            <div className="mt-6 space-y-3 text-left">
+                                <p className="text-sm text-growth font-bold">All Attempts</p>
+                                {questions.map((question, index) => {
+                                    const userAnswer = answers.find((a) => a.questionId === question.id)?.selectedOption ?? null;
+                                    return (
+                                        <div key={question.id} className="p-4 bg-earth/70 rounded-lg border border-[#5D4037]">
+                                            <p className="text-xs text-gray-400 mb-2">Q{index + 1}</p>
+                                            <p className="text-sm text-white mb-2">{question.text}</p>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                {question.options.map((option) => {
+                                                    const isCorrectOption = option === question.correctAnswer;
+                                                    const isUserChoice = option === userAnswer;
+                                                    let optionClass = 'text-xs px-3 py-2 rounded border ';
+
+                                                    if (isCorrectOption) {
+                                                        optionClass += 'bg-forest/70 border-growth text-white';
+                                                    } else if (isUserChoice) {
+                                                        optionClass += 'bg-red-900/70 border-red-500 text-white';
+                                                    } else {
+                                                        optionClass += 'bg-[#1B1B1B] border-[#5D4037] text-gray-400';
+                                                    }
+
+                                                    return (
+                                                        <div key={option} className={optionClass}>
+                                                            {option}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                            <p className="text-xs text-gray-400 mt-2">Your answer: {userAnswer ?? 'No answer'}</p>
+                                            <p className="text-xs text-gray-400">Correct: {question.correctAnswer}</p>
+                                        </div>
+                                    );
+                                })}
+                            </div>
                             <div className="mt-6">
                                 <ChatTutor
                                     context={feedback
                                         .map((item) => {
                                             const question = questions.find((q) => q.id === item.questionId);
                                             const userAnswer = answers.find((a) => a.questionId === item.questionId)?.selectedOption ?? 'No answer';
-                                            return `Q: ${question?.text || item.questionId}\nCorrect: ${item.correctAnswer || 'N/A'}\nExplanation: ${item.explanation || 'No explanation available.'}`;
+                                            return `Q: ${question?.text || item.questionId}\nYour answer: ${userAnswer}\nCorrect: ${item.correctAnswer || 'N/A'}\nExplanation: ${item.explanation || 'No explanation available.'}`;
                                         })
                                         .join('\n\n')}
                                 />

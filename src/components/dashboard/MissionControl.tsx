@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Cpu,
@@ -67,6 +67,7 @@ const TacticalOrb = ({ id, icon, label, value, color, x, y, delay, onClick }: Ta
 
 export default function MissionControl({ user }: { user: any }) {
     const [activeTab, setActiveTab] = useState<string | null>(null);
+    const [quests, setQuests] = useState<Array<{ id: string; title: string; description: string; progress: number; target: number; rewardXp: number }>>([]);
     const xp = user?.gamification?.xp || 0;
     const level = user?.gamification?.level || 1;
     const accuracy = user?.performance?.totalQuestions > 0
@@ -129,6 +130,18 @@ export default function MissionControl({ user }: { user: any }) {
             </div>
         )
     };
+
+    useEffect(() => {
+        const loadQuests = async () => {
+            const response = await fetch('/api/quests');
+            if (response.ok) {
+                const data = await response.json();
+                setQuests(data.quests || []);
+            }
+        };
+
+        loadQuests();
+    }, []);
 
     return (
         <div className="relative w-full h-[800px] flex items-center justify-center select-none">
@@ -193,21 +206,33 @@ export default function MissionControl({ user }: { user: any }) {
                         <Activity size={16} /> Active_Mission
                     </h3>
                     <div className="space-y-4">
-                        <div className="p-4 rounded-xl bg-white/5 border border-white/5 group hover:bg-white/10 transition-all cursor-pointer">
-                            <div className="flex justify-between items-start mb-2">
-                                <div>
-                                    <h4 className="text-sm font-bold text-white mb-1">Cryptography Phase 2</h4>
-                                    <p className="text-[10px] text-gray-500 font-bold">REWARD: +500 XP | ELITE_GEAR</p>
+                        {quests.length === 0 && (
+                            <div className="p-4 rounded-xl bg-white/5 border border-white/5 text-xs text-gray-400">
+                                Missions syncing...
+                            </div>
+                        )}
+                        {quests.map((quest) => {
+                            const progressPct = Math.min(100, Math.round((quest.progress / quest.target) * 100));
+                            return (
+                                <div key={quest.id} className="p-4 rounded-xl bg-white/5 border border-white/5 group hover:bg-white/10 transition-all cursor-pointer">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <div>
+                                            <h4 className="text-sm font-bold text-white mb-1">{quest.title}</h4>
+                                            <p className="text-[10px] text-gray-500 font-bold">REWARD: +{quest.rewardXp} XP</p>
+                                            <p className="text-[10px] text-gray-500">{quest.description}</p>
+                                        </div>
+                                        <div className="px-2 py-1 rounded bg-purple-ai text-white text-[9px] font-black">{progressPct}% COM</div>
+                                    </div>
+                                    <div className="w-full h-1 bg-teal-bg rounded-full overflow-hidden mt-3">
+                                        <div className="h-full bg-purple-ai" style={{ width: `${progressPct}%` }} />
+                                    </div>
+                                    <div className="mt-2 text-[10px] text-gray-400">{quest.progress} / {quest.target}</div>
                                 </div>
-                                <div className="px-2 py-1 rounded bg-purple-ai text-white text-[9px] font-black">74% COM</div>
-                            </div>
-                            <div className="w-full h-1 bg-teal-bg rounded-full overflow-hidden mt-3">
-                                <div className="h-full bg-purple-ai w-[74%]" />
-                            </div>
-                        </div>
+                            );
+                        })}
                     </div>
                     <Link href="/quiz" className="mt-8 w-full py-4 rounded-xl bg-white text-teal-bg font-black uppercase text-xs tracking-widest flex items-center justify-center gap-2 hover:bg-purple-ai hover:text-white transition-all">
-                        Initiate Mission Deck <ChevronRight size={16} />
+                        Start Quest <ChevronRight size={16} />
                     </Link>
                 </div>
             </div>

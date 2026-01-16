@@ -13,7 +13,13 @@ interface BadgeUnlockProps {
 }
 
 export default function BadgeUnlock({ badgeName, description, icon }: BadgeUnlockProps) {
-    const [isVisible, setIsVisible] = useState(true);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const key = `badge-unlock:${badgeName}`;
+        const hasSeen = typeof window !== 'undefined' && window.localStorage.getItem(key) === 'seen';
+        setIsVisible(!hasSeen);
+    }, [badgeName]);
 
     useEffect(() => {
         if (isVisible) {
@@ -41,7 +47,13 @@ export default function BadgeUnlock({ badgeName, description, icon }: BadgeUnloc
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-purple-ai/20 rounded-full blur-[80px]"></div>
 
                         <button
-                            onClick={() => setIsVisible(false)}
+                            onClick={() => {
+                                const key = `badge-unlock:${badgeName}`;
+                                if (typeof window !== 'undefined') {
+                                    window.localStorage.setItem(key, 'seen');
+                                }
+                                setIsVisible(false);
+                            }}
                             className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors"
                         >
                             <X size={24} />
@@ -72,7 +84,13 @@ export default function BadgeUnlock({ badgeName, description, icon }: BadgeUnloc
                                 <p className="text-gray-400 mb-6 leading-relaxed">{description}</p>
 
                                 <button
-                                    onClick={() => setIsVisible(false)}
+                                    onClick={() => {
+                                        const key = `badge-unlock:${badgeName}`;
+                                        if (typeof window !== 'undefined') {
+                                            window.localStorage.setItem(key, 'seen');
+                                        }
+                                        setIsVisible(false);
+                                    }}
                                     className="w-full py-4 bg-purple-ai text-teal-bg font-black rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg uppercase tracking-wider"
                                 >
                                     Continue Journey

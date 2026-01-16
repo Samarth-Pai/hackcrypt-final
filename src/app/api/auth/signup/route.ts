@@ -33,8 +33,19 @@ export async function POST(request: Request) {
                 xp: 0,
                 level: 1,
                 badges: [],
-                completedLessons: []
-            }
+                achievements: [],
+                completedLessons: 0,
+                streak: {
+                    count: 0,
+                    lastActive: null,
+                },
+            },
+            performance: {
+                totalQuestions: 0,
+                totalCorrect: 0,
+                bySubject: {},
+                byDifficulty: {},
+            },
         };
 
         await db.collection('users').insertOne(newUser);

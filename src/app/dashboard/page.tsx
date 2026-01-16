@@ -6,6 +6,10 @@ import Link from 'next/link';
 
 export default async function DashboardPage() {
     const user = await getUserProfile();
+    const totalQuestions = user?.performance?.totalQuestions || 0;
+    const totalCorrect = user?.performance?.totalCorrect || 0;
+    const accuracy = totalQuestions > 0 ? (totalCorrect / totalQuestions) * 100 : 0;
+    const streakDays = user?.gamification?.streak?.count || 0;
 
     return (
         <div className="space-y-8">
@@ -35,14 +39,14 @@ export default async function DashboardPage() {
                                 <Target className="w-5 h-5" />
                                 <span>Accuracy</span>
                             </div>
-                            <p className="text-2xl font-bold text-[#ededed]">85%</p>
+                            <p className="text-2xl font-bold text-[#ededed]">{accuracy.toFixed(0)}%</p>
                         </div>
                         <div className="bg-[#5D4037]/40 p-6 rounded-xl border border-[#5D4037]">
                             <div className="flex items-center gap-3 mb-2 text-gray-400">
                                 <Calendar className="w-5 h-5" />
                                 <span>Streak</span>
                             </div>
-                            <p className="text-2xl font-bold text-[#FFD600]">3 Days</p>
+                            <p className="text-2xl font-bold text-[#FFD600]">{streakDays} Days</p>
                         </div>
                     </div>
 

@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { LayoutDashboard, Gamepad2, LogOut, User } from 'lucide-react';
+import { LayoutDashboard, Gamepad2, LogOut } from 'lucide-react';
 import { getUserProfile } from '@/lib/user';
+import { logoutAction } from '@/app/actions/auth';
 
 export default async function Sidebar() {
     const user = await getUserProfile();
@@ -62,12 +63,11 @@ export default async function Sidebar() {
             </nav>
 
             <div className="p-6 border-t border-[#5D4037]">
-                <form action="/api/auth/logout" method="POST">
-                    {/* Note: Logout API not implemented yet, using client-side redirect usually or simple cookie clearing */}
-                    <Link href="/" className="flex items-center gap-3 text-red-400 hover:text-red-300 transition-colors">
+                <form action={logoutAction}>
+                    <button type="submit" className="flex items-center gap-3 text-red-400 hover:text-red-300 transition-colors">
                         <LogOut className="w-5 h-5" />
                         <span>Logout</span>
-                    </Link>
+                    </button>
                 </form>
             </div>
         </aside>

@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { saveQuizResult } from '@/app/actions/quiz';
 import { Loader2, CheckCircle, XCircle, Trophy } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -18,6 +17,13 @@ interface QuizInterfaceProps {
     questions: Question[];
 }
 
+interface FeedbackItem {
+    questionId: string;
+    correct: boolean;
+    correctAnswer: string | null;
+    explanation: string | null;
+}
+
 export default function QuizInterface({ questions }: QuizInterfaceProps) {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -27,6 +33,8 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
     const [timeLeft, setTimeLeft] = useState(15);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [xpGained, setXpGained] = useState(0);
+    const [feedback, setFeedback] = useState<FeedbackItem[]>([]);
+    const [answers, setAnswers] = useState<{ questionId: string; selectedOption: string | null }[]>([]);
     const router = useRouter();
 
     const currentQuestion = questions[currentQuestionIndex];
@@ -57,6 +65,17 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
 
         setSelectedOption(option);
 
+        setAnswers((prev) => {
+            const next = [...prev];
+            const existingIndex = next.findIndex((a) => a.questionId === currentQuestion.id);
+            if (existingIndex >= 0) {
+                next[existingIndex] = { questionId: currentQuestion.id, selectedOption: option };
+                return next;
+            }
+            next.push({ questionId: currentQuestion.id, selectedOption: option });
+            return next;
+        });
+
         const correct = option === currentQuestion.correctAnswer;
         setIsCorrect(correct);
 
@@ -85,8 +104,7 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
         setIsSubmitting(true);
         // Optimistic completion state
         setIsCompleted(true);
-        const finalScore = isCorrect ? score + 1 : score; // Account for last question if correct (already updated in state but safe to calc)
-        // Actually score state is updated immediately on click, so `score` is current.
+        // Score state is updated immediately on click, so `score` is current.
 
         // Trigger confetti
         confetti({
@@ -96,38 +114,67 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
             colors: ['#2E7D32', '#C6FF00', '#FFD600'] // Theme colors
         });
 
-        const result = await saveQuizResult(score, questions.length);
-        if (result.success) {
+        const finalAnswers = (() => {
+            const existing = answers.find((a) => a.questionId === currentQuestion.id);
+            if (existing) return answers;
+            return [...answers, { questionId: currentQuestion.id, selectedOption }];
+        })();
+
+        const response = await fetch('/api/quiz/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ answers: finalAnswers }),
+        });
+
+        if (response.ok) {
+            const result = await response.json();
             setXpGained(result.xpGained || 0);
+            setFeedback(result.feedback || []);
+            if (typeof result.score === 'number') {
+                setScore(result.score);
+            }
         }
         setIsSubmitting(false);
     };
 
     if (isCompleted) {
         return (
-            <div className="flex flex-col items-center justify-center p-8 bg-[#3E2723] text-[#ededed] rounded-xl shadow-2xl max-w-2xl mx-auto mt-10 border border-[#2E7D32]">
+            <div className="flex flex-col items-center justify-center p-8 bg-earth text-[#ededed] rounded-xl shadow-2xl max-w-2xl mx-auto mt-10 border border-forest">
                 <motion.div
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.5 }}
                     className="text-center"
                 >
-                    <Trophy className="w-24 h-24 text-[#FFD600] mx-auto mb-4" />
-                    <h2 className="text-3xl font-bold mb-2 text-[#C6FF00]">Quiz Completed!</h2>
+                    <Trophy className="w-24 h-24 text-sun mx-auto mb-4" />
+                    <h2 className="text-3xl font-bold mb-2 text-growth">Quiz Completed!</h2>
                     <p className="text-xl mb-6">You scored {score} / {questions.length}</p>
 
                     {isSubmitting ? (
-                        <div className="flex items-center justify-center space-x-2 text-[#C6FF00]">
+                        <div className="flex items-center justify-center space-x-2 text-growth">
                             <Loader2 className="w-6 h-6 animate-spin" />
                             <span>Saving results...</span>
                         </div>
                     ) : (
-                        <div className="bg-[#2E7D32]/20 p-6 rounded-lg border border-[#2E7D32]">
-                            <p className="text-2xl font-bold text-[#FFD600]">+{xpGained} XP</p>
+                        <div className="bg-forest/20 p-6 rounded-lg border border-forest">
+                            <p className="text-2xl font-bold text-sun">+{xpGained} XP</p>
                             <p className="text-sm text-gray-300">Great job cultivating your knowledge!</p>
+                            {feedback.length > 0 && (
+                                <div className="mt-6 space-y-3 text-left">
+                                    <p className="text-sm text-growth font-bold">Review</p>
+                                    {feedback.filter((item) => !item.correct).map((item) => (
+                                        <div key={item.questionId} className="p-3 bg-earth/70 rounded-lg border border-[#5D4037]">
+                                            <p className="text-xs text-red-300">Correct: {item.correctAnswer || 'N/A'}</p>
+                                            {item.explanation && (
+                                                <p className="text-xs text-gray-300 mt-1">{item.explanation}</p>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                             <button
                                 onClick={() => router.push('/dashboard')}
-                                className="mt-6 px-6 py-2 bg-[#2E7D32] hover:bg-[#1B5E20] text-white rounded-full transition-colors font-bold"
+                                className="mt-6 px-6 py-2 bg-forest hover:bg-[#1B5E20] text-white rounded-full transition-colors font-bold"
                             >
                                 Return to Dashboard
                             </button>
@@ -139,23 +186,23 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
     }
 
     return (
-        <div className="max-w-3xl mx-auto mt-10 p-6 bg-[#3E2723]/90 text-[#ededed] rounded-xl shadow-xl backdrop-blur-sm border border-[#5D4037]">
+        <div className="max-w-3xl mx-auto mt-10 p-6 bg-earth/90 text-[#ededed] rounded-xl shadow-xl backdrop-blur-sm border border-[#5D4037]">
             {/* Progress Bar */}
             <div className="mb-6">
-                <div className="flex justify-between text-sm mb-2 text-[#C6FF00]">
+                <div className="flex justify-between text-sm mb-2 text-growth">
                     <span>Question {currentQuestionIndex + 1} / {questions.length}</span>
                     <span>Time: {timeLeft}s</span>
                 </div>
                 <div className="h-4 bg-[#1B1B1B] rounded-full overflow-hidden border border-[#5D4037]">
                     <motion.div
-                        className="h-full bg-[#2E7D32]"
+                        className="h-full bg-forest"
                         initial={{ width: 0 }}
                         animate={{ width: `${((currentQuestionIndex) / questions.length) * 100}%` }}
                         transition={{ duration: 0.5 }}
                     />
                 </div>
                 <motion.div
-                    className="h-1 bg-[#FFD600] mt-1"
+                    className="h-1 bg-sun mt-1"
                     initial={{ width: "100%" }}
                     animate={{ width: `${(timeLeft / 15) * 100}%` }}
                     transition={{ duration: 1, ease: "linear" }}
@@ -202,7 +249,7 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
                                 >
                                     <div className="flex items-center justify-between">
                                         {option}
-                                        {selectedOption === option && isCorrect && <CheckCircle className="text-[#C6FF00]" />}
+                                        {selectedOption === option && isCorrect && <CheckCircle className="text-growth" />}
                                         {selectedOption === option && isCorrect === false && <XCircle className="text-red-400" />}
                                     </div>
                                 </motion.button>

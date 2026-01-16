@@ -24,11 +24,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
-        className={`${pressStart.variable} ${pixelify.variable} antialiased font-pixelify`}
+        className={`${pressStart.variable} ${pixelify.variable} antialiased font-sans bg-teal-bg text-gray-100 min-h-screen relative overflow-x-hidden`}
       >
-        {children}
+        {/* Immersive Background System */}
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <div className="absolute inset-0 bg-teal-bg" />
+          <div className="absolute inset-0 pixel-grid-v2 opacity-30" />
+          <div className="absolute inset-0 neural-bg opacity-50" />
+          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-ai/50 to-transparent animate-scanline opacity-20" />
+        </div>
+
+        {/* Content Layer */}
+        <div className="relative z-10">
+          {children}
+        </div>
       </body>
     </html>
   );

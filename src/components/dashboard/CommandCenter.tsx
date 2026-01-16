@@ -39,7 +39,7 @@ const InsightOrb = ({ icon, label, value, color, delay, onClick, id }: OrbProps)
             delay,
             y: { duration: 4, repeat: Infinity, ease: "easeInOut" }
         }}
-        whileHover={{ scale: 1.1, filter: "brightness(1.2)" }}
+        whileHover={{ scale: 1.1, filter: "brightness(1.5)" }}
         onClick={() => onClick(id)}
         className="absolute cursor-pointer group"
         style={{
@@ -47,11 +47,11 @@ const InsightOrb = ({ icon, label, value, color, delay, onClick, id }: OrbProps)
             top: `${(Math.sin(delay * 2) * 35) + 50}%`
         }}
     >
-        <div className={`relative p-4 rounded-full glass-panel border-2 transition-all duration-300 group-hover:shadow-[0_0_30px_rgba(var(--orb-color),0.5)]`}
-            style={{ borderColor: color, '--orb-color': color === '#C6FF00' ? '198,255,0' : '0,255,255' } as any}>
+        <div className={`relative p-4 rounded-2xl glass-v2 border-2 transition-all duration-300 group-hover:shadow-[0_0_30px_rgba(var(--orb-color),0.5)]`}
+            style={{ borderColor: color, '--orb-color': color === '#1ED760' ? '30,215,96' : '255,255,255' } as any}>
             <div className="text-white mb-1">{icon}</div>
             <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap text-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <p className="text-[10px] uppercase tracking-widest text-gray-400">{label}</p>
+                <p className="text-[10px] uppercase tracking-widest text-gray-500">{label}</p>
                 <p className="text-sm font-bold" style={{ color }}>{value}</p>
             </div>
         </div>
@@ -71,16 +71,16 @@ export default function CommandCenter() {
     }, []);
 
     const orbs = [
-        { id: 'weak', icon: <AlertTriangle size={20} />, label: 'Weak Topics', value: '4 Areas', color: '#FF5252', delay: 0 },
-        { id: 'engagement', icon: <Users size={20} />, label: 'Engagement', value: '92%', color: '#C6FF00', delay: 1.5 },
-        { id: 'battles', icon: <Zap size={20} />, label: 'Live Battles', value: '12 Active', color: '#00E5FF', delay: 3 },
-        { id: 'performers', icon: <TrendingUp size={20} />, label: 'Top Players', value: '8 Elite', color: '#FFD600', delay: 4.5 },
+        { id: 'weak', icon: <AlertTriangle size={20} />, label: 'Weak Topics', value: '4 Areas', color: '#1ED760', delay: 0 },
+        { id: 'engagement', icon: <Users size={20} />, label: 'Engagement', value: '92%', color: '#FFFFFF', delay: 1.5 },
+        { id: 'battles', icon: <Zap size={20} />, label: 'Live Battles', value: '12 Active', color: '#1ED760', delay: 3 },
+        { id: 'performers', icon: <TrendingUp size={20} />, label: 'Top Players', value: '8 Elite', color: '#FFFFFF', delay: 4.5 },
     ];
 
     const panels: Record<string, React.ReactNode> = {
         weak: (
             <div className="space-y-6">
-                <h3 className="text-xl font-bold neon-text text-[#FF5252]">Critical Vulnerabilities</h3>
+                <h3 className="text-xl font-bold neon-text text-[#1ED760]">Critical Vulnerabilities</h3>
                 <div className="grid grid-cols-2 gap-4">
                     {['Asymmetric Encryption', 'Network Security', 'Buffer Overflows', 'SQL Injection'].map(topic => (
                         <div key={topic} className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 transition-all cursor-default">
@@ -98,11 +98,11 @@ export default function CommandCenter() {
                         </div>
                     ))}
                 </div>
-                <div className="p-4 rounded-xl glass-panel border-l-4 border-[#C6FF00]">
+                <div className="p-4 rounded-xl glass-panel border-l-4 border-[#1ED760]">
                     <div className="flex gap-3">
-                        <Info className="text-[#C6FF00] shrink-0" />
+                        <Info className="text-[#1ED760] shrink-0" />
                         <div>
-                            <p className="text-xs font-bold uppercase text-[#C6FF00] mb-1">AI Recommendation</p>
+                            <p className="text-xs font-bold uppercase text-[#1ED760] mb-1">AI Recommendation</p>
                             <p className="text-sm text-gray-300">Deploying "Sanitizer Quest" to address SQL Injection weaknesses. Expected improvement: +15%.</p>
                         </div>
                     </div>
@@ -111,8 +111,8 @@ export default function CommandCenter() {
         ),
         engagement: (
             <div className="space-y-6">
-                <h3 className="text-xl font-bold neon-text text-[#C6FF00]">Class Synchronization</h3>
-                <div className="flex items-center gap-8 p-6 rounded-2xl bg-[#C6FF00]/5 border border-[#C6FF00]/20">
+                <h3 className="text-xl font-bold neon-text text-[#FFFFFF]">Class Synchronization</h3>
+                <div className="flex items-center gap-8 p-6 rounded-2xl bg-[#FFFFFF]/5 border border-[#FFFFFF]/20">
                     <div className="relative w-32 h-32">
                         <svg className="w-full h-full rotate-[-90deg]">
                             <circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-gray-800" />
@@ -121,7 +121,7 @@ export default function CommandCenter() {
                                 strokeDasharray="364.4"
                                 initial={{ strokeDashoffset: 364.4 }}
                                 animate={{ strokeDashoffset: 364.4 * (1 - 0.92) }}
-                                className="text-[#C6FF00]"
+                                className="text-[#FFFFFF]"
                             />
                         </svg>
                         <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -136,7 +136,7 @@ export default function CommandCenter() {
                         </div>
                         <div className="flex justify-between items-center text-sm">
                             <span className="text-gray-400 text-xs uppercase">Milestones Reached</span>
-                            <span className="font-bold text-[#C6FF00]">128 Today</span>
+                            <span className="font-bold text-[#FFFFFF]">128 Today</span>
                         </div>
                         <div className="flex justify-between items-center text-sm">
                             <span className="text-gray-400 text-xs uppercase">Active Collaborations</span>
@@ -148,7 +148,7 @@ export default function CommandCenter() {
         ),
         battles: (
             <div className="space-y-6">
-                <h3 className="text-xl font-bold neon-text text-[#00E5FF]">Live Operations</h3>
+                <h3 className="text-xl font-bold neon-text text-[#1ED760]">Live Operations</h3>
                 <div className="space-y-3">
                     {[1, 2, 3].map(i => (
                         <div key={i} className="flex items-center justify-between p-4 rounded-xl glass-panel group hover:bg-cyan-500/10 transition-all border-r-2 border-cyan-500/0 hover:border-cyan-500/50">
@@ -173,7 +173,7 @@ export default function CommandCenter() {
         ),
         performers: (
             <div className="space-y-6">
-                <h3 className="text-xl font-bold neon-text text-[#FFD600]">Elite Candidates</h3>
+                <h3 className="text-xl font-bold neon-text text-[#FFFFFF]">Elite Candidates</h3>
                 <div className="grid grid-cols-1 gap-3">
                     {['Samarth Pai', 'Rhea Sharma', 'Aryan Gupta'].map((name, i) => (
                         <div key={name} className="flex items-center gap-4 p-4 rounded-xl glass-panel relative overflow-hidden group">
@@ -199,24 +199,24 @@ export default function CommandCenter() {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white p-8 relative overflow-hidden pixel-grid font-pixelify select-none">
+        <div className="min-h-screen bg-teal-bg text-white p-8 relative overflow-hidden pixel-grid-v2 select-none">
 
             {/* Background Ambience */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#3E2723]/20 via-black to-[#2E7D32]/10 pointer-events-none" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#C6FF00]/5 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute inset-0 neural-bg opacity-30 pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-ai/5 rounded-full blur-[120px] pointer-events-none" />
 
             {/* Header Info */}
             <div className="relative z-10 flex justify-between items-start mb-12">
                 <div>
-                    <h1 className="text-4xl font-black neon-text text-[#C6FF00] mb-2 tracking-tighter">Command Center v2.0</h1>
-                    <div className="flex items-center gap-4 text-xs tracking-widest text-[#C6FF00]/60">
-                        <span className="flex items-center gap-1"><Activity size={14} /> LIVE SYSTEM STATUS: OPTIMAL</span>
-                        <span className="flex items-center gap-1"><Shield size={14} /> SECURITY CLEARANCE: LEVEL 4</span>
+                    <h1 className="text-4xl font-black neon-text-ai text-purple-ai mb-2 tracking-tighter italic">Neural_Cmd_Deck v2.1</h1>
+                    <div className="flex items-center gap-4 text-[10px] tracking-[0.3em] text-purple-ai/60 font-black uppercase">
+                        <span className="flex items-center gap-1"><Activity size={14} /> Neural Status: SYNCED</span>
+                        <span className="flex items-center gap-1"><Shield size={14} /> Encryption: LEVEL 5</span>
                     </div>
                 </div>
                 <div className="text-right">
-                    <p className="text-4xl font-black text-white/10">01-16-2026</p>
-                    <p className="text-xs tracking-[0.5em] text-[#C6FF00]">OPERATIONAL</p>
+                    <p className="text-4xl font-black text-white/10 italic">01.16.2026</p>
+                    <p className="text-[10px] tracking-[0.5em] text-purple-ai font-black uppercase">Cyber_Operations</p>
                 </div>
             </div>
 
@@ -225,16 +225,16 @@ export default function CommandCenter() {
                 {/* Left Col: Activity Feed */}
                 <div className="col-span-3 space-y-6">
                     <div className="glass-panel p-6 rounded-3xl neon-border relative overflow-hidden h-full">
-                        <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#C6FF00]/50 to-transparent animate-scanline" />
-                        <h3 className="text-xs uppercase tracking-[0.3em] text-[#C6FF00] mb-6 flex items-center gap-2">
+                        <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#1ED760]/50 to-transparent animate-scanline" />
+                        <h3 className="text-xs uppercase tracking-[0.3em] text-[#1ED760] mb-6 flex items-center gap-2">
                             <Activity size={16} /> Neural Activity Feed
                         </h3>
                         <div className="space-y-6 overflow-y-auto max-h-[600px] no-scrollbar">
                             {[
-                                { time: '14:22', event: 'DIFFICULTY INCREASED', desc: 'Class mastery reached 88%', icon: <TrendingUp size={14} />, color: '#C6FF00' },
-                                { time: '14:20', event: 'BADGE UNLOCKED', desc: 'Samarth unboxed "Cipher King"', icon: <Zap size={14} />, color: '#FFD600' },
-                                { time: '14:15', event: 'BATTLE DETECTED', desc: 'Tier 3 matchup initiated', icon: <Target size={14} />, color: '#00E5FF' },
-                                { time: '14:10', event: 'SYS AUTO-ADAPT', desc: 'Adjusting easy/hard ratio (↓ 0.2)', icon: <TrendingDown size={14} />, color: '#FF5252' },
+                                { time: '14:22', event: 'DIFFICULTY INCREASED', desc: 'Class mastery reached 88%', icon: <TrendingUp size={14} />, color: '#1ED760' },
+                                { time: '14:20', event: 'BADGE UNLOCKED', desc: 'Samarth unboxed "Cipher King"', icon: <Zap size={14} />, color: '#FFFFFF' },
+                                { time: '14:15', event: 'BATTLE DETECTED', desc: 'Tier 3 matchup initiated', icon: <Target size={14} />, color: '#1ED760' },
+                                { time: '14:10', event: 'SYS AUTO-ADAPT', desc: 'Adjusting easy/hard ratio (↓ 0.2)', icon: <TrendingDown size={14} />, color: '#FFFFFF' },
                             ].map((item, i) => (
                                 <div key={i} className="relative pl-6 border-l border-white/10 py-1">
                                     <div className="absolute left-[-4px] top-2 w-2 h-2 rounded-full bg-white/20" />
@@ -257,17 +257,16 @@ export default function CommandCenter() {
                         className="relative z-20 w-80 h-80 flex items-center justify-center"
                     >
                         {/* Pulsing Outer Ring */}
-                        <div className="absolute inset-0 rounded-full border-4 border-[#C6FF00]/10 animate-ping" />
-                        <div className="absolute inset-[-20px] rounded-full border border-[#C6FF00]/10" />
+                        <div className="absolute inset-0 rounded-full border-4 border-purple-ai/10 animate-ping" />
+                        <div className="absolute inset-[-20px] rounded-full border border-purple-ai/10" />
 
                         {/* Main Hub Body */}
-                        <div className="w-full h-full rounded-full glass-panel border-4 border-[#C6FF00] shadow-[0_0_80px_rgba(198,255,0,0.2)] flex items-center justify-center flex-col relative overflow-hidden group">
-                            <div className="absolute inset-0 bg-[#C6FF00]/5 group-hover:bg-[#C6FF00]/10 transition-colors" />
-                            <Cpu size={60} className="text-[#C6FF00] mb-4 animate-pulse" />
-                            <p className="text-xs uppercase tracking-[0.4em] text-gray-400 mb-2">NEURAL CORE</p>
+                        <div className="w-full h-full rounded-full glass-v2-glow border-4 border-purple-ai/40 flex items-center justify-center flex-col relative overflow-hidden group">
+                            <div className="absolute inset-0 bg-purple-ai/5 group-hover:bg-purple-ai/10 transition-colors" />
+                            <Cpu size={60} className="text-purple-ai mb-4 animate-pulse neon-text-ai" />
+                            <p className="text-[10px] uppercase tracking-[0.4em] text-gray-500 font-black mb-2">NEURAL CORE</p>
                             <div className="flex items-baseline gap-1">
-                                <span className="text-5xl font-black text-white neon-text">88</span>
-                                <span className="text-xl font-bold text-[#C6FF00] tracking-tighter">MAX_POTENTIAL</span>
+                                <span className="text-5xl font-black text-white neon-text-ai italic tracking-tighter">LVL_24</span>
                             </div>
                             <div className="mt-6 flex gap-1">
                                 {[...Array(5)].map((_, i) => (
@@ -275,7 +274,7 @@ export default function CommandCenter() {
                                         key={i}
                                         animate={{ height: [10, 25, 10] }}
                                         transition={{ duration: 0.5 + i * 0.1, repeat: Infinity }}
-                                        className="w-1 bg-[#C6FF00]/50 rounded-full"
+                                        className="w-1 bg-purple-ai/50 rounded-full"
                                     />
                                 ))}
                             </div>
@@ -289,8 +288,8 @@ export default function CommandCenter() {
 
                     {/* Connected Orbital Lines */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
-                        <div className="w-[450px] h-[450px] border border-[#C6FF00] rounded-full" />
-                        <div className="absolute w-[600px] h-[600px] border border-cyan-500/50 rounded-full border-dashed animate-spin-slow" style={{ animationDuration: '30s' }} />
+                        <div className="w-[450px] h-[450px] border border-[#1ED760] rounded-full" />
+                        <div className="absolute w-[600px] h-[600px] border border-green-500/50 rounded-full border-dashed animate-spin-slow" style={{ animationDuration: '30s' }} />
                     </div>
                 </div>
 
@@ -324,8 +323,8 @@ export default function CommandCenter() {
                     </div>
 
                     {/* AI Decision Panel */}
-                    <div className="glass-panel p-6 rounded-3xl border border-white/10 hover:border-[#C6FF00]/30 transition-colors">
-                        <h3 className="text-xs uppercase tracking-[0.3em] text-[#00E5FF] mb-6 flex items-center gap-2">
+                    <div className="glass-panel p-6 rounded-3xl border border-white/10 hover:border-[#1ED760]/30 transition-colors">
+                        <h3 className="text-xs uppercase tracking-[0.3em] text-[#1ED760] mb-6 flex items-center gap-2">
                             <Cpu size={16} /> AI Decision Engine
                         </h3>
                         <div className="space-y-4">
@@ -341,7 +340,7 @@ export default function CommandCenter() {
                             <div>
                                 <div className="flex justify-between text-[10px] uppercase font-bold text-gray-400 mb-2">
                                     <span>System Intervention</span>
-                                    <span className="text-[#C6FF00]">ACTIVE</span>
+                                    <span className="text-[#1ED760]">ACTIVE</span>
                                 </div>
                                 <p className="text-xs text-gray-500">Auto-generated specialized quiz for 14 students below threshold.</p>
                             </div>
@@ -366,7 +365,7 @@ export default function CommandCenter() {
                             initial={{ x: '100%', opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             exit={{ x: '100%', opacity: 0 }}
-                            className="fixed top-0 right-0 z-[110] w-[500px] h-screen glass-panel border-l-2 border-[#C6FF00] p-12 shadow-[-20px_0_50px_rgba(0,0,0,0.5)]"
+                            className="fixed top-0 right-0 z-[110] w-[500px] h-screen glass-panel border-l-2 border-[#1ED760] p-12 shadow-[-20px_0_50px_rgba(0,0,0,0.5)]"
                         >
                             <button
                                 onClick={() => setActivePanel(null)}

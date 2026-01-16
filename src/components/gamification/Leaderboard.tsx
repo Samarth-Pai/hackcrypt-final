@@ -45,37 +45,38 @@ export default async function Leaderboard() {
     };
 
     return (
-        <div className="bg-[#3E2723] rounded-xl shadow-xl overflow-hidden border border-[#5D4037]">
-            <div className="p-4 bg-[#2E7D32]/20 border-b border-[#5D4037] flex items-center justify-between">
-                <h3 className="text-xl font-bold text-[#ededed] flex items-center gap-2">
-                    <Trophy className="w-5 h-5 text-[#FFD600]" />
-                    Leaderboard
-                </h3>
-                <span className="text-xs text-[#C6FF00] font-mono">Top Cultivators</span>
-            </div>
-
-            <div className="divide-y divide-[#5D4037]/50">
+        <div className="overflow-hidden">
+            <div className="space-y-3">
                 {topUsers.map((user, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 hover:bg-[#2E7D32]/10 transition-colors">
-                        <div className="flex items-center gap-4">
+                    <div key={index} className="flex items-center justify-between p-4 glass-v2 border border-white/5 rounded-2xl hover:border-purple-ai/30 transition-all group relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-2 opacity-5">
+                            {index === 0 && <Crown className="text-sun" size={40} />}
+                        </div>
+                        <div className="flex items-center gap-4 relative z-10">
                             <div className="w-8 flex justify-center">
                                 {getRankIcon(index)}
                             </div>
                             <div>
-                                <p className="font-bold text-[#ededed]">{user.name}</p>
-                                <p className="text-xs text-[#C6FF00]">Level {user.gamification.level}</p>
+                                <p className="font-bold text-white tracking-tight">{user.name}</p>
+                                <div className="flex items-center gap-1.5 font-mono text-purple-ai">
+                                    <div className="w-1 h-1 rounded-full bg-purple-ai/40" />
+                                    <p className="text-[10px] uppercase font-bold tracking-widest">LVL_{user.gamification.level}</p>
+                                </div>
                             </div>
                         </div>
-                        <div className="text-right">
-                            <p className="font-mono text-[#FFD600] font-bold">{user.gamification.xp}</p>
-                            <p className="text-[10px] text-gray-400 uppercase tracking-wider">XP</p>
+                        <div className="text-right relative z-10">
+                            <p className="font-mono text-white font-black text-lg neon-text-ai" style={{ color: index === 0 ? '#FACC15' : '#A855F7' }}>{user.gamification.xp}</p>
+                            <p className="text-[8px] text-gray-500 uppercase tracking-[0.3em] font-black">Points_Sync</p>
                         </div>
                     </div>
                 ))}
 
                 {topUsers.length === 0 && (
-                    <div className="p-8 text-center text-gray-400">
-                        No cultivators found yet. Be the first!
+                    <div className="p-12 text-center rounded-3xl border border-dashed border-white/10">
+                        <Trophy className="mx-auto text-gray-700 mb-4" size={40} />
+                        <p className="text-xs text-gray-500 uppercase tracking-widest font-black leading-relaxed">
+                            No Neural Data Found.<br />Establish Synchronicity.
+                        </p>
                     </div>
                 )}
             </div>

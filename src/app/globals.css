@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #1E1E1E;
+  --foreground: #FFFFFF;
 }
 
 @theme inline {
@@ -13,19 +13,23 @@
   --font-pixel: var(--font-press-start), cursive;
   --font-pixelify: var(--font-pixelify), cursive;
 
-  /* Overgrown Adventure Theme */
-  --color-earth: #3E2723;
-  --color-forest: #2E7D32;
-  --color-growth: #C6FF00;
-  --color-sun: #FFD600;
+  /* Command Center V4 Palette (Neon Slate) */
+  --color-teal-bg: #1E1E1E;
+  /* Deep Slate (User Specified) */
+  --color-teal-muted: #121212;
+  /* Darker Slate */
+  --color-purple-ai: #1ED760;
+  /* Neon Green (primary accent) */
+  --color-green-neon: #1ED760;
+  /* Neon Green (success/growth) */
+  --color-gold-streak: #FFFFFF;
+  /* White (high contrast) */
+  --color-coral-error: #FF5252;
+  /* Standard Red for errors */
+  --color-cyber-blue: #FFFFFF;
+  /* Simplified to White for monochrome feel */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 body {
   background: var(--background);
@@ -130,25 +134,81 @@ h6,
   }
 }
 
-.neon-border {
-  border: 1px solid rgba(198, 255, 0, 0.3);
-  box-shadow: 0 0 15px rgba(198, 255, 0, 0.1);
+@keyframes neural-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(30, 215, 96, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 50px rgba(30, 215, 96, 0.4);
+  }
 }
 
-.neon-text {
-  text-shadow: 0 0 10px rgba(198, 255, 0, 0.5);
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+
+  20% {
+    transform: translate(-2px, 2px);
+  }
+
+  40% {
+    transform: translate(-2px, -2px);
+  }
+
+  60% {
+    transform: translate(2px, 2px);
+  }
+
+  80% {
+    transform: translate(2px, -2px);
+  }
+
+  100% {
+    transform: translate(0);
+  }
 }
 
-.glass-panel {
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+.neon-border-purple {
+  border: 1px solid rgba(30, 215, 96, 0.3);
+  box-shadow: 0 0 15px rgba(30, 215, 96, 0.1);
 }
 
-.pixel-grid {
-  background-image: radial-gradient(rgba(198, 255, 0, 0.1) 1px, transparent 1px);
-  background-size: 30px 30px;
+.neon-border-green {
+  border: 1px solid rgba(30, 215, 96, 0.3);
+  box-shadow: 0 0 15px rgba(30, 215, 96, 0.1);
+}
+
+.neon-text-ai {
+  text-shadow: 0 0 10px rgba(30, 215, 96, 0.5);
+}
+
+.glass-v2 {
+  background: rgba(10, 31, 38, 0.4);
+  backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+.glass-v2-glow {
+  background: rgba(10, 31, 38, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(30, 215, 96, 0.2);
+  box-shadow: 0 0 20px rgba(30, 215, 96, 0.1);
+}
+
+.pixel-grid-v2 {
+  background-image:
+    linear-gradient(rgba(30, 215, 96, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 215, 96, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.neural-bg {
+  background: radial-gradient(circle at center, rgba(30, 215, 96, 0.1) 0%, transparent 70%);
 }
 
 .animate-float {

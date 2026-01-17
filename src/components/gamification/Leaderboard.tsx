@@ -9,6 +9,18 @@ export const dynamic = 'force-dynamic';
 interface LeaderboardUser {
     _id: string | { toString: () => string };
     name: string;
+    title?: string;
+    avatarConfig?: {
+        type?: 'custom' | 'classic';
+        hero?: string;
+        colors?: {
+            primary: string;
+            secondary: string;
+            accent: string;
+            bg: string;
+        };
+        imageUrl?: string;
+    };
     gamification: {
         level: number;
         xp: number;
@@ -29,6 +41,8 @@ export default async function Leaderboard() {
                 $project: {
                     _id: 1,
                     name: 1,
+                    title: 1,
+                    avatarConfig: 1,
                     'gamification.level': 1,
                     'gamification.xp': 1,
                 },
@@ -48,12 +62,39 @@ export default async function Leaderboard() {
         }
     };
 
+    const getTier = (level: number) => {
+        if (level >= 20) return 'Mythic';
+        if (level >= 12) return 'Elite';
+        if (level >= 6) return 'Veteran';
+        return 'Rookie';
+    };
+
+    const getLevelProgress = (level: number, xp: number) => {
+        const currentLevelStartXP = Math.pow(level - 1, 2) * 100;
+        const nextLevelStartXP = Math.pow(level, 2) * 100;
+        const xpForNextLevel = nextLevelStartXP - currentLevelStartXP;
+        const currentLevelProgress = xp - currentLevelStartXP;
+        const progressPercent = xpForNextLevel > 0
+            ? Math.max(0, Math.min(100, (currentLevelProgress / xpForNextLevel) * 100))
+            : 0;
+        const xpToNext = Math.max(0, nextLevelStartXP - xp);
+        return { progressPercent, xpToNext };
+    };
+
     return (
         <div className="overflow-hidden">
-            <div className="space-y-3">
+            <div className="space-y-4">
                 {topUsers.map((user, index) => (
                     (() => {
                         const userId = typeof user._id === 'string' ? user._id : user._id.toString();
+                        const { progressPercent, xpToNext } = getLevelProgress(user.gamification.level, user.gamification.xp);
+                        const tier = getTier(user.gamification.level);
+                        const initials = user.name
+                            ?.split(' ')
+                            .slice(0, 2)
+                            .map((part) => part[0])
+                            .join('')
+                            .toUpperCase() || 'NX';
                         return (
                             <Link
                                 key={userId}
@@ -63,7 +104,7 @@ export default async function Leaderboard() {
                                 <CosmicCard
                                     glow={index === 0 ? 'cyan' : 'none'}
                                     className={`
-                                        flex items-center justify-between p-4 
+                                        flex flex-col gap-4 p-4 md:p-5
                                         hover:border-violet-500/50 transition-all group relative overflow-hidden
                                         ${index === 0 ? 'bg-cyan-950/20' : ''}
                                     `}
@@ -72,20 +113,50 @@ export default async function Leaderboard() {
                                         {index === 0 && <Crown className="text-yellow-400" size={40} />}
                                     </div>
                                     <div className="flex items-center gap-4 relative z-10">
-                                        <div className="w-8 flex justify-center">
+                                        <div className="w-10 flex justify-center">
                                             {getRankIcon(index)}
                                         </div>
-                                        <div>
-                                            <p className="font-bold text-slate-100 tracking-tight">{user.name}</p>
-                                            <div className="flex items-center gap-1.5 font-mono text-violet-400">
-                                                <div className="w-1 h-1 rounded-full bg-violet-400" />
-                                                <p className="text-[10px] uppercase font-bold tracking-widest">LVL_{user.gamification.level}</p>
+                                        <div className="relative">
+                                            <div className="w-12 h-12 rounded-2xl overflow-hidden border border-cyan-500/30 bg-black/40 flex items-center justify-center text-sm font-black text-cyan-200">
+                                                {user.avatarConfig?.imageUrl ? (
+                                                    <img
+                                                        src={user.avatarConfig.imageUrl}
+                                                        alt={user.name}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <span>{initials}</span>
+                                                )}
+                                            </div>
+                                            <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-[9px] uppercase tracking-widest font-black text-cyan-300/80 bg-cyan-950/60 px-2 py-0.5 rounded-full border border-cyan-500/20">
+                                                {tier}
+                                            </span>
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="font-bold text-slate-100 tracking-tight text-lg">{user.name}</p>
+                                            <p className="text-xs text-slate-400 truncate max-w-[220px]">
+                                                {user.title || 'Cosmic Challenger'}
+                                            </p>
+                                            <div className="mt-2 flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-black text-violet-300">
+                                                <span>LVL_{user.gamification.level}</span>
+                                                <span className="text-slate-600">•</span>
+                                                <span>Rank {index + 1}</span>
                                             </div>
                                         </div>
+                                        <div className="text-right">
+                                            <p className="font-mono font-black text-xl text-glow" style={{ color: index === 0 ? '#FACC15' : '#A855F7' }}>{user.gamification.xp}</p>
+                                            <p className="text-[9px] text-slate-500 uppercase tracking-[0.3em] font-black">Total_XP</p>
+                                        </div>
                                     </div>
-                                    <div className="text-right relative z-10">
-                                        <p className="font-mono font-black text-lg text-glow" style={{ color: index === 0 ? '#FACC15' : '#A855F7' }}>{user.gamification.xp}</p>
-                                        <p className="text-[8px] text-slate-500 uppercase tracking-[0.3em] font-black">Points_Sync</p>
+
+                                    <div className="relative z-10">
+                                        <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.3em] font-black text-slate-500">
+                                            <span>Next Level</span>
+                                            <span>{xpToNext} XP</span>
+                                        </div>
+                                        <div className="mt-2 h-2 bg-[#0F061A] rounded-full overflow-hidden border border-cyan-500/20">
+                                            <div className="h-full bg-cyan-400" style={{ width: `${progressPercent}%` }} />
+                                        </div>
                                     </div>
                                 </CosmicCard>
                             </Link>

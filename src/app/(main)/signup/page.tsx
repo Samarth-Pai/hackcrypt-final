@@ -40,7 +40,8 @@ export default function SignupPage() {
         });
 
         if (loginResponse.ok) {
-            router.push('/dashboard');
+            router.replace('/dashboard');
+            router.refresh();
             return;
         }
 

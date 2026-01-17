@@ -108,6 +108,27 @@ export default function Home() {
             <br className="hidden md:block" />
             Choose a mission and begin your mastery arc.
           </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="flex flex-wrap items-center justify-center gap-3"
+          >
+            <Link
+              href="/signup"
+              className="group px-8 py-3 rounded-full border border-cyan-500/30 bg-cyan-950/20 text-cyan-300 text-sm font-black uppercase tracking-widest relative overflow-hidden transition-all hover:border-cyan-400 hover:shadow-[0_0_30px_rgba(0,243,255,0.4)]"
+            >
+              <span className="relative z-10 group-hover:text-white transition-colors">Start Mission</span>
+              <div className="absolute inset-0 bg-cyan-500/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+            </Link>
+            <Link
+              href="/learning-path"
+              className="px-6 py-3 rounded-full border border-violet-500/30 bg-violet-950/20 text-violet-300 text-sm font-black uppercase tracking-widest hover:text-white hover:border-violet-400/80 transition-all"
+            >
+              Explore Paths
+            </Link>
+          </motion.div>
         </div>
 
         {/* Grand Stones Constellation (Carousel Layout) */}
@@ -159,6 +180,117 @@ export default function Home() {
 
         </div>
 
+        {/* Quick Stats */}
+        <div className="w-full max-w-5xl mx-auto mt-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { label: 'Learners', value: '12,480+' },
+              { label: 'Quests', value: '320+' },
+              { label: 'Accuracy Boost', value: '38%' },
+              { label: 'Active Streaks', value: '4,920' },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="p-4 rounded-2xl border border-white/5 bg-white/5 backdrop-blur-xl text-center"
+              >
+                <p className="text-xl md:text-2xl font-black text-white">{item.value}</p>
+                <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400 font-bold mt-1">{item.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Feature Strip */}
+        <section className="w-full max-w-6xl mx-auto mt-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                title: 'Adaptive Missions',
+                body: 'Dynamic quests that tune difficulty in real time based on your performance.',
+              },
+              {
+                title: 'Story-Driven Learning',
+                body: 'Narrative arcs that turn every syllabus unit into a cinematic mission.',
+              },
+              {
+                title: 'Live Duels',
+                body: 'Challenge rivals in real-time and climb the global leaderboard.',
+              },
+            ].map((feature) => (
+              <div
+                key={feature.title}
+                className="p-6 rounded-3xl border border-cyan-500/20 bg-cyan-950/10 hover:border-cyan-400/50 transition-all"
+              >
+                <h3 className="text-lg font-bold text-cyan-200 mb-2">{feature.title}</h3>
+                <p className="text-sm text-slate-300 leading-relaxed">{feature.body}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* How It Works */}
+        <section className="w-full max-w-6xl mx-auto mt-16">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl md:text-3xl font-black text-white">How it works</h2>
+            <span className="text-xs uppercase tracking-[0.3em] text-slate-400 font-bold">3 steps</span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { step: '01', title: 'Choose a Path', body: 'Pick a subject and unlock your first quest line.' },
+              { step: '02', title: 'Complete Missions', body: 'Finish story quests, quizzes, and challenges.' },
+              { step: '03', title: 'Level Up', body: 'Earn XP, unlock badges, and climb the ranks.' },
+            ].map((item) => (
+              <div
+                key={item.step}
+                className="p-6 rounded-3xl border border-white/5 bg-white/5 backdrop-blur-xl"
+              >
+                <p className="text-xs font-black uppercase tracking-[0.3em] text-cyan-400">Step {item.step}</p>
+                <h3 className="text-lg font-bold text-white mt-2">{item.title}</h3>
+                <p className="text-sm text-slate-300 mt-2 leading-relaxed">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Testimonials */}
+        <section className="w-full max-w-6xl mx-auto mt-16">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl md:text-3xl font-black text-white">Pilot feedback</h2>
+            <span className="text-xs uppercase tracking-[0.3em] text-slate-400 font-bold">Global cohort</span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { name: 'Nova R.', quote: 'The story missions made CS finally click for me.' },
+              { name: 'Kai M.', quote: 'Duels are insanely fun — I practice more just to rank up.' },
+              { name: 'Aster L.', quote: 'The visuals and XP system keep me locked in.' },
+            ].map((item) => (
+              <div
+                key={item.name}
+                className="p-6 rounded-3xl border border-violet-500/20 bg-violet-950/10"
+              >
+                <p className="text-sm text-slate-200 leading-relaxed">“{item.quote}”</p>
+                <p className="text-xs uppercase tracking-[0.3em] text-violet-300 font-bold mt-4">{item.name}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Final CTA */}
+        <section className="w-full max-w-6xl mx-auto mt-16">
+          <div className="p-8 md:p-10 rounded-3xl border border-cyan-500/30 bg-gradient-to-r from-cyan-950/40 via-slate-950/40 to-violet-950/40 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className="text-2xl md:text-3xl font-black text-white">Ready to enter the arena?</h3>
+              <p className="text-sm text-slate-300 mt-2">Start your first quest and unlock the cosmic curriculum.</p>
+            </div>
+            <Link
+              href="/signup"
+              className="group px-10 py-4 rounded-full border border-cyan-500/30 bg-cyan-950/30 text-cyan-300 text-sm font-black uppercase tracking-widest relative overflow-hidden transition-all hover:border-cyan-400 hover:shadow-[0_0_30px_rgba(0,243,255,0.4)]"
+            >
+              <span className="relative z-10 group-hover:text-white transition-colors">Begin Journey</span>
+              <div className="absolute inset-0 bg-cyan-500/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+            </Link>
+          </div>
+        </section>
       </main>
     </div>
   );

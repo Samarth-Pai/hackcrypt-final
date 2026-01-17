@@ -46,7 +46,7 @@ export default function LoginPage() {
                             <Cpu size={32} className="text-violet-400" />
                         </div>
                         <h1 className="text-2xl font-black text-white tracking-widest uppercase">
-                            Cosmic Cypher
+                            Edu Quest
                         </h1>
                         <p className="text-xs text-slate-400 uppercase tracking-widest mt-2">
                             Enter Credentials to Access

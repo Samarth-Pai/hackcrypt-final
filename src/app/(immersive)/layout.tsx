@@ -1,9 +1,8 @@
-
 import { getUserProfile } from '@/lib/user';
 import DashboardShell from '@/components/layout/DashboardShell';
 import PageTransition from '@/components/layout/PageTransition';
 
-export default async function MainLayout({
+export default async function ImmersiveLayout({
     children,
 }: {
     children: React.ReactNode;

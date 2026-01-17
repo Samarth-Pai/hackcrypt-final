@@ -60,7 +60,7 @@ export default function Home() {
             <Cpu className="text-violet-400 group-hover:text-cyan-400 transition-colors" size={24} />
           </div>
           <span className="text-2xl font-black font-mono tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 group-hover:to-cyan-300 transition-all">
-            COSMIC_CYPHER
+            EDU_QUEST
           </span>
         </div>
         <div className="flex items-center gap-6">

@@ -13,7 +13,7 @@ export default async function TopNav() {
                         <Cpu size={18} className="text-violet-400 group-hover:text-white transition-colors" />
                     </div>
                     <span className="text-lg font-bold font-mono tracking-tighter text-slate-100 group-hover:text-violet-300 transition-colors">
-                        COSMIC_CYPHER
+                        EDU_QUEST
                     </span>
                 </Link>
 

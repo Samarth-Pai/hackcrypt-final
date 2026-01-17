@@ -60,7 +60,7 @@ export default function Home() {
             <Cpu className="text-violet-400 group-hover:text-cyan-400 transition-colors" size={24} />
           </div>
           <span className="text-2xl font-black font-mono tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 group-hover:to-cyan-300 transition-all">
-            EDU_QUEST
+            CogniArena
           </span>
         </div>
         <div className="flex items-center gap-6">
@@ -123,10 +123,10 @@ export default function Home() {
               <div className="absolute inset-0 bg-cyan-500/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             </Link>
             <Link
-              href="/learning-path"
+              href="/syllabus"
               className="px-6 py-3 rounded-full border border-violet-500/30 bg-violet-950/20 text-violet-300 text-sm font-black uppercase tracking-widest hover:text-white hover:border-violet-400/80 transition-all"
             >
-              Explore Paths
+              Explore Syllabus
             </Link>
           </motion.div>
         </div>

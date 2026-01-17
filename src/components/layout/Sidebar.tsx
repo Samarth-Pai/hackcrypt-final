@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { LayoutDashboard, LogOut, Swords, Cpu, User, BookOpen, Trophy, Map, Book, ChevronRight, ChevronLeft } from 'lucide-react';
+import { LayoutDashboard, LogOut, Swords, Cpu, User, BookOpen, Trophy, Book, ChevronRight, ChevronLeft } from 'lucide-react';
 import { logoutAction } from '@/app/actions/auth';
 import SidebarProfile from './SidebarProfile';
 
@@ -28,7 +28,6 @@ export default function Sidebar({ user, isCollapsed, toggleCollapse }: SidebarPr
     const navItems = [
         { href: '/dashboard', icon: LayoutDashboard, label: 'Control Hub', color: 'group-hover:text-green-neon', bgColor: 'group-hover:bg-green-neon' },
         { href: '/syllabus', icon: BookOpen, label: 'Syllabus Hub', color: 'group-hover:text-green-neon', bgColor: 'group-hover:bg-green-neon' },
-        { href: '/learning-path', icon: Map, label: 'Learning Path', color: 'group-hover:text-sun', bgColor: 'group-hover:bg-sun' },
         { href: '/story', icon: Book, label: 'Story Mode', color: 'group-hover:text-growth', bgColor: 'group-hover:bg-growth' },
         { href: '/duels', icon: Swords, label: 'Battle Rift', color: 'group-hover:text-gold-streak', bgColor: 'group-hover:bg-gold-streak' },
         { href: '/leaderboard', icon: Trophy, label: 'Global Leaderboard', color: 'group-hover:text-sun', bgColor: 'group-hover:bg-sun' },
@@ -45,7 +44,7 @@ export default function Sidebar({ user, isCollapsed, toggleCollapse }: SidebarPr
                     <div className="w-8 h-8 rounded bg-purple-ai flex items-center justify-center neon-border-purple shrink-0">
                         <Cpu size={18} className="text-white animate-pulse" />
                     </div>
-                    <h1 className="text-xl font-bold font-mono tracking-tighter text-white neon-text-ai">EDU_QUEST</h1>
+                    <h1 className="text-xl font-bold font-mono tracking-tighter text-white neon-text-ai">CogniArena</h1>
                 </div>
 
                 {isCollapsed && (

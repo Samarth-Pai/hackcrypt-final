@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Cpu, Trophy, BookOpen, Swords, LayoutDashboard, User, Map, Book } from 'lucide-react';
+import { Cpu, Trophy, BookOpen, Swords, LayoutDashboard, User, Book } from 'lucide-react';
 import { getUserProfile } from '@/lib/user';
 
 export default async function TopNav() {
@@ -13,14 +13,13 @@ export default async function TopNav() {
                         <Cpu size={18} className="text-violet-400 group-hover:text-white transition-colors" />
                     </div>
                     <span className="text-lg font-bold font-mono tracking-tighter text-slate-100 group-hover:text-violet-300 transition-colors">
-                        EDU_QUEST
+                        CogniArena
                     </span>
                 </Link>
 
                 <div className="hidden md:flex items-center gap-6 text-xs uppercase tracking-widest font-bold text-slate-400">
                     {[
                         { href: '/dashboard', icon: LayoutDashboard, label: 'Control Hub' },
-                        { href: '/learning-path', icon: Map, label: 'Learning Path' },
                         { href: '/story', icon: Book, label: 'Story Mode' },
                         { href: '/syllabus', icon: BookOpen, label: 'Syllabus' },
                         { href: '/duels', icon: Swords, label: 'Duels' },

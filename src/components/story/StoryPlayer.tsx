@@ -52,7 +52,10 @@ export default function StoryPlayer({ story }: { story: Story }) {
         const loadImage = async () => {
             if (!step) return;
             if (step.type === 'card' && step.image) {
-                setImageByStep((prev) => ({ ...prev, [step.id]: step.image! }));
+                setImageByStep((prev) => {
+                    if (prev[step.id]) return prev;
+                    return { ...prev, [step.id]: step.image! };
+                });
                 return;
             }
             if (imageByStep[step.id]) return;

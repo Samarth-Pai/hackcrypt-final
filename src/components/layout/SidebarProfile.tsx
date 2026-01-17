@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import MarvelAvatar, { DEFAULT_AVATAR_COLORS, HeroType } from '@/components/profile/MarvelAvatar';
 
 interface SidebarProfileProps {
     user: any;
@@ -11,13 +12,29 @@ interface SidebarProfileProps {
 }
 
 export default function SidebarProfile({ user, level, progressPercent, isCollapsed }: SidebarProfileProps) {
+    const avatarConfig = user?.avatarConfig;
+    const hero = avatarConfig?.hero as HeroType | undefined;
+    const avatarColors = avatarConfig?.colors || (hero ? DEFAULT_AVATAR_COLORS[hero] : DEFAULT_AVATAR_COLORS.tech);
+
     return (
         <div className={`border-b border-white/5 neural-bg relative overflow-hidden transition-all duration-300 ${isCollapsed ? 'p-4' : 'p-6'}`}>
             <div className={`flex items-center gap-3 relative z-10 transition-all ${isCollapsed ? 'justify-center' : ''}`}>
                 <div className="relative shrink-0">
-                    <div className="w-12 h-12 rounded-xl bg-purple-ai/20 flex items-center justify-center text-purple-ai font-black text-xl border border-purple-ai/50 neon-border-purple group-hover:scale-110 transition-transform">
-                        {user?.name?.[0]?.toUpperCase() || 'E'}
-                    </div>
+                    {avatarConfig?.imageUrl ? (
+                        <div className="w-12 h-12 rounded-xl overflow-hidden border border-purple-ai/50 neon-border-purple">
+                            <img
+                                src={avatarConfig.imageUrl}
+                                alt={user?.name || 'User avatar'}
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                    ) : avatarConfig?.hero ? (
+                        <MarvelAvatar hero={hero || 'tech'} colors={avatarColors} size={48} />
+                    ) : (
+                        <div className="w-12 h-12 rounded-xl bg-purple-ai/20 flex items-center justify-center text-purple-ai font-black text-xl border border-purple-ai/50 neon-border-purple group-hover:scale-110 transition-transform">
+                            {user?.name?.[0]?.toUpperCase() || 'E'}
+                        </div>
+                    )}
                     <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-neon border-2 border-teal-bg animate-pulse" />
                 </div>
 

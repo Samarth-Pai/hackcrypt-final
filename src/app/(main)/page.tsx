@@ -252,29 +252,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Testimonials */}
-        <section className="w-full max-w-6xl mx-auto mt-16">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl md:text-3xl font-black text-white">Pilot feedback</h2>
-            <span className="text-xs uppercase tracking-[0.3em] text-slate-400 font-bold">Global cohort</span>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { name: 'Nova R.', quote: 'The story missions made CS finally click for me.' },
-              { name: 'Kai M.', quote: 'Duels are insanely fun — I practice more just to rank up.' },
-              { name: 'Aster L.', quote: 'The visuals and XP system keep me locked in.' },
-            ].map((item) => (
-              <div
-                key={item.name}
-                className="p-6 rounded-3xl border border-violet-500/20 bg-violet-950/10"
-              >
-                <p className="text-sm text-slate-200 leading-relaxed">“{item.quote}”</p>
-                <p className="text-xs uppercase tracking-[0.3em] text-violet-300 font-bold mt-4">{item.name}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
         {/* Final CTA */}
         <section className="w-full max-w-6xl mx-auto mt-16">
           <div className="p-8 md:p-10 rounded-3xl border border-cyan-500/30 bg-gradient-to-r from-cyan-950/40 via-slate-950/40 to-violet-950/40 flex flex-col md:flex-row items-center justify-between gap-6">

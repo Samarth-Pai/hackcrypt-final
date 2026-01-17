@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1B0F2E"/>
+      <stop offset="100%" stop-color="#3C1B4D"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <path d="M260 520 C340 420, 500 420, 580 520" stroke="#FF7AD9" stroke-width="10" stroke-linecap="round"/>
+  <path d="M620 520 C700 420, 860 420, 940 520" stroke="#7CFFB2" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="420" cy="380" r="70" fill="rgba(255,122,217,0.2)" stroke="#FF7AD9" stroke-width="4"/>
+  <circle cx="780" cy="380" r="70" fill="rgba(124,255,178,0.2)" stroke="#7CFFB2" stroke-width="4"/>
+  <text x="395" y="390" fill="#FFD6F2" font-size="16" font-family="Inter,Arial,sans-serif">BREATH</text>
+  <text x="760" y="390" fill="#D5FFE9" font-size="16" font-family="Inter,Arial,sans-serif">HEART</text>
+  <rect x="120" y="640" width="960" height="120" rx="28" fill="rgba(12,6,20,0.7)" stroke="#FF7AD9" stroke-opacity="0.35"/>
+  <text x="160" y="705" fill="#FFD6F2" font-size="30" font-family="Inter,Arial,sans-serif" letter-spacing="4">EXERCISE → HIGHER ENERGY DEMAND</text>
+  <text x="160" y="745" fill="#FFC2E9" font-size="18" font-family="Inter,Arial,sans-serif" letter-spacing="4">BREATHING + HEART RATE INCREASE</text>
+</svg>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0C1D3A"/>
+      <stop offset="100%" stop-color="#263A7D"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <circle cx="260" cy="420" r="90" fill="rgba(124,255,178,0.2)" stroke="#7CFFB2" stroke-width="4"/>
+  <circle cx="520" cy="420" r="90" fill="rgba(124,255,178,0.2)" stroke="#7CFFB2" stroke-width="4"/>
+  <circle cx="780" cy="420" r="90" fill="rgba(124,255,178,0.2)" stroke="#7CFFB2" stroke-width="4"/>
+  <path d="M350 420 L430 420" stroke="#C8FFDD" stroke-width="4" stroke-linecap="round"/>
+  <path d="M610 420 L690 420" stroke="#C8FFDD" stroke-width="4" stroke-linecap="round"/>
+  <rect x="120" y="640" width="960" height="120" rx="28" fill="rgba(6,10,24,0.75)" stroke="#7CFFB2" stroke-opacity="0.4"/>
+  <text x="160" y="705" fill="#E8FFF2" font-size="30" font-family="Inter,Arial,sans-serif" letter-spacing="4">PLANT → HERBIVORE → PREDATOR</text>
+  <text x="160" y="745" fill="#B6FFD9" font-size="18" font-family="Inter,Arial,sans-serif" letter-spacing="4">PHOTOSYNTHESIS FUELS FOOD CHAINS</text>
+</svg>

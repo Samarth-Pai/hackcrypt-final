@@ -14,6 +14,7 @@ export type StoryChoice = {
 export type StoryCard = {
     id?: string;
     content: string;
+    image?: string;
     choices?: StoryChoice[];
 };
 

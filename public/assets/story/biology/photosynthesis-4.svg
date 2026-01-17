@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1B1B2F"/>
+      <stop offset="100%" stop-color="#2E4A7D"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect x="140" y="220" width="420" height="280" rx="26" fill="rgba(255,214,102,0.15)" stroke="#FFD166" stroke-width="4"/>
+  <rect x="640" y="220" width="420" height="280" rx="26" fill="rgba(124,255,178,0.15)" stroke="#7CFFB2" stroke-width="4"/>
+  <path d="M560 360 L640 360" stroke="#C8D6FF" stroke-width="6" stroke-linecap="round" stroke-dasharray="10 12"/>
+  <text x="220" y="320" fill="#FFE7A6" font-size="20" font-family="Inter,Arial,sans-serif" letter-spacing="3">LIGHT REACTIONS</text>
+  <text x="720" y="320" fill="#C8FFDD" font-size="20" font-family="Inter,Arial,sans-serif" letter-spacing="3">CALVIN CYCLE</text>
+  <rect x="120" y="640" width="960" height="120" rx="28" fill="rgba(8,10,18,0.7)" stroke="#7CF9FF" stroke-opacity="0.4"/>
+  <text x="160" y="705" fill="#E6FCFF" font-size="30" font-family="Inter,Arial,sans-serif" letter-spacing="4">TWO STAGES • ENERGY CAPTURE</text>
+  <text x="160" y="745" fill="#B6FFD9" font-size="18" font-family="Inter,Arial,sans-serif" letter-spacing="4">LIGHT-DEPENDENT → SUGAR BUILD</text>
+</svg>

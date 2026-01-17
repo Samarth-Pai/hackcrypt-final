@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F1C2E"/>
+      <stop offset="100%" stop-color="#1E3F5D"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <circle cx="320" cy="360" r="110" fill="rgba(124,255,178,0.18)" stroke="#7CFFB2" stroke-width="6"/>
+  <circle cx="600" cy="360" r="110" fill="rgba(255,214,102,0.18)" stroke="#FFD166" stroke-width="6"/>
+  <circle cx="880" cy="360" r="110" fill="rgba(110,231,255,0.18)" stroke="#6EE7FF" stroke-width="6"/>
+  <text x="290" y="370" fill="#E8FFF2" font-size="18" font-family="Inter,Arial,sans-serif">O2</text>
+  <text x="560" y="370" fill="#FFF1C7" font-size="18" font-family="Inter,Arial,sans-serif">GLUCOSE</text>
+  <text x="840" y="370" fill="#D7F4FF" font-size="18" font-family="Inter,Arial,sans-serif">ATP</text>
+  <path d="M410 360 L510 360" stroke="#AEEFFF" stroke-width="6" stroke-linecap="round" stroke-dasharray="10 10"/>
+  <path d="M690 360 L790 360" stroke="#AEEFFF" stroke-width="6" stroke-linecap="round" stroke-dasharray="10 10"/>
+  <rect x="120" y="640" width="960" height="120" rx="28" fill="rgba(7,12,20,0.7)" stroke="#7CFFB2" stroke-opacity="0.35"/>
+  <text x="160" y="705" fill="#E8FFF2" font-size="30" font-family="Inter,Arial,sans-serif" letter-spacing="4">O2 + GLUCOSE → ATP + CO2 + H2O</text>
+  <text x="160" y="745" fill="#B6FFD9" font-size="18" font-family="Inter,Arial,sans-serif" letter-spacing="4">CELLULAR RESPIRATION</text>
+</svg>

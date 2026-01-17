@@ -151,11 +151,31 @@
         "title": "Sunlight to Sugar",
         "topic": "Photosynthesis",
         "cards": [
-          "Photosynthesis converts light energy into chemical energy. Plants use sunlight, water, and carbon dioxide to create glucose.\n\nOxygen is released as a byproduct.",
-          "Chloroplasts contain chlorophyll, the pigment that captures sunlight.\n\nThis energy drives the reactions that build sugar molecules.",
-          "The process fuels plant growth and supports most food chains. It also affects Earth’s carbon balance.",
-          "Photosynthesis happens in two stages: light-dependent reactions and the Calvin cycle.\n\nEach stage plays a distinct role in energy capture and sugar production.",
-          "Environmental factors like light intensity, CO₂ levels, and temperature influence photosynthesis speed.\n\nThese limits shape plant growth and crop yield." 
+          {
+            "id": "photo-0",
+            "content": "Photosynthesis converts light energy into chemical energy. Plants use sunlight, water, and carbon dioxide to create glucose.\n\nOxygen is released as a byproduct.",
+            "image": "/assets/story/biology/photosynthesis-1.svg"
+          },
+          {
+            "id": "photo-1",
+            "content": "Chloroplasts contain chlorophyll, the pigment that captures sunlight.\n\nThis energy drives the reactions that build sugar molecules.",
+            "image": "/assets/story/biology/photosynthesis-2.svg"
+          },
+          {
+            "id": "photo-2",
+            "content": "The process fuels plant growth and supports most food chains. It also affects Earth’s carbon balance.",
+            "image": "/assets/story/biology/photosynthesis-3.svg"
+          },
+          {
+            "id": "photo-3",
+            "content": "Photosynthesis happens in two stages: light-dependent reactions and the Calvin cycle.\n\nEach stage plays a distinct role in energy capture and sugar production.",
+            "image": "/assets/story/biology/photosynthesis-4.svg"
+          },
+          {
+            "id": "photo-4",
+            "content": "Environmental factors like light intensity, CO₂ levels, and temperature influence photosynthesis speed.\n\nThese limits shape plant growth and crop yield.",
+            "image": "/assets/story/biology/photosynthesis-5.svg"
+          }
         ],
         "questions": [
           {
@@ -178,11 +198,31 @@
         "title": "Powerhouse Patrol",
         "topic": "Cellular Respiration",
         "cards": [
-          "Mitochondria produce ATP, the energy currency of the cell.\n\nThey convert nutrients into usable energy through cellular respiration.",
-          "Cellular respiration uses oxygen and glucose to create ATP, carbon dioxide, and water.\n\nThis process keeps cells functioning efficiently.",
-          "When energy demands rise, cells increase respiration rates.\n\nThat’s why breathing and heart rate increase during exercise.",
-          "Mitochondria have their own DNA, suggesting they evolved from ancient bacteria.\n\nThis endosymbiotic origin is a key evolutionary insight.",
-          "Disruptions in mitochondrial function can lead to fatigue and disease.\n\nThat’s why energy metabolism is a major focus in health science." 
+          {
+            "id": "cell-0",
+            "content": "Mitochondria produce ATP, the energy currency of the cell.\n\nThey convert nutrients into usable energy through cellular respiration.",
+            "image": "/assets/story/biology/cellular-1.svg"
+          },
+          {
+            "id": "cell-1",
+            "content": "Cellular respiration uses oxygen and glucose to create ATP, carbon dioxide, and water.\n\nThis process keeps cells functioning efficiently.",
+            "image": "/assets/story/biology/cellular-2.svg"
+          },
+          {
+            "id": "cell-2",
+            "content": "When energy demands rise, cells increase respiration rates.\n\nThat’s why breathing and heart rate increase during exercise.",
+            "image": "/assets/story/biology/cellular-3.svg"
+          },
+          {
+            "id": "cell-3",
+            "content": "Mitochondria have their own DNA, suggesting they evolved from ancient bacteria.\n\nThis endosymbiotic origin is a key evolutionary insight.",
+            "image": "/assets/story/biology/cellular-4.svg"
+          },
+          {
+            "id": "cell-4",
+            "content": "Disruptions in mitochondrial function can lead to fatigue and disease.\n\nThat’s why energy metabolism is a major focus in health science.",
+            "image": "/assets/story/biology/cellular-5.svg"
+          }
         ],
         "questions": [
           {

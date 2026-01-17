@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1A1D2F"/>
+      <stop offset="100%" stop-color="#2D3C72"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <ellipse cx="520" cy="380" rx="260" ry="160" fill="rgba(124,255,178,0.12)" stroke="#7CFFB2" stroke-width="5"/>
+  <path d="M420 380 C470 330, 520 330, 570 380" stroke="#AEEFFF" stroke-width="8" stroke-linecap="round"/>
+  <path d="M470 420 C520 470, 570 470, 620 420" stroke="#AEEFFF" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="760" cy="380" r="80" fill="rgba(110,231,255,0.15)" stroke="#6EE7FF" stroke-width="4"/>
+  <text x="726" y="388" fill="#D7F4FF" font-size="16" font-family="Inter,Arial,sans-serif">mtDNA</text>
+  <rect x="120" y="640" width="960" height="120" rx="28" fill="rgba(8,10,20,0.7)" stroke="#7CFFB2" stroke-opacity="0.35"/>
+  <text x="160" y="705" fill="#E8FFF2" font-size="30" font-family="Inter,Arial,sans-serif" letter-spacing="4">MITOCHONDRIA HAVE THEIR OWN DNA</text>
+  <text x="160" y="745" fill="#B6FFD9" font-size="18" font-family="Inter,Arial,sans-serif" letter-spacing="4">ENDOSYMBIOTIC ORIGIN</text>
+</svg>

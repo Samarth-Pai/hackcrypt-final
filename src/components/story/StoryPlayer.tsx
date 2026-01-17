@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CheckCircle, XCircle } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -26,6 +26,7 @@ export default function StoryPlayer({ story }: { story: Story }) {
                 type: 'card' as const,
                 content: typedCard.content,
                 choices: typedCard.choices,
+                image: typedCard.image,
                 id: typedCard.id || `card-${index}`,
             };
         });
@@ -40,8 +41,62 @@ export default function StoryPlayer({ story }: { story: Story }) {
     const [selected, setSelected] = useState<string | null>(null);
     const [submitted, setSubmitted] = useState(false);
     const [correctCount, setCorrectCount] = useState(0);
+    const [imageByStep, setImageByStep] = useState<Record<string, string>>({});
+    const [imageLoading, setImageLoading] = useState(false);
+    const [imageError, setImageError] = useState<string | null>(null);
     const step = steps[stepIndex];
     const progress = Math.round(((stepIndex + 1) / steps.length) * 100);
+
+    useEffect(() => {
+        let isMounted = true;
+        const loadImage = async () => {
+            if (!step) return;
+            if (step.type === 'card' && step.image) {
+                setImageByStep((prev) => ({ ...prev, [step.id]: step.image! }));
+                return;
+            }
+            if (imageByStep[step.id]) return;
+
+            setImageLoading(true);
+            setImageError(null);
+
+            const prompt = step.type === 'card'
+                ? `Cinematic sci-fi story scene: ${step.content}`
+                : `Cinematic sci-fi learning scene illustrating: ${step.question.prompt}`;
+
+            try {
+                const response = await fetch('/api/story/image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt }),
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data?.error || 'Failed to generate image');
+                }
+                const nextImage = data?.image || data?.imageUrl;
+                if (isMounted && nextImage) {
+                    setImageByStep((prev) => ({ ...prev, [step.id]: nextImage }));
+                }
+            } catch (error) {
+                if (isMounted) {
+                    const message = error instanceof Error ? error.message : 'Unable to generate visual';
+                    setImageError(message);
+                }
+            } finally {
+                if (isMounted) {
+                    setImageLoading(false);
+                }
+            }
+        };
+
+        loadImage();
+        return () => {
+            isMounted = false;
+        };
+    }, [imageByStep, step]);
 
     const handleAnswer = async (option: string) => {
         if (submitted || step?.type !== 'question') return;
@@ -113,8 +168,27 @@ export default function StoryPlayer({ story }: { story: Story }) {
                         transition={{ duration: 0.25, ease: 'easeOut' }}
                         className="space-y-4"
                     >
-                        <h2 className="text-xl font-bold text-cyan-200">Story Intel</h2>
-                        <p className="text-sm text-slate-200 whitespace-pre-line leading-relaxed">{step.content}</p>
+                        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr,0.8fr] gap-6">
+                            <div>
+                                <h2 className="text-xl font-bold text-cyan-200">Story Intel</h2>
+                                <p className="text-sm text-slate-200 whitespace-pre-line leading-relaxed mt-3">{step.content}</p>
+                            </div>
+                            <div className="relative rounded-2xl border border-cyan-500/20 bg-[#0F061A] overflow-hidden min-h-[220px]">
+                                {imageByStep[step.id] && (
+                                    <img
+                                        src={imageByStep[step.id]}
+                                        alt="Story visual"
+                                        className="w-full h-full object-cover opacity-90"
+                                    />
+                                )}
+                                {!imageByStep[step.id] && (
+                                    <div className="absolute inset-0 flex items-center justify-center text-xs uppercase tracking-[0.3em] text-cyan-400/70">
+                                        {imageLoading ? 'Generating visual...' : imageError ?? 'Visual pending'}
+                                    </div>
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#0F061A] via-transparent to-transparent" />
+                            </div>
+                        </div>
                         {step.choices && step.choices.length > 0 ? (
                             <div className="space-y-3">
                                 <p className="text-xs uppercase tracking-widest text-slate-400">Choose a path</p>
@@ -152,8 +226,27 @@ export default function StoryPlayer({ story }: { story: Story }) {
                         transition={{ duration: 0.25, ease: 'easeOut' }}
                         className="space-y-4"
                     >
-                        <h2 className="text-xl font-bold text-cyan-200">Knowledge Check</h2>
-                        <p className="text-sm text-slate-200">{step.question.prompt}</p>
+                        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr,0.8fr] gap-6">
+                            <div>
+                                <h2 className="text-xl font-bold text-cyan-200">Knowledge Check</h2>
+                                <p className="text-sm text-slate-200 mt-3">{step.question.prompt}</p>
+                            </div>
+                            <div className="relative rounded-2xl border border-cyan-500/20 bg-[#0F061A] overflow-hidden min-h-[220px]">
+                                {imageByStep[step.id] && (
+                                    <img
+                                        src={imageByStep[step.id]}
+                                        alt="Story visual"
+                                        className="w-full h-full object-cover opacity-90"
+                                    />
+                                )}
+                                {!imageByStep[step.id] && (
+                                    <div className="absolute inset-0 flex items-center justify-center text-xs uppercase tracking-[0.3em] text-cyan-400/70">
+                                        {imageLoading ? 'Generating visual...' : imageError ?? 'Visual pending'}
+                                    </div>
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#0F061A] via-transparent to-transparent" />
+                            </div>
+                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                             {formatOptions(step.question).map((option) => {
                                 const isCorrect = submitted && option === step.question.correctAnswer;

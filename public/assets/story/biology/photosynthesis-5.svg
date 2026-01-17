@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#101D2B"/>
+      <stop offset="100%" stop-color="#1C3F5A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <circle cx="320" cy="360" r="80" fill="rgba(255,209,102,0.2)" stroke="#FFD166" stroke-width="4"/>
+  <circle cx="560" cy="360" r="80" fill="rgba(124,255,178,0.2)" stroke="#7CFFB2" stroke-width="4"/>
+  <circle cx="800" cy="360" r="80" fill="rgba(110,231,255,0.2)" stroke="#6EE7FF" stroke-width="4"/>
+  <text x="300" y="370" fill="#FFF2CC" font-size="18" font-family="Inter,Arial,sans-serif">LIGHT</text>
+  <text x="540" y="370" fill="#D5FFE9" font-size="18" font-family="Inter,Arial,sans-serif">CO2</text>
+  <text x="770" y="370" fill="#D7F4FF" font-size="18" font-family="Inter,Arial,sans-serif">TEMP</text>
+  <rect x="120" y="640" width="960" height="120" rx="28" fill="rgba(6,12,20,0.7)" stroke="#FFD166" stroke-opacity="0.35"/>
+  <text x="160" y="705" fill="#FFF2CC" font-size="30" font-family="Inter,Arial,sans-serif" letter-spacing="4">PHOTOSYNTHESIS LIMITS</text>
+  <text x="160" y="745" fill="#FFE7A6" font-size="18" font-family="Inter,Arial,sans-serif" letter-spacing="4">INTENSITY • CO2 • TEMPERATURE</text>
+</svg>

@@ -129,7 +129,6 @@ export default function DuelsPage() {
         return players.find((id) => id !== userId) || null;
     }, [players, userId]);
 
-    const opponentAnswers = matchResult && opponentId ? matchResult.answers?.[opponentId] || {} : {};
 
     const handleJoinQueue = () => {
         socket?.emit('join_queue');
@@ -325,7 +324,6 @@ export default function DuelsPage() {
                                             <p className="text-slate-300 mb-1">Q{index + 1}: {question.text}</p>
                                             <p className="text-slate-400">Correct: {question.correctAnswer}</p>
                                             <p className="text-slate-400">You: {answerLog[question.id] ?? 'No answer'}</p>
-                                            <p className="text-slate-400">Opponent: {opponentAnswers?.[question.id] ?? 'No answer'}</p>
                                         </div>
                                     ))}
                                 </div>

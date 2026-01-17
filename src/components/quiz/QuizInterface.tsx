@@ -155,6 +155,21 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
             : score >= 6
                 ? 'Solid effort. A little more practice will level you up.'
                 : 'Keep going. Review the concepts and try again.';
+        const attemptedContext = answers
+            .map((answer, index) => {
+                const question = questions.find((q) => q.id === answer.questionId);
+                const feedbackItem = feedback.find((item) => item.questionId === answer.questionId);
+                const correctAnswer = feedbackItem?.correctAnswer || question?.correctAnswer || 'N/A';
+                const explanation = feedbackItem?.explanation || 'No explanation available.';
+                return [
+                    `Q${index + 1}: ${question?.text || answer.questionId}`,
+                    `Your answer: ${answer.selectedOption ?? 'No answer'}`,
+                    `Correct: ${correctAnswer}`,
+                    `Explanation: ${explanation}`,
+                ].join('\n');
+            })
+            .join('\n\n');
+
         return (
             <div className="flex flex-col items-center justify-center p-8 bg-earth text-[#ededed] rounded-xl shadow-2xl max-w-2xl mx-auto mt-10 border border-forest">
                 <motion.div
@@ -226,15 +241,7 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
                                 })}
                             </div>
                             <div className="mt-6">
-                                <ChatTutor
-                                    context={feedback
-                                        .map((item) => {
-                                            const question = questions.find((q) => q.id === item.questionId);
-                                            const userAnswer = answers.find((a) => a.questionId === item.questionId)?.selectedOption ?? 'No answer';
-                                            return `Q: ${question?.text || item.questionId}\nYour answer: ${userAnswer}\nCorrect: ${item.correctAnswer || 'N/A'}\nExplanation: ${item.explanation || 'No explanation available.'}`;
-                                        })
-                                        .join('\n\n')}
-                                />
+                                <ChatTutor context={attemptedContext} />
                             </div>
                             <button
                                 onClick={() => router.push('/dashboard')}

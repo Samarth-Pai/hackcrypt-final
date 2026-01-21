@@ -1,13 +1,14 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const client = await clientPromise;
     const db = client.db();
     let userId: ObjectId;
     try {
-        userId = new ObjectId(params.id);
+        userId = new ObjectId(id);
     } catch {
         return NextResponse.json({ error: 'Not found' }, { status: 404 });
     }

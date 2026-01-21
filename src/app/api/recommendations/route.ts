@@ -6,7 +6,7 @@ export async function GET() {
     if (!data) return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
 
     const performance = data.user.performance;
-    const bySubject = performance?.bySubject || {};
+    const bySubject: Record<string, { total?: number; correct?: number }> = performance?.bySubject || {};
 
     const subjectStats = Object.entries(bySubject).map(([subject, stats]) => {
         const total = stats.total || 0;

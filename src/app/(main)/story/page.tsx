@@ -11,7 +11,7 @@ export default async function StoryMapPage() {
     const db = client.db();
     const rawStoryGroups = await db.collection<StoryGroup>('stories').find({}).toArray();
     // Serialize for Client Component
-    const storyGroups = JSON.parse(JSON.stringify(rawStoryGroups));
+    const storyGroups: StoryGroup[] = JSON.parse(JSON.stringify(rawStoryGroups));
 
     const nodes = [
         { slug: 'cs-fundamentals', x: 12, y: 18 },

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSessionUserDoc } from '@/lib/session';
-import { buildQuestProgress } from '@/lib/quests';
+import { buildQuestProgress, type UserSnapshot } from '@/lib/quests';
 
 export async function GET() {
     const data = await getSessionUserDoc();
@@ -8,6 +8,6 @@ export async function GET() {
         return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
 
-    const quests = buildQuestProgress(data.user);
+    const quests = buildQuestProgress(data.user as UserSnapshot);
     return NextResponse.json({ quests });
 }

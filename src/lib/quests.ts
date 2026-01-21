@@ -7,7 +7,7 @@ export type QuestProgress = {
     rewardXp: number;
 };
 
-type UserSnapshot = {
+export type UserSnapshot = {
     gamification?: {
         xp?: number;
         completedLessons?: number;

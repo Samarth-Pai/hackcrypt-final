@@ -180,7 +180,7 @@ export default function QuizInterface({ questions }: QuizInterfaceProps) {
                 >
                     <Trophy className="w-24 h-24 text-sun mx-auto mb-4" />
                     <h2 className="text-3xl font-bold mb-2 text-growth">Quiz Completed!</h2>
-                    <p className="text-xl mb-2">You scored {score} / {questions.length}</p>
+                    <p className="text-xl mb-2">You scored {score + 1} / {questions.length}</p>
                     <p className="text-sm text-gray-300 mb-4">Rating: <span className="text-sun font-bold">{rating}</span></p>
 
                     {isSubmitting ? (

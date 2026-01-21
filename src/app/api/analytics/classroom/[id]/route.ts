@@ -1,9 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { getSessionUserDoc } from '@/lib/session';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const data = await getSessionUserDoc();
     if (!data) return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
 
@@ -16,7 +17,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
     const client = await clientPromise;
     const db = client.db();
 
-    const classroom = await db.collection('classrooms').findOne({ _id: new ObjectId(params.id) });
+    const classroom = await db.collection('classrooms').findOne({ _id: new ObjectId(id) });
     if (!classroom) return NextResponse.json({ error: 'Classroom not found' }, { status: 404 });
 
     if (!classroom.teacherId?.equals(user._id)) {

@@ -21,6 +21,14 @@ type Performance = {
     totalCorrect: number;
     bySubject: Record<string, { total: number; correct: number }>;
     byDifficulty: Record<string, { total: number; correct: number }>;
+    weekly?: {
+        weekStart?: string;
+        questions?: number;
+        correct?: number;
+        quizzesCompleted?: number;
+        storiesCompleted?: number;
+        completedStoryIds?: string[];
+    };
 };
 
 type UserDoc = {
